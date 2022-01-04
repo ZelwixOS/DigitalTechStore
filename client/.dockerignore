@@ -1,0 +1,6 @@
+**/bin/
+**/obj/
+**/node_modules/
+WebApi.Tests/
+.git
+/src/dist

@@ -1,0 +1,43 @@
+﻿namespace Domain.Models
+{
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
+    public class Product
+    {
+        public Guid Id { get; set; }
+
+        [Required]
+        [MaxLength(40)]
+        public string Name { get; set; }
+
+        [Required]
+        public decimal Price { get; set; }
+
+        [Required]
+        [MaxLength(300)]
+        public string Description { get; set; }
+
+        [Required]
+        public double Mark { get; set; }
+
+        [Required]
+        [MaxLength(10)]
+        public string VendorCode { get; set; }
+
+        [Required]
+        public int Popularity { get; set; }
+
+        [Required]
+        [MaxLength(40)]
+        public string PicURL { get; set; }
+
+        [Required]
+        public Guid CategoryIdFk { get; set; }
+
+        public Category Category { get; set; }
+
+        public HashSet<ProductParameter> ProductParameters { get; set; }
+    }
+}

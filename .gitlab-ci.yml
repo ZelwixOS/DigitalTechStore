@@ -1,0 +1,13 @@
+image: node
+
+stages:
+  - lint
+
+eslint:
+  tags:
+    - docker
+  stage: lint
+  script:
+    - npm install -g lerna
+    - lerna bootstrap --hoist
+    - npm run lint
