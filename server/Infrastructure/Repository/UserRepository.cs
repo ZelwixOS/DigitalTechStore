@@ -5,15 +5,18 @@
     using Domain.Models;
     using Domain.Repository;
     using Infrastructure.EF;
+    using Infrastructure.Interfaces;
+    using Infrastructure.Repository;
     using Microsoft.EntityFrameworkCore;
 
-    public class UserRepository : IUserRepository
+    public class UserRepository : BaseRepository, IUserRepository
     {
         private DatabaseContext context;
 
-        public UserRepository(DatabaseContext context)
+        public UserRepository(string connectionString, IDatabaseContextFactory contextFactory)
+            : base(connectionString, contextFactory)
         {
-            this.context = context;
+            this.context = this.ContextFactory.CreateDbContext(this.ConnectionString);
         }
 
         public IQueryable<User> GetItems()

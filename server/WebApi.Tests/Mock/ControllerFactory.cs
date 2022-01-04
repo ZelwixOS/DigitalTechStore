@@ -17,9 +17,9 @@
             this.serviceFactory = new ServiceFactory(databaseContextFactory, productHelperFactory);
         }
 
-        public ProductsController CreateProductController()
+        public ProductController CreateProductController()
         {
-            return new ProductsController(this.GetLogger<ProductsController>(), this.serviceFactory.CreateProductService(dbstring));
+            return new ProductController(this.GetLogger<ProductController>(), this.serviceFactory.CreateProductService(dbstring), this.serviceFactory.CreateProductParameterService(dbstring));
         }
 
         public CategoryController CreateCategoryController()

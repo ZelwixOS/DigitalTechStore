@@ -5,15 +5,18 @@
     using Domain.Models;
     using Domain.Repository;
     using Infrastructure.EF;
+    using Infrastructure.Interfaces;
+    using Infrastructure.Repository;
     using Microsoft.EntityFrameworkCore;
 
-    public class TechParameterRepository : ITechParameterRepository
+    public class TechParameterRepository : BaseRepository, ITechParameterRepository
     {
         private DatabaseContext context;
 
-        public TechParameterRepository(DatabaseContext context)
+        public TechParameterRepository(string connectionString, IDatabaseContextFactory contextFactory)
+            : base(connectionString, contextFactory)
         {
-            this.context = context;
+            this.context = this.ContextFactory.CreateDbContext(this.ConnectionString);
         }
 
         public IQueryable<TechParameter> GetItems()

@@ -22,5 +22,20 @@
         {
             return new CategoryRepository(dbstring, dbContextFactory);
         }
+
+        public IProductParameterRepository CreateProductParameterRepository(string dbstring)
+        {
+            return new ProductParameterRepository(dbstring, dbContextFactory);
+        }
+
+        public ITechParameterRepository CreateTechParameterRepository(string dbstring)
+        {
+            return new TechParameterRepository(dbstring, dbContextFactory);
+        }
+
+        public IUserRepository CreateUserRepository(string dbstring)
+        {
+            return new UserRepository(dbstring, dbContextFactory);
+        }
     }
 }

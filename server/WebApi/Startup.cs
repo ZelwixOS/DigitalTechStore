@@ -9,8 +9,8 @@ namespace WebApi
     using Domain.Models;
     using Domain.Repository;
     using Infrastructure.EF;
-    using Microsoft.AspNetCore.Authentication.Cookies;
     using Infrastructure.Interfaces;
+    using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -35,8 +35,7 @@ namespace WebApi
         {
             string dbconectionString = Configuration.GetConnectionString("DefaultConnection");
 
-            services.AddEntityFrameworkSqlServer().AddDbContext<DatabaseContext>(options =>
-           options.UseSqlServer(dbconectionString));
+            services.AddEntityFrameworkSqlServer().AddDbContext<DatabaseContext>(options => options.UseSqlServer(dbconectionString));
 
             services.AddControllersWithViews();
 
@@ -52,12 +51,6 @@ namespace WebApi
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddIdentity<User, IdentityRole<Guid>>().AddEntityFrameworkStores<DatabaseContext>();
-
-            services.AddScoped<IProductParameterRepository, ProductParameterRepository>();
-            services.AddScoped<IProductParameterService, ProductParameterService>();
-
-            services.AddScoped<ITechParameterRepository, TechParameterRepository>();
-            services.AddScoped<ITechParameterService, TechParameterService>();
 
             services.AddSingleton<ProductHelpersContainer>();
             services.AddScoped<RoleManager<IdentityRole<Guid>>>();
@@ -88,9 +81,15 @@ namespace WebApi
             services.AddScoped<IDatabaseContextFactory, DatabaseContextFactory>();
             services.AddScoped<ICategoryRepository, CategoryRepository>(provider => new CategoryRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<IProductRepository, ProductRepository>(provider => new ProductRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
+            services.AddScoped<IProductParameterRepository, ProductParameterRepository>(provider => new ProductParameterRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
+            services.AddScoped<ITechParameterRepository, TechParameterRepository>(provider => new TechParameterRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
+
             services.AddSingleton<ProductHelpersContainer>();
+
             services.AddScoped<IProductService, ProductService>(provider => new ProductService(provider.GetService<IProductRepository>(), provider.GetService<ICategoryRepository>(), provider.GetService<ProductHelpersContainer>()));
-            services.AddScoped<ICategoryService, CategoryService>(provider => new CategoryService(provider.GetService<ICategoryRepository>(), provider.GetService<ProductHelpersContainer>()));
+            services.AddScoped<ICategoryService, CategoryService>(provider => new CategoryService(provider.GetService<ICategoryRepository>(), provider.GetService<IProductRepository>(), provider.GetService<ProductHelpersContainer>()));
+            services.AddScoped<IProductParameterService, ProductParameterService>(provider => new ProductParameterService(provider.GetService<IProductParameterRepository>(), provider.GetService<IProductRepository>(), provider.GetService<ITechParameterRepository>()));
+            services.AddScoped<ITechParameterService, TechParameterService>(provider => new TechParameterService(provider.GetService<ITechParameterRepository>(), provider.GetService<ICategoryRepository>()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,7 +106,6 @@ namespace WebApi
             app.UseSpaStaticFiles();
 
             app.UseAuthentication();
-
 
             app.UseRouting();
 
