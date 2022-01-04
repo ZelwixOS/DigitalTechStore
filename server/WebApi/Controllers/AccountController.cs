@@ -35,20 +35,34 @@
         }
 
         [HttpPost]
+        [Route("RegisterViaGoogle")]
+        public async Task<ActionResult<MessageResultDto>> RegisterViaGoogle([FromBody] CustomerRegistrationDto model)
+        {
+            return this.Ok(await accountService.RegisterViaGoogle(model));
+        }
+
+        [HttpPost("GoogleAuth")]
+        public async Task<ActionResult<MessageResultDto>> AuthViaGoogle([FromBody] GoogleLoginDto loginData)
+        {
+            var answer = await accountService.GoogleAuth(loginData.Token);
+            return Ok(answer);
+        }
+
+        [HttpPost]
         [Route("LogOut")]
         public async Task<ActionResult<string>> LogOut()
         {
             return Ok(await accountService.LogOut());
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("isAuthenticated")]
         public async Task<ActionResult<string>> GetCurrentUserInfo()
         {
             return Ok(await accountService.GetCurrentUserInfo(HttpContext));
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("Role")]
         public async Task<ActionResult<string>> Role()
         {

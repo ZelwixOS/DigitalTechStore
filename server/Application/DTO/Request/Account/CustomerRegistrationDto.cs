@@ -27,5 +27,8 @@
         [MaxLength(50)]
         [MinLength(1)]
         public string SecondName { get; set; }
+
+        [MaxLength(2000)]
+        public string Token { get; set; }
     }
 }

@@ -13,6 +13,8 @@
 
         public Task<string> LogOut();
 
+        public Task<MessageResultDto> RegisterViaGoogle(CustomerRegistrationDto model);
+
         public Task<MessageResultDto> Register(CustomerRegistrationDto model);
 
         public Task<User> GetCurrentUserAsync(HttpContext httpCont);
@@ -22,5 +24,7 @@
         public Task<IList<User>> GetByRole(string role);
 
         public Task<string> GetCurrentUserInfo(HttpContext httpCont);
+
+        public Task<MessageResultDto> GoogleAuth(string token);
     }
 }

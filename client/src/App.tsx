@@ -6,6 +6,7 @@ import './App.css';
 import CategoryPage from './Components/Pages/CategoryPage';
 import ProductsPage from './Components/Pages/ProductsPage';
 import ProductPage from './Components/Pages/ProductPage';
+import RegistrationPage from './Components/Pages/RegistrationPage';
 
 const innerTheme = createMuiTheme({
   palette: {
@@ -26,6 +27,7 @@ const App: React.FC = () => (
           <Route exact path="/" component={ProductsPage} />
           <Route path="/category/:categoryName" component={CategoryPage} />
           <Route path="/product/:productID" component={ProductPage} />
+          <Route path="/registration" component={RegistrationPage} />
         </div>
       </BrowserRouter>
     </ThemeProvider>

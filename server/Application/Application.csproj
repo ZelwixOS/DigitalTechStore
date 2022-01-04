@@ -6,8 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="Google.Apis.Auth" Version="1.55.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
+	<PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
   </ItemGroup>
   
   <ItemGroup>
@@ -17,6 +19,7 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>../_stylecop/stylecop.ruleset</CodeAnalysisRuleSet>
     <GenerateFullPaths>true</GenerateFullPaths>
+	<UserSecretsId>7d5178e2-ced9-4643-955e-4b91bd74cd43</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -29,7 +29,7 @@
             Category category2 = testObjects.GetCategoryPhones();
             Product product21 = testObjects.GetProductPhone(category2.Id, category2);
             string argument1 = "Notebooks";
-            var argument2 = new GetProductsRequest() { PageNumber = 1, ItemsOnPage = 9 };
+            var argument2 = new GetCategoryProductsRequest() { PageNumber = 1, ItemsOnPage = 9 };
 
             var expected = new WrapperExtraInfo<CategoryDto>(new CategoryDto(category1), 1, 333, 333);
             expected.Container.Products = new HashSet<ProductOfCategoryDto>();
@@ -68,7 +68,7 @@
             Category category1 = testObjects.GetCategoryNotebooks();
             Product product11 = testObjects.GetProductNotebook(category1.Id, category1);
             string argument1 = "Phones";
-            var argument2 = new GetProductsRequest() { PageNumber = 1, ItemsOnPage = 9 };
+            var argument2 = new GetCategoryProductsRequest() { PageNumber = 1, ItemsOnPage = 9 };
 
             var dataBaseInitializer = testInitFactory.CreateDbInitalizer();
             dataBaseInitializer.InitDataBase(x =>
@@ -100,7 +100,7 @@
             var expected = new WrapperExtraInfo<CategoryDto>(new CategoryDto(category1), 0, 0, 0);
 
             string argument1 = "Notebooks";
-            var argument2 = new GetProductsRequest() { PageNumber = 1, ItemsOnPage = 9 };
+            var argument2 = new GetCategoryProductsRequest() { PageNumber = 1, ItemsOnPage = 9 };
 
             var dataBaseInitializer = testInitFactory.CreateDbInitalizer();
             dataBaseInitializer.InitDataBase(x =>
@@ -132,7 +132,7 @@
             Product product2 = testObjects.GetProductNotebook2(category1.Id, category1);
 
             string argument1 = "Notebooks";
-            var argument2 = new GetProductsRequest() { PageNumber = 2, ItemsOnPage = 1 };
+            var argument2 = new GetCategoryProductsRequest() { PageNumber = 2, ItemsOnPage = 1 };
 
             var expected = new WrapperExtraInfo<CategoryDto>(new CategoryDto(category1), 2, 322, 333);
             expected.Container.Products = new HashSet<ProductOfCategoryDto>();
@@ -174,7 +174,7 @@
             Product product21 = testObjects.GetProductPhone(category2.Id, category2);
 
             string argument1 = "Notebooks";
-            var argument2 = new GetProductsRequest() { PageNumber = 1, ItemsOnPage = 0 };
+            var argument2 = new GetCategoryProductsRequest() { PageNumber = 1, ItemsOnPage = 0 };
 
             var expected = new WrapperExtraInfo<CategoryDto>(new CategoryDto(category1), 0, 333, 333);
 
@@ -214,7 +214,7 @@
             Product product21 = testObjects.GetProductPhone(category2.Id, category2);
 
             string argument1 = "Notebooks";
-            var argument2 = new GetProductsRequest() { PageNumber = 0, ItemsOnPage = 9 };
+            var argument2 = new GetCategoryProductsRequest() { PageNumber = 0, ItemsOnPage = 9 };
 
             var expected = new WrapperExtraInfo<CategoryDto>(new CategoryDto(category1), 1, 333, 333);
 
@@ -252,7 +252,7 @@
             Product product2 = testObjects.GetProductNotebook2(category1.Id, category1);
 
             string argument1 = "Notebooks";
-            var argument2 = new GetProductsRequest() { PageNumber = 1, ItemsOnPage = 9, MaxPrice = 330 };
+            var argument2 = new GetCategoryProductsRequest() { PageNumber = 1, ItemsOnPage = 9, MaxPrice = 330 };
 
             var expected = new WrapperExtraInfo<CategoryDto>(new CategoryDto(category1), 1, 322, 322);
             expected.Container.Products = new HashSet<ProductOfCategoryDto>();
@@ -292,7 +292,7 @@
             Product product2 = testObjects.GetProductNotebook2(category1.Id, category1);
 
             string argument1 = "Notebooks";
-            var argument2 = new GetProductsRequest() { PageNumber = 1, ItemsOnPage = 9, MinPrice = 330 };
+            var argument2 = new GetCategoryProductsRequest() { PageNumber = 1, ItemsOnPage = 9, MinPrice = 330 };
 
             var expected = new WrapperExtraInfo<CategoryDto>(new CategoryDto(category1), 1, 333, 333);
             expected.Container.Products = new HashSet<ProductOfCategoryDto>();
@@ -332,7 +332,7 @@
             Product product2 = testObjects.GetProductNotebook2(category1.Id, category1);
 
             string argument1 = "Notebooks";
-            var argument2 = new GetProductsRequest() { PageNumber = 1, ItemsOnPage = 9, MinPrice = 400, MaxPrice = 200 };
+            var argument2 = new GetCategoryProductsRequest() { PageNumber = 1, ItemsOnPage = 9, MinPrice = 400, MaxPrice = 200 };
 
             var expected = new WrapperExtraInfo<CategoryDto>(new CategoryDto(category1), 0, 0, 0);
 
@@ -369,7 +369,7 @@
             Product product2 = testObjects.GetProductNotebook2(category1.Id, category1);
 
             string argument1 = "Notebooks";
-            var argument2 = new GetProductsRequest() { PageNumber = 1, ItemsOnPage = 9, MinPrice = 333, MaxPrice = 333 };
+            var argument2 = new GetCategoryProductsRequest() { PageNumber = 1, ItemsOnPage = 9, MinPrice = 333, MaxPrice = 333 };
 
             var expected = new WrapperExtraInfo<CategoryDto>(new CategoryDto(category1), 1, 333, 333);
             expected.Container.Products = new HashSet<ProductOfCategoryDto>();
@@ -409,7 +409,7 @@
             Product product2 = testObjects.GetProductNotebook2(category1.Id, category1);
 
             string argument1 = "Notebooks";
-            var argument2 = new GetProductsRequest() { PageNumber = 1, ItemsOnPage = 9, SortingType = SortingType.Price };
+            var argument2 = new GetCategoryProductsRequest() { PageNumber = 1, ItemsOnPage = 9, SortingType = SortingType.Price };
 
             var expected = new WrapperExtraInfo<CategoryDto>(new CategoryDto(category1), 1, 322, 333);
             expected.Container.Products = new HashSet<ProductOfCategoryDto>();
@@ -451,7 +451,7 @@
             Product product2 = testObjects.GetProductNotebook2(category1.Id, category1);
 
             string argument1 = "Notebooks";
-            var argument2 = new GetProductsRequest() { PageNumber = 1, ItemsOnPage = 9, SortingType = SortingType.Name };
+            var argument2 = new GetCategoryProductsRequest() { PageNumber = 1, ItemsOnPage = 9, SortingType = SortingType.Name };
 
             var expected = new WrapperExtraInfo<CategoryDto>(new CategoryDto(category1), 1, 322, 333);
             expected.Container.Products = new HashSet<ProductOfCategoryDto>();
@@ -493,7 +493,7 @@
             Product product2 = testObjects.GetProductNotebook2(category1.Id, category1);
 
             string argument1 = "Notebooks";
-            var argument2 = new GetProductsRequest() { PageNumber = 1, ItemsOnPage = 9, SortingType = SortingType.Name, ReverseSorting = true };
+            var argument2 = new GetCategoryProductsRequest() { PageNumber = 1, ItemsOnPage = 9, SortingType = SortingType.Name, ReverseSorting = true };
 
             var expected = new WrapperExtraInfo<CategoryDto>(new CategoryDto(category1), 1, 322, 333);
             expected.Container.Products = new HashSet<ProductOfCategoryDto>();

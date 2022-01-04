@@ -12,6 +12,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import DevicesIcon from '@material-ui/icons/Devices';
 
 import CategorySelector from './CategorySelector';
+import LoginModal from './LoginModal';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -103,9 +104,7 @@ const NavigationBar: React.FC = () => {
             </ButtonGroup>
           </Grid>
           <Grid item xs={12} sm={2}>
-            <Button className={classes.buttons} color="secondary" variant="outlined">
-              LogIn
-            </Button>
+            <LoginModal />
           </Grid>
         </Toolbar>
       </AppBar>

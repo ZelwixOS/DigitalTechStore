@@ -61,6 +61,30 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
     setRegData(newData);
   };
 
+  const handleEMailChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const newData = newObject(regData);
+    newData.email = event.target.value as string;
+    setRegData(newData);
+  };
+
+  const handleFirstNameChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const newData = newObject(regData);
+    newData.firstName = event.target.value as string;
+    setRegData(newData);
+  };
+
+  const handleSecondNameChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const newData = newObject(regData);
+    newData.secondName = event.target.value as string;
+    setRegData(newData);
+  };
+
+  const handlePhoneChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const newData = newObject(regData);
+    newData.phoneNumber = event.target.value as string;
+    setRegData(newData);
+  };
+
   const registerButtonClicked = async () => {
     if (!props.regData?.token) {
       redirectTo(await registrationRequest(regData));
@@ -103,7 +127,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
         id="email-tf"
         className={classes.spaces}
         value={regData.email}
-        onChange={handleLoginChange}
+        onChange={handleEMailChange}
         label="Email"
         variant="outlined"
       />
@@ -111,7 +135,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
         id="first-name-tf"
         className={classes.spaces}
         value={regData.firstName}
-        onChange={handleLoginChange}
+        onChange={handleFirstNameChange}
         label="First Name"
         variant="outlined"
       />
@@ -119,7 +143,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
         id="second-name-tf"
         className={classes.spaces}
         value={regData.secondName}
-        onChange={handleLoginChange}
+        onChange={handleSecondNameChange}
         label="Second Name"
         variant="outlined"
       />
@@ -127,7 +151,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
         id="phone-tf"
         className={classes.spaces}
         value={regData.phoneNumber}
-        onChange={handleLoginChange}
+        onChange={handlePhoneChange}
         label="Phone Number"
         variant="outlined"
       />

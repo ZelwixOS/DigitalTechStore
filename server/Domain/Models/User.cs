@@ -15,5 +15,8 @@
         [MaxLength(50)]
         [MinLength(1)]
         public string SecondName { get; set; }
+
+        [MaxLength(50)]
+        public string GoogleMail { get; set; }
     }
 }

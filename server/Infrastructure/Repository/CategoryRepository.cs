@@ -34,7 +34,7 @@
 
         public Category GetItem(Guid id)
         {
-            return context.Categories.Include(c => c.Parameters).AsNoTracking().FirstOrDefault(c => c.Id == id);
+            return context.Categories.Include(c => c.Products).Include(c => c.Parameters).AsNoTracking().FirstOrDefault(c => c.Id == id);
         }
 
         public Category GetItem(string name)

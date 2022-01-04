@@ -76,7 +76,7 @@
         public int DeleteCategory(Guid id)
         {
             var category = _categoryRepository.GetItem(id);
-            if (category != null && category.Products.Count == 0)
+            if (category != null && (category.Products == null || category.Products.Count == 0))
             {
                 return _categoryRepository.DeleteItem(category);
             }

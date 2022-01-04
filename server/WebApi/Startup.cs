@@ -11,6 +11,7 @@ namespace WebApi
     using Infrastructure.EF;
     using Infrastructure.Interfaces;
     using Microsoft.AspNetCore.Authentication.Cookies;
+    using Microsoft.AspNetCore.Authentication.Google;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -59,7 +60,29 @@ namespace WebApi
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IRolesIntializer, RolesInitializer>();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+                options.Password.RequireNonAlphanumeric = false;
+            });
+
+            services.AddAuthentication(o =>
+            {
+                o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                o.DefaultForbidScheme = GoogleDefaults.AuthenticationScheme;
+                o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+             .AddCookie()
+             .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+             {
+                 IConfigurationSection googleAuthNSection = Configuration.GetSection("Authentication:Google");
+                 options.ClientId = googleAuthNSection["ClientId"];
+                 options.ClientSecret = googleAuthNSection["ClientSecret"];
+             });
+
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Name = "DNStoreCookies";
@@ -78,11 +101,12 @@ namespace WebApi
                 };
             });
 
-            services.AddScoped<IDatabaseContextFactory, DatabaseContextFactory>();
+            services.AddSingleton<IDatabaseContextFactory, DatabaseContextFactory>();
             services.AddScoped<ICategoryRepository, CategoryRepository>(provider => new CategoryRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<IProductRepository, ProductRepository>(provider => new ProductRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<IProductParameterRepository, ProductParameterRepository>(provider => new ProductParameterRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<ITechParameterRepository, TechParameterRepository>(provider => new TechParameterRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
+            services.AddScoped<IUserRepository, UserRepository>(provider => new UserRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
 
             services.AddSingleton<ProductHelpersContainer>();
 

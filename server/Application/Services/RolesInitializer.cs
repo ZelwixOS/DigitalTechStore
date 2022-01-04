@@ -21,18 +21,18 @@
 
         public async Task CreateUserRoles()
         {
-            if (await roleManager.FindByNameAsync(RoleManager.Admin) == null)
+            if (await roleManager.FindByNameAsync(Constants.RoleManager.Admin) == null)
             {
-                await roleManager.CreateAsync(new IdentityRole<Guid>(RoleManager.Admin));
+                await roleManager.CreateAsync(new IdentityRole<Guid>(Constants.RoleManager.Admin));
             }
 
-            if (await roleManager.FindByNameAsync(RoleManager.Customer) == null)
+            if (await roleManager.FindByNameAsync(Constants.RoleManager.Customer) == null)
             {
-                await roleManager.CreateAsync(new IdentityRole<Guid>(RoleManager.Customer));
+                await roleManager.CreateAsync(new IdentityRole<Guid>(Constants.RoleManager.Customer));
             }
 
-            await CreateUserAsync("adminNE@mail.com", "Admin", "Main", "Administrator", "Aa123456!", "89807350000", RoleManager.Admin);
-            await CreateUserAsync("costomerNE@mail.com", "Sergey", "Prohorov", "TestCustomer", "Aa123456!", "89807350000", RoleManager.Customer);
+            await CreateUserAsync("adminNE@mail.com", "Admin", "Main", "Administrator", "Aa123456!", "89807350000", Constants.RoleManager.Admin);
+            await CreateUserAsync("costomerNE@mail.com", "Sergey", "Prohorov", "TestCustomer", "Aa123456!", "89807350000", Constants.RoleManager.Customer);
         }
 
         private async Task CreateUserAsync(string email, string firstName, string secondName, string login, string password, string phoneNumber, string role)
