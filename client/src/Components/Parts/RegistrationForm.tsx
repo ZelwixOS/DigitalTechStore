@@ -7,6 +7,8 @@ import { registrationRequest, regViaGoogleRequest, serverAnswers } from 'src/Req
 import ServerResponse from 'src/Types/ServerResponse';
 import Register from 'src/Types/Register';
 
+import ErrorSnackBar from './ErrorSnackBar';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     spaces: {
@@ -35,6 +37,11 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
     email: oldData.email,
   });
 
+  const [errors, setErrors] = React.useState<string[]>([]);
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [message, setMessage] = React.useState<string>('');
+
+  const [rerendered, setRererendered] = React.useState(false);
   const [regData, setRegData] = React.useState<Register>({
     login: '',
     password: '',
@@ -45,8 +52,9 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
     token: '',
   });
 
-  if (props.regData) {
+  if (props.regData && !rerendered) {
     setRegData(props.regData);
+    setRererendered(true);
   }
 
   const handleLoginChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -95,11 +103,13 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
 
   const redirectTo = (response: ServerResponse) => {
     switch (response.code) {
-      case serverAnswers.goToGoogleRegistrationPage:
-        window.location.replace('/Registration');
-        break;
       case serverAnswers.signedIn:
         window.location.replace('/');
+        break;
+      case serverAnswers.noCommand:
+        setMessage(response.message);
+        setErrors(response.errors);
+        setOpen(true);
         break;
     }
   };
@@ -164,6 +174,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
       >
         Register
       </Button>
+      <ErrorSnackBar message={message} errors={errors} open={open} setOpen={setOpen} />
     </Grid>
   );
 };

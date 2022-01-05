@@ -7,6 +7,9 @@ import GoogleLogin, { GoogleLoginResponse } from 'react-google-login';
 import Login from 'src/Types/Login';
 import { authViaGoogle, logInRequest, serverAnswers } from 'src/Requests/AccountRequests';
 import ServerResponse from 'src/Types/ServerResponse';
+import Register from 'src/Types/Register';
+
+import ErrorSnackBar from './ErrorSnackBar';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,6 +23,10 @@ const LoginForm: React.FC = () => {
   const classes = useStyles();
 
   const [loginData, setLoginData] = React.useState<Login>({ login: '', password: '', rememberMe: true });
+
+  const [errors, setErrors] = React.useState<string[]>([]);
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [message, setMessage] = React.useState<string>('');
 
   const handleRememberMeChange = () => {
     setLoginData({ login: loginData.login, password: loginData.password, rememberMe: !loginData.rememberMe });
@@ -43,9 +50,9 @@ const LoginForm: React.FC = () => {
 
   const handleGoogleLoginSuccess = async (googleData: unknown) => {
     if (googleData) {
-      const token = (googleData as GoogleLoginResponse)?.getAuthResponse()?.id_token;
-      if (token) {
-        redirectTo(await authViaGoogle(token));
+      const authResponse = (googleData as GoogleLoginResponse)?.getAuthResponse();
+      if (authResponse) {
+        googleRedirectTo(googleData as GoogleLoginResponse);
       }
     }
   };
@@ -54,15 +61,53 @@ const LoginForm: React.FC = () => {
     redirectTo(await logInRequest(loginData));
   };
 
-  const redirectTo = (response: ServerResponse) => {
+  const redirectTo = async (response: ServerResponse) => {
     switch (response.code) {
       case serverAnswers.goToGoogleRegistrationPage:
-        window.location.replace('/Registration');
+        window.location.replace('/registration');
         break;
       case serverAnswers.signedIn:
         window.location.replace('/');
         break;
+      case serverAnswers.noCommand:
+        setMessage(response.message);
+        setErrors(response.errors);
+        setOpen(true);
+        break;
     }
+  };
+
+  const googleRedirectTo = async (googleData: GoogleLoginResponse) => {
+    const id = googleData?.getAuthResponse()?.id_token;
+    const serverResult = await authViaGoogle(id);
+    switch (serverResult.code) {
+      case serverAnswers.goToGoogleRegistrationPage:
+        redirectToRegistrationPage(id, googleData);
+        break;
+      case serverAnswers.signedIn:
+        window.location.replace('/');
+        break;
+      case serverAnswers.noCommand:
+        setMessage(serverResult.message);
+        setErrors(serverResult.errors);
+        setOpen(true);
+        break;
+    }
+  };
+
+  const redirectToRegistrationPage = (id: string, googleData: GoogleLoginResponse) => {
+    const profile = googleData.getBasicProfile();
+    const regData: Register = {
+      login: '',
+      password: '',
+      email: profile.getEmail(),
+      firstName: profile.getGivenName(),
+      secondName: profile.getFamilyName(),
+      token: id,
+    };
+
+    history.pushState(regData, '', '/registration');
+    window.location.replace('/registration');
   };
 
   return (
@@ -108,7 +153,7 @@ const LoginForm: React.FC = () => {
         </Button>
       </Grid>
       <Grid className={classes.spaces} container justify="center">
-        <Typography>Sign in with other services</Typography>
+        <Typography component="div">Sign in with other services</Typography>
       </Grid>
       <Grid container justify="center">
         <GoogleLogin
@@ -118,6 +163,7 @@ const LoginForm: React.FC = () => {
           cookiePolicy={'single_host_origin'}
         />
       </Grid>
+      <ErrorSnackBar message={message} errors={errors} open={open} setOpen={setOpen} />
     </Grid>
   );
 };

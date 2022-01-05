@@ -98,7 +98,7 @@
 
                 var msg = Answer.RegisteredSuccessfully + user.UserName;
 
-                return new MessageResultDto(msg, null);
+                return new MessageResultDto(msg, null, Constants.AnswerCodes.SignedIn);
             }
             else
             {
@@ -149,7 +149,7 @@
 
                 var msg = Answer.RegisteredSuccessfully + user.UserName;
 
-                return new MessageResultDto(msg, null);
+                return new MessageResultDto(msg, null, Constants.AnswerCodes.SignedIn);
             }
             else
             {

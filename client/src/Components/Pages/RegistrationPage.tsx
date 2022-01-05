@@ -9,7 +9,7 @@ interface IRegistration {
   regData?: Register;
 }
 
-const RegistrationPage: React.FC<IRegistration> = props => (
+const RegistrationPage: React.FC<IRegistration> = () => (
   <React.Fragment>
     <script src="https://apis.google.com/js/platform.js" async defer />
     <NavigationBar />
@@ -19,7 +19,7 @@ const RegistrationPage: React.FC<IRegistration> = props => (
           <Typography variant="h4" style={{ paddingBottom: '10px' }}>
             Registration
           </Typography>
-          <RegistrationForm regData={props.regData} />
+          <RegistrationForm regData={history.state} />
         </Card>
       </Grid>
     </Grid>
