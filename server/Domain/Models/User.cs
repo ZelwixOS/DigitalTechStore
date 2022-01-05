@@ -18,5 +18,8 @@
 
         [MaxLength(50)]
         public string GoogleMail { get; set; }
+
+        [MaxLength(100)]
+        public string Avatar { get; set; }
     }
 }

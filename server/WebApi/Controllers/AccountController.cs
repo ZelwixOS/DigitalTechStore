@@ -56,8 +56,8 @@
         }
 
         [HttpGet]
-        [Route("isAuthenticated")]
-        public async Task<ActionResult<string>> GetCurrentUserInfo()
+        [Route("GetCurrentUserInfo")]
+        public async Task<ActionResult<UserInfo>> GetCurrentUserInfo()
         {
             return Ok(await accountService.GetCurrentUserInfo(HttpContext));
         }

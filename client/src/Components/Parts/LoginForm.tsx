@@ -63,9 +63,6 @@ const LoginForm: React.FC = () => {
 
   const redirectTo = async (response: ServerResponse) => {
     switch (response.code) {
-      case serverAnswers.goToGoogleRegistrationPage:
-        window.location.replace('/registration');
-        break;
       case serverAnswers.signedIn:
         window.location.replace('/');
         break;
@@ -81,7 +78,7 @@ const LoginForm: React.FC = () => {
     const id = googleData?.getAuthResponse()?.id_token;
     const serverResult = await authViaGoogle(id);
     switch (serverResult.code) {
-      case serverAnswers.goToGoogleRegistrationPage:
+      case serverAnswers.userNotFound:
         redirectToRegistrationPage(id, googleData);
         break;
       case serverAnswers.signedIn:

@@ -87,6 +87,7 @@
                 FirstName = model.FirstName,
                 SecondName = model.SecondName,
                 PhoneNumber = model.PhoneNumber,
+                Avatar = "defaultAvatar",
             };
 
             var result = await this.userManager.CreateAsync(user, model.Password);
@@ -129,6 +130,7 @@
                 if (await CheckGoogleUser(gUser) == GoogleCode.NoUserInDB)
                 {
                     user.GoogleMail = gUser.Email;
+                    user.Avatar = gUser.Picture;
                 }
                 else
                 {
@@ -185,11 +187,19 @@
             return this.userManager.GetUsersInRoleAsync(role);
         }
 
-        public async Task<string> GetCurrentUserInfo(HttpContext httpCont)
+        public async Task<UserInfo> GetCurrentUserInfo(HttpContext httpCont)
         {
             User usr = await GetCurrentUserAsync(httpCont);
-            var message = usr == null ? string.Empty : usr.UserName;
-            return message;
+            if (usr != null)
+            {
+                string role = (await this.userManager.GetRolesAsync(usr)).FirstOrDefault();
+                if (role != null)
+                {
+                    return new UserInfo(usr, role);
+                }
+            }
+
+            return null;
         }
 
         private async Task<Payload> GetGoogleUser(string token)

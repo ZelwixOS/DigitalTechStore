@@ -23,7 +23,7 @@
 
         public Task<IList<User>> GetByRole(string role);
 
-        public Task<string> GetCurrentUserInfo(HttpContext httpCont);
+        public Task<UserInfo> GetCurrentUserInfo(HttpContext httpCont);
 
         public Task<MessageResultDto> GoogleAuth(string token);
     }

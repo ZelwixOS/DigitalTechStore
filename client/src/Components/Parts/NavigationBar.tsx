@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -11,8 +11,12 @@ import Grid from '@material-ui/core/Grid';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import DevicesIcon from '@material-ui/icons/Devices';
 
+import { getRole } from 'src/Requests/AccountRequests';
+import Roles from 'src/Types/Roles';
+
 import CategorySelector from './CategorySelector';
 import LoginModal from './LoginModal';
+import UserMiniPanel from './UserMiniPanel';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -63,6 +67,31 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const NavigationBar: React.FC = () => {
   const classes = useStyles();
+
+  const [isAuth, setAuth] = useState<boolean>(false);
+  const [loaded, setLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    checkAuth(isMounted);
+    return () => {
+      isMounted = false;
+    };
+  });
+
+  const checkAuth = async (isMounted: boolean) => {
+    const authres = await getRole();
+
+    if (isMounted) {
+      if (authres !== Roles.guest) {
+        setAuth(true);
+      } else {
+        setAuth(false);
+      }
+      setLoaded(true);
+    }
+  };
+
   return (
     <React.Fragment>
       <AppBar>
@@ -104,7 +133,7 @@ const NavigationBar: React.FC = () => {
             </ButtonGroup>
           </Grid>
           <Grid item xs={12} sm={2}>
-            <LoginModal />
+            {loaded && (isAuth ? <UserMiniPanel /> : <LoginModal />)}
           </Grid>
         </Toolbar>
       </AppBar>
