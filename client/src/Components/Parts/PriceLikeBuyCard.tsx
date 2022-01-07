@@ -54,10 +54,10 @@ const PriceLikeBuyCard: React.FC<IPriceLikeBuyCard> = props => {
         <Grid className={classes.grid} container direction="row" justify="center" alignItems="center">
           <Grid item container direction="column" justify="center" alignItems="center" xs={12} sm={6}>
             <Typography component="h5" variant="h5" className={classes.bold}>
-              Price:
+              Цена:
             </Typography>
             <Typography color="primary" component="h5" variant="h5" className={classes.bold}>
-              ${props.price}
+              {props.price}₽
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} container direction="row" justify="center" alignItems="center">
@@ -68,7 +68,7 @@ const PriceLikeBuyCard: React.FC<IPriceLikeBuyCard> = props => {
             </Grid>
             <Grid item xs={12} sm={9}>
               <Button color="primary" variant="contained">
-                Buy
+                Купить
               </Button>
             </Grid>
           </Grid>

@@ -117,7 +117,7 @@ const NavigationBar: React.FC = () => {
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder="Search"
+                placeholder="Поиск"
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
@@ -128,8 +128,8 @@ const NavigationBar: React.FC = () => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <ButtonGroup variant="outlined" color="secondary" size="large" aria-label="text primary button group">
-              <Button startIcon={<FavoriteBorderIcon />}>Favorite</Button>
-              <Button startIcon={<ShoppingCartOutlinedIcon />}>Cart</Button>
+              <Button startIcon={<FavoriteBorderIcon />}>Избранное</Button>
+              <Button startIcon={<ShoppingCartOutlinedIcon />}>Корзина</Button>
             </ButtonGroup>
           </Grid>
           <Grid item xs={12} sm={2}>

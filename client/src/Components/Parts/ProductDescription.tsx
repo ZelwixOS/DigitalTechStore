@@ -25,7 +25,7 @@ const ProductDescription: React.FC<IProductDescription> = props => {
   return (
     <Grid container direction="column" alignItems="center" justify="center">
       <Typography className={classes.prodName} variant="overline">
-        {`Descripton of ${props.productName}`}
+        {`Описание ${props.productName}`}
       </Typography>
       <Grid className={classes.descriptionText} container justify="flex-start">
         <Typography variant="body2">{props.productDescription}</Typography>

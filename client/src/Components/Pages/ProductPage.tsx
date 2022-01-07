@@ -29,7 +29,7 @@ const ProductPage: React.FC = () => {
 
   const [product, setProduct] = useState<Product>();
   const [picture, setPicture] = useState<string>('');
-  const picUrl = 'http://localhost:3000/';
+  const picUrl = 'https://localhost:5001/products/';
 
   useEffect(() => {
     let isMounted = true;

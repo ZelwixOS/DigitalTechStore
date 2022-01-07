@@ -121,7 +121,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
         className={classes.spaces}
         value={regData.login}
         onChange={handleLoginChange}
-        label="Login"
+        label="Логин"
         variant="outlined"
       />
       <TextField
@@ -130,7 +130,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
         type="password"
         value={regData.password}
         onChange={handlePasswordChange}
-        label="Password"
+        label="Пароль"
         variant="outlined"
       />
       <TextField
@@ -146,7 +146,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
         className={classes.spaces}
         value={regData.firstName}
         onChange={handleFirstNameChange}
-        label="First Name"
+        label="Имя"
         variant="outlined"
       />
       <TextField
@@ -154,7 +154,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
         className={classes.spaces}
         value={regData.secondName}
         onChange={handleSecondNameChange}
-        label="Second Name"
+        label="Фамилия"
         variant="outlined"
       />
       <TextField
@@ -162,7 +162,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
         className={classes.spaces}
         value={regData.phoneNumber}
         onChange={handlePhoneChange}
-        label="Phone Number"
+        label="Номер телефона"
         variant="outlined"
       />
       <Button
@@ -172,7 +172,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
         variant="contained"
         onClick={registerButtonClicked}
       >
-        Register
+        Зарегистрироваться
       </Button>
       <ErrorSnackBar message={message} errors={errors} open={open} setOpen={setOpen} />
     </Grid>

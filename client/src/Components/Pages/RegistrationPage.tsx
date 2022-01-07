@@ -17,7 +17,7 @@ const RegistrationPage: React.FC<IRegistration> = () => (
       <Grid xs={12} sm={9} item direction="column" justify="center" alignItems="center" container>
         <Card style={{ padding: '35px' }} variant="outlined">
           <Typography variant="h4" style={{ paddingBottom: '10px' }}>
-            Registration
+            Регистрация
           </Typography>
           <RegistrationForm regData={history.state} />
         </Card>

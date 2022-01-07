@@ -3,7 +3,7 @@ import axios from 'axios';
 import Login from 'src/Types/Login';
 import Register from 'src/Types/Register';
 import ServerResponse from 'src/Types/ServerResponse';
-import UserInfo from 'src/Types/UserInfo';
+import UserMainInfo from 'src/Types/UserMainInfo';
 
 const serverAnswers = {
   noCommand: 0,
@@ -25,6 +25,17 @@ const regViaGoogleRequest = async (registrationData: Register): Promise<ServerRe
 
 const getRole = async (): Promise<string> => (await axios.get('/api/Account/Role')).data;
 
-const getUserInfo = async (): Promise<UserInfo> => (await axios.get('/api/Account/GetCurrentUserInfo')).data;
+const getUserInfo = async (): Promise<UserMainInfo> => (await axios.get('/api/Account/GetCurrentUserInfo')).data;
 
-export { serverAnswers, authViaGoogle, logInRequest, registrationRequest, regViaGoogleRequest, getRole, getUserInfo };
+const logOut = async (): Promise<string> => (await axios.post('/api/Account/LogOut')).data;
+
+export {
+  serverAnswers,
+  authViaGoogle,
+  logInRequest,
+  registrationRequest,
+  regViaGoogleRequest,
+  getRole,
+  getUserInfo,
+  logOut,
+};

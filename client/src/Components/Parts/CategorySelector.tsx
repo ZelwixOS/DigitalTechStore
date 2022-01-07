@@ -98,7 +98,7 @@ const CategorySelector: React.FC = () => {
           onClick={handleToggle}
           endIcon={<ArrowDropUpIcon />}
         >
-          Categories
+          Категории
         </Button>
       ) : (
         <Button
@@ -111,7 +111,7 @@ const CategorySelector: React.FC = () => {
           onClick={handleToggle}
           endIcon={<ArrowDropDownIcon />}
         >
-          Categories
+          Категории
         </Button>
       )}
       <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>

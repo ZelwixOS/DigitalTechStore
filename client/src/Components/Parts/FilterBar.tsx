@@ -46,13 +46,13 @@ const FilterBar: React.FC<IFilterBar> = props => {
         <List component="nav" aria-label="main mailbox folders">
           <ListItem>
             <Typography variant="h5" component="h5">
-              Filters
+              Фильтры
             </Typography>
           </ListItem>
           <Divider />
           <ListItem>
             <Typography id="price-slider" gutterBottom>
-              Price
+              Цена
             </Typography>
           </ListItem>
           <ListItem>
@@ -68,7 +68,7 @@ const FilterBar: React.FC<IFilterBar> = props => {
                   value={props.pickedPrices[0]}
                   onChange={handleMinChange}
                   InputProps={{
-                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                    endAdornment: <InputAdornment position="end">₽</InputAdornment>,
                   }}
                 />
               )}
@@ -85,7 +85,7 @@ const FilterBar: React.FC<IFilterBar> = props => {
                   value={props.pickedPrices[1]}
                   onChange={handleMaxChange}
                   InputProps={{
-                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                    endAdornment: <InputAdornment position="end">₽</InputAdornment>,
                   }}
                 />
               )}
@@ -95,7 +95,7 @@ const FilterBar: React.FC<IFilterBar> = props => {
           <ListItem>
             <Grid container justify="center">
               <Button variant="contained" color="primary" onClick={props.applyChanges}>
-                Apply
+                Применить
               </Button>
             </Grid>
           </ListItem>

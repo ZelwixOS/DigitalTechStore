@@ -44,7 +44,7 @@ const SortBar: React.FC<ISortBar> = props => {
       <Card variant="outlined">
         <Grid className={classes.selector} container alignItems="center" justify="flex-start">
           <FormControl className={classes.formControl}>
-            <InputLabel id="sorting-controlled-open-select-label">Sort by</InputLabel>
+            <InputLabel id="sorting-controlled-open-select-label">Сортировка</InputLabel>
             <Observer>
               {() => (
                 <Select
@@ -56,16 +56,16 @@ const SortBar: React.FC<ISortBar> = props => {
                   onChange={handleSortTypeChanged}
                 >
                   <MenuItem value={'price'}>
-                    <ArrowDownwardIcon fontSize="small" /> Price
+                    <ArrowDownwardIcon fontSize="small" /> Цена
                   </MenuItem>
                   <MenuItem value={'price reverse'}>
-                    <ArrowUpwardIcon fontSize="small" /> Price
+                    <ArrowUpwardIcon fontSize="small" /> Цена
                   </MenuItem>
                   <MenuItem value={'name'}>
-                    <ArrowDownwardIcon fontSize="small" /> Name
+                    <ArrowDownwardIcon fontSize="small" /> Название
                   </MenuItem>
                   <MenuItem value={'name reverse'}>
-                    <ArrowUpwardIcon fontSize="small" /> Name
+                    <ArrowUpwardIcon fontSize="small" /> Название
                   </MenuItem>
                 </Select>
               )}

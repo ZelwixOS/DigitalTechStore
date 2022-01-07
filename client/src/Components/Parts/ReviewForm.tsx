@@ -65,7 +65,7 @@ const ReviewForm: React.FC<IReviewForm> = props => {
         />
         <Grid className={classes.cardPart} container alignItems="center" justify="flex-end">
           <Button color="primary" variant="contained" onClick={submit}>
-            Submit
+            Отправить
           </Button>
         </Grid>
       </Grid>

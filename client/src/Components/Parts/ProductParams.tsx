@@ -25,7 +25,7 @@ const ProductParams: React.FC<IProductParams> = props => {
   return (
     <Grid container direction="column" alignItems="center" justify="center">
       <Typography className={classes.prodName} variant="overline">
-        {`Parameters of ${props.productName}`}
+        {`Характеристики ${props.productName}`}
       </Typography>
       {props.params?.map((param, index) => (
         <ProductParameter param={param} key={index} />

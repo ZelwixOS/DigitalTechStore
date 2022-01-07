@@ -37,7 +37,7 @@ const LoginModal: React.FC = () => {
   return (
     <div>
       <Button className={classes.buttons} color="secondary" variant="outlined" onClick={handleClickOpen}>
-        LogIn
+        Войти
       </Button>
       <Dialog
         open={open}
@@ -45,7 +45,7 @@ const LoginModal: React.FC = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Sign in</DialogTitle>
+        <DialogTitle id="alert-dialog-title">Войти</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <LoginForm />
@@ -53,8 +53,8 @@ const LoginModal: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <Grid container justify="center">
-            <Typography>You are new here?</Typography>
-            <Link href="/Registration"> Regiser </Link>
+            <Typography>Вы здесь впервые?</Typography>
+            <Link href="/Registration"> Зарегистрироваться </Link>
           </Grid>
         </DialogActions>
       </Dialog>

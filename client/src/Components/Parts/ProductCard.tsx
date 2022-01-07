@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ProductCard: React.FC<IProductCard> = props => {
   const [isShown, setIsShown] = useState(false);
-  const picUrl = 'http://localhost:3000/';
+  const picUrl = 'https://localhost:5001/products/';
   const [picture, setPicture] = useState(`${picUrl}${props.product.picURL}`);
   const classes = useStyles();
 
@@ -91,7 +91,7 @@ const ProductCard: React.FC<IProductCard> = props => {
               </Link>
             </Typography>
             <Typography component="h5" variant="h5" className={classes.bold}>
-              ${props.product.price}
+              {props.product.price}₽
             </Typography>
           </Grid>
         </CardContent>
@@ -107,7 +107,7 @@ const ProductCard: React.FC<IProductCard> = props => {
         </Grid>
         <Grid item xs={12} sm={8}>
           <Button className={classes.button} variant="outlined">
-            Buy
+            Купить
           </Button>
         </Grid>
       </Grid>

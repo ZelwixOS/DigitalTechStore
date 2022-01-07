@@ -114,7 +114,7 @@ const LoginForm: React.FC = () => {
         className={classes.spaces}
         value={loginData.login}
         onChange={handleLoginChange}
-        label="Login"
+        label="Логин"
         variant="outlined"
       />
       <TextField
@@ -123,7 +123,7 @@ const LoginForm: React.FC = () => {
         type="password"
         value={loginData.password}
         onChange={handlePasswordChange}
-        label="Password"
+        label="Пароль"
         variant="outlined"
       />
       <FormControlLabel
@@ -135,7 +135,7 @@ const LoginForm: React.FC = () => {
             color="primary"
           />
         }
-        label="Remember me"
+        label="Запомнить меня"
         className={classes.spaces}
       />
       <Grid container justify="flex-end">
@@ -146,11 +146,11 @@ const LoginForm: React.FC = () => {
           variant="contained"
           onClick={logInButtonClicked}
         >
-          LogIn
+          Войти
         </Button>
       </Grid>
       <Grid className={classes.spaces} container justify="center">
-        <Typography component="div">Sign in with other services</Typography>
+        <Typography component="div">Войти с помощью</Typography>
       </Grid>
       <Grid container justify="center">
         <GoogleLogin

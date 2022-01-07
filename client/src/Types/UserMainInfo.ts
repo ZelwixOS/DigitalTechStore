@@ -1,4 +1,4 @@
-type UseInfo = {
+type UseMainInfo = {
   userName: string;
   firstName: string;
   secondName: string;
@@ -9,4 +9,4 @@ type UseInfo = {
   avatar: string;
 };
 
-export default UseInfo;
+export default UseMainInfo;

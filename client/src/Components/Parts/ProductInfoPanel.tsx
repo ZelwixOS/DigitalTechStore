@@ -77,9 +77,9 @@ const ProductInfoPanel = (props: IVerticalTabs) => {
             aria-label="Vertical tabs"
             textColor="primary"
           >
-            <Tab label="Description" {...a11yProps(0)} />
-            <Tab label="Parameters" {...a11yProps(1)} />
-            <Tab label="Reviews" {...a11yProps(2)} />
+            <Tab label="Описание" {...a11yProps(0)} />
+            <Tab label="Характеристики" {...a11yProps(1)} />
+            <Tab label="Отзывы" {...a11yProps(2)} />
           </Tabs>
         </Grid>
         <Grid item xs={12} sm={9}>

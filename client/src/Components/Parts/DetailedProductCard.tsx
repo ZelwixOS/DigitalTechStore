@@ -43,7 +43,7 @@ const DetailedProductCard: React.FC<IDetailedProductCard> = props => {
       <Grid direction="row" justify="center" container>
         <Grid item xs={12} sm={6} direction="column" justify="center" alignItems="center" container>
           <img className={classes.image} src={props.image} />
-          Code: {props.product?.vendorCode}
+          Артикул: {props.product?.vendorCode}
         </Grid>
         <Grid item xs={12} sm={6}>
           <Typography variant="h6" component="h6">
