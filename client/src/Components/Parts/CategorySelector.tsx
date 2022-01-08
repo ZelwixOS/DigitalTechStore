@@ -30,6 +30,16 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingTop: theme.spacing(2),
       paddingBottom: theme.spacing(2),
     },
+    largeObject: {
+      [theme.breakpoints.down('sm')]: {
+        display: 'none',
+      },
+    },
+    smallObject: {
+      [theme.breakpoints.up('md')]: {
+        display: 'none',
+      },
+    },
   }),
 );
 
@@ -39,7 +49,7 @@ const CategorySelector: React.FC = () => {
   const [open, setOpen] = React.useState<boolean>(false);
   const [categories, setCategories] = React.useState<Category[]>([]);
 
-  const anchorRef = React.useRef<HTMLButtonElement>(null);
+  const anchorRef = React.useRef<HTMLDivElement>(null);
 
   const handleToggle = () => {
     setOpen(prevOpen => !prevOpen);
@@ -87,33 +97,60 @@ const CategorySelector: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      {open ? (
-        <Button
-          variant="outlined"
-          size="large"
-          color="secondary"
-          ref={anchorRef}
-          aria-controls={open ? 'menu-list-grow' : undefined}
-          aria-haspopup="true"
-          onClick={handleToggle}
-          endIcon={<ArrowDropUpIcon />}
-        >
-          Категории
-        </Button>
-      ) : (
-        <Button
-          variant="outlined"
-          size="large"
-          color="secondary"
-          ref={anchorRef}
-          aria-controls={open ? 'menu-list-grow' : undefined}
-          aria-haspopup="true"
-          onClick={handleToggle}
-          endIcon={<ArrowDropDownIcon />}
-        >
-          Категории
-        </Button>
-      )}
+      <div ref={anchorRef}>
+        {open ? (
+          <Button
+            variant="outlined"
+            size="large"
+            color="secondary"
+            aria-controls={open ? 'menu-list-grow' : undefined}
+            aria-haspopup="true"
+            className={classes.largeObject}
+            onClick={handleToggle}
+            endIcon={<ArrowDropUpIcon />}
+          >
+            Категории
+          </Button>
+        ) : (
+          <Button
+            variant="outlined"
+            size="large"
+            color="secondary"
+            aria-controls={open ? 'menu-list-grow' : undefined}
+            aria-haspopup="true"
+            onClick={handleToggle}
+            className={classes.largeObject}
+            endIcon={<ArrowDropDownIcon />}
+          >
+            Категории
+          </Button>
+        )}
+        {open ? (
+          <Button
+            variant="outlined"
+            size="medium"
+            color="secondary"
+            aria-controls={open ? 'menu-list-grow' : undefined}
+            aria-haspopup="true"
+            onClick={handleToggle}
+            className={classes.smallObject}
+          >
+            <ArrowDropUpIcon />
+          </Button>
+        ) : (
+          <Button
+            variant="outlined"
+            size="medium"
+            color="secondary"
+            aria-controls={open ? 'menu-list-grow' : undefined}
+            aria-haspopup="true"
+            onClick={handleToggle}
+            className={classes.smallObject}
+          >
+            <ArrowDropDownIcon />
+          </Button>
+        )}
+      </div>
       <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
         <Paper>
           <ClickAwayListener onClickAway={handleClose}>

@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: theme.typography.fontWeightBold,
     },
     descriptionText: {
-      margin: theme.spacing(2),
+      padding: theme.spacing(2),
     },
   }),
 );

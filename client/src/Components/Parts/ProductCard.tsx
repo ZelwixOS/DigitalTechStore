@@ -31,16 +31,12 @@ const useStyles = makeStyles((theme: Theme) =>
       flex: '1 0 auto',
     },
     button: {
-      marginBottom: theme.spacing(5),
-      marginTop: theme.spacing(5),
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      maxHeight: 50,
+      padding: theme.spacing(1),
     },
     cover: {
       maxWidth: 151,
       maxHeight: 120,
-      margin: theme.spacing(2),
+      margin: theme.spacing(1),
     },
     bold: {
       fontWeight: 600,
@@ -78,7 +74,7 @@ const ProductCard: React.FC<IProductCard> = props => {
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
     >
-      <Grid container direction="column" alignItems="center" item xs={12} sm={3}>
+      <Grid container direction="column" alignItems="center" justify="center" xs={12} sm={3}>
         <img className={classes.cover} src={picture} alt={props.product.name} />
         <Typography variant="body1">{isShown && props.product.vendorCode}</Typography>
       </Grid>
@@ -99,7 +95,7 @@ const ProductCard: React.FC<IProductCard> = props => {
           <Rating name="read-only" value={props.product.mark} readOnly />
         </Grid>
       </Grid>
-      <Grid container direction="column" justify="center" alignItems="center" item xs={12} sm={3}>
+      <Grid container direction="row" justify="center" alignItems="center" item xs={12} sm={3}>
         <Grid item xs={12} sm={4}>
           <IconButton aria-label="favourite" className={classes.button}>
             <FavoriteIcon />

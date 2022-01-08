@@ -61,6 +61,24 @@ const useStyles = makeStyles((theme: Theme) =>
     logoButton: {
       fontSize: '30px',
       fontFamily: 'cursive',
+      [theme.breakpoints.down('sm')]: {
+        display: 'none',
+      },
+    },
+    logoIcon: {
+      [theme.breakpoints.up('md')]: {
+        display: 'none',
+      },
+    },
+    largeObject: {
+      [theme.breakpoints.down('md')]: {
+        display: 'none',
+      },
+    },
+    smallObject: {
+      [theme.breakpoints.up('lg')]: {
+        display: 'none',
+      },
     },
   }),
 );
@@ -107,6 +125,9 @@ const NavigationBar: React.FC = () => {
             >
               DDoS
             </Button>
+            <Button variant="text" size="large" color="secondary" href="/" className={classes.logoIcon}>
+              <DevicesIcon />
+            </Button>
           </Grid>
           <Grid item xs={12} sm={2}>
             <CategorySelector />
@@ -127,7 +148,27 @@ const NavigationBar: React.FC = () => {
             </div>
           </Grid>
           <Grid item xs={12} sm={3}>
-            <ButtonGroup variant="outlined" color="secondary" size="large" aria-label="text primary button group">
+            <ButtonGroup
+              className={classes.smallObject}
+              variant="outlined"
+              color="secondary"
+              size="large"
+              aria-label="text primary button group"
+            >
+              <Button>
+                <FavoriteBorderIcon />
+              </Button>
+              <Button>
+                <ShoppingCartOutlinedIcon />
+              </Button>
+            </ButtonGroup>
+            <ButtonGroup
+              className={classes.largeObject}
+              variant="outlined"
+              color="secondary"
+              size="large"
+              aria-label="text primary button group"
+            >
               <Button startIcon={<FavoriteBorderIcon />}>Избранное</Button>
               <Button startIcon={<ShoppingCartOutlinedIcon />}>Корзина</Button>
             </ButtonGroup>
