@@ -19,6 +19,6 @@
 
         public Product Product { get; set; }
 
-        public TechParameter Parameter { get; set; }
+        public TechParameter TechParameter { get; set; }
     }
 }

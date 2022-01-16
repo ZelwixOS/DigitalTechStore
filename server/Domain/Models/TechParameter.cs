@@ -13,13 +13,13 @@
         public string Name { get; set; }
 
         [Required]
-        public bool Important { get; set; }
+        public Guid ParameterBlockIdFk { get; set; }
 
         [Required]
-        public Guid CategoryIdFk { get; set; }
-
-        public Category Category { get; set; }
+        public ParameterType ParameterType { get; set; }
 
         public HashSet<ProductParameter> ProductParameters { get; set; }
+
+        public ParameterBlock ParameterBlock { get; set; }
     }
 }
