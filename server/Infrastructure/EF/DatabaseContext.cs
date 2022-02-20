@@ -23,6 +23,8 @@
 
         public DbSet<User> StoreUsers { get; set; }
 
+        public DbSet<CommonCategory> CommonCategories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>(entity =>
