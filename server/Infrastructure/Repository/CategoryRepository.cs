@@ -34,12 +34,16 @@
 
         public Category GetItem(Guid id)
         {
-            return context.Categories.Include(c => c.Products).Include(c => c.Parameters).AsNoTracking().FirstOrDefault(c => c.Id == id);
+            var category = context.Categories.Include(c => c.Products).Include(c => c.CategoryParameterBlocks.Select(p => p.ParameterBlock.Parameters)).FirstOrDefault(c => c.Id == id);
+            category.ParameterBlocks = category.CategoryParameterBlocks.Select(p => p.ParameterBlock).ToHashSet();
+            return category;
         }
 
         public Category GetItem(string name)
         {
-            return context.Categories.Include(c => c.Parameters).AsNoTracking().FirstOrDefault(c => c.Name == name);
+            var category = context.Categories.Include(c => c.CategoryParameterBlocks.Select(p => p.ParameterBlock.Parameters)).AsNoTracking().FirstOrDefault(c => c.Name == name);
+            category.ParameterBlocks = category.CategoryParameterBlocks.Select(p => p.ParameterBlock).ToHashSet();
+            return category;
         }
 
         public int DeleteItem(Category category)

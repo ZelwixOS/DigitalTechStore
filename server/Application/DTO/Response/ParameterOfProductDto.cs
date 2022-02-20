@@ -8,9 +8,9 @@
         public ParameterOfProductDto(ProductParameter productParam)
         {
             this.Id = productParam.Id;
-            this.Name = productParam.Parameter.Name;
+            this.Name = productParam.TechParameter.Name;
             this.Value = productParam.Value;
-            this.Important = productParam.Parameter.Important;
+            this.Important = productParam.TechParameter.Important;
         }
 
         public ParameterOfProductDto()

@@ -16,7 +16,7 @@
                 ParameterIdFk = this.ParameterId,
                 ProductIdFk = this.ProductId,
                 Product = null,
-                Parameter = null,
+                TechParameter = null,
             };
         }
     }

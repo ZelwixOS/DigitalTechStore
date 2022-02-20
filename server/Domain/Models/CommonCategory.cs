@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class Category
+    public class CommonCategory
     {
         public Guid Id { get; set; }
 
@@ -16,14 +16,6 @@
         [MaxLength(200)]
         public string Description { get; set; }
 
-        public Guid CommonCategoryIdFk { get; set; }
-
-        public HashSet<Product> Products { get; set; }
-
-        public HashSet<CategoryParameterBlock> CategoryParameterBlocks { get; set; }
-
-        public HashSet<ParameterBlock> ParameterBlocks { get; set; }
-
-        public CommonCategory CommonCategory { get; set; }
+        public HashSet<Category> Categories { get; set; }
     }
 }

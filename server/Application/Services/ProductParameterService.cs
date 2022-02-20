@@ -81,7 +81,7 @@
             var product = _productRepository.GetItem(prodParam.ProductId);
             var parameter = _techParameterRepository.GetItem(prodParam.ParameterId);
 
-            if (product != null && parameter != null && product.Category.Id == parameter.Category.Id)
+            if (product != null && parameter != null)
             {
                 return true;
             }

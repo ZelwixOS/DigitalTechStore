@@ -14,8 +14,7 @@
                 Id = this.Id,
                 Name = this.Name,
                 Important = this.Important,
-                CategoryIdFk = this.CategoryId,
-                Category = null,
+                ParameterType = this.ParameterType,
             };
         }
     }

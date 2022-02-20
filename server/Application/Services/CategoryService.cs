@@ -46,7 +46,7 @@
             var category = _categoryRepository.GetItem(name);
             if (category != null)
             {
-                var filtersWithCodes = _productHelper.Filter.ConvertParameters(category.Parameters, parameters.ParameterFilters);
+                var filtersWithCodes = _productHelper.Filter.ConvertParameters(category.ParameterBlocks.SelectMany(p => p.Parameters), parameters.ParameterFilters);
                 var allProducts = _productRepository.GetItems();
                 var productByParams = _productHelper.Filter.FilterByParameters(allProducts, filtersWithCodes, category.Id);
                 var filterResult = _productHelper.Filter.FilterByPrice(productByParams, (decimal)parameters.MinPrice, parameters.MaxPrice);

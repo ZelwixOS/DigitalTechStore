@@ -1,6 +1,5 @@
 ﻿namespace Application.DTO.Request
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
     using Application.Interfaces;
     using Domain.Models;
@@ -14,7 +13,7 @@
         [Required]
         public bool Important { get; set; }
 
-        public Guid CategoryId { get; set; }
+        public ParameterType ParameterType { get; set; }
 
         public abstract TechParameter ToModel();
     }

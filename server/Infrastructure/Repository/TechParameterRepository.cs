@@ -26,7 +26,7 @@
 
         public TechParameter GetItem(Guid id)
         {
-            return context.TechParameters.Include(i => i.ProductParameters).Include(i => i.Category).AsNoTracking().FirstOrDefault(t => t.Id == id);
+            return context.TechParameters.Include(i => i.ProductParameters).AsNoTracking().FirstOrDefault(t => t.Id == id);
         }
 
         public TechParameter CreateItem(TechParameter techParameter)

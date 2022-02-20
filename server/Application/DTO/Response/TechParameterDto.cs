@@ -10,7 +10,6 @@
             this.Id = techParam.Id;
             this.Name = techParam.Name;
             this.Important = techParam.Important;
-            this.CategoryId = techParam.CategoryIdFk;
         }
 
         public TechParameterDto()
@@ -22,7 +21,5 @@
         public string Name { get; set; }
 
         public bool Important { get; set; }
-
-        public Guid CategoryId { get; set; }
     }
 }

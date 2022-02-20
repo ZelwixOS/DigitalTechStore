@@ -10,8 +10,9 @@
             {
                 Name = this.Name,
                 Important = this.Important,
-                CategoryIdFk = this.CategoryId,
-                Category = null,
+                ParameterBlock = null,
+                ParameterType = this.ParameterType,
+                ProductParameters = null,
             };
         }
     }

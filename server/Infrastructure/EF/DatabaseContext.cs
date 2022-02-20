@@ -44,7 +44,11 @@
                 entity.HasKey(p => p.Id);
             });
 
-            modelBuilder.Entity<Category>().HasKey(c => c.Id);
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.HasOne(c => c.CommonCategory).WithMany(c => c.Categories).HasForeignKey(c => c.CommonCategoryIdFk);
+                entity.HasKey(c => c.Id);
+            });
 
             modelBuilder.Entity<CategoryParameterBlock>(entity =>
             {
@@ -54,6 +58,8 @@
             });
 
             modelBuilder.Entity<ParameterBlock>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<CommonCategory>().HasKey(c => c.Id);
 
             modelBuilder.Entity<User>().HasKey(u => u.Id);
 

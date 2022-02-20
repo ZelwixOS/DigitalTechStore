@@ -57,7 +57,7 @@
             return null;
         }
 
-        public HashSet<ProductParameter> ConvertParameters(HashSet<TechParameter> techParameters, List<string> filters)
+        public HashSet<ProductParameter> ConvertParameters(IEnumerable<TechParameter> techParameters, List<string> filters)
         {
             var existingParams = new HashSet<ProductParameter>();
 

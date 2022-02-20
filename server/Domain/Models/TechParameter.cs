@@ -15,6 +15,8 @@
         [Required]
         public Guid ParameterBlockIdFk { get; set; }
 
+        public bool Important { get; set; }
+
         [Required]
         public ParameterType ParameterType { get; set; }
 

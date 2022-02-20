@@ -26,7 +26,7 @@
 
         public IQueryable<ProductParameter> GetItems(Guid id)
         {
-            return context.ProductParameters.Where(p => p.Product.Id == id).Include(p => p.Parameter).AsNoTracking();
+            return context.ProductParameters.Where(p => p.Product.Id == id).Include(p => p.TechParameter).AsNoTracking();
         }
 
         public ProductParameter GetItem(Guid id)

@@ -46,18 +46,5 @@
                 return 0;
             }
         }
-
-        private bool TechParameterModelCheck(TechParameterDto techParam)
-        {
-            var category = _categoryRepository.GetItem(techParam.CategoryId);
-            if (category != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
     }
 }
