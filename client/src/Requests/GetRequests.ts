@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+import Category from 'src/Types/Category';
+import CommonCategory from 'src/Types/CommonCategory';
+import Product from 'src/Types/Product';
 import Sorting from 'src/Types/Sorting';
 
 async function getRequest(url: string) {
@@ -13,11 +16,15 @@ async function getProducts(currentPage: number, itemsOnPage: number, sortType: s
 }
 
 async function getCategories() {
-  return await getRequest('/api/Category');
+  return (await getRequest('/api/Category')) as Category[];
+}
+
+async function getCommonCategories() {
+  return (await getRequest('/api/CommonCategory')) as CommonCategory[];
 }
 
 async function getProduct(id: string) {
-  return await getRequest(`/api/Product/${id}`);
+  return (await getRequest(`/api/Product/${id}`)) as Product;
 }
 
 async function getProductsOfCategory(
@@ -42,4 +49,4 @@ function sortTypeParsing(sortType: string): Sorting {
 
 export default getRequest;
 
-export { getProducts, getRequest, getCategories, getProductsOfCategory, getProduct };
+export { getProducts, getRequest, getCategories, getCommonCategories, getProductsOfCategory, getProduct };

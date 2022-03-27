@@ -11,7 +11,8 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import { Typography } from '@material-ui/core';
 
 import Category from 'src/Types/Category';
-import { getCategories } from 'src/Requests/GetRequests';
+import CommonCategory from 'src/Types/CommonCategory';
+import { getCommonCategories } from 'src/Requests/GetRequests';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,7 +48,7 @@ const CategorySelector: React.FC = () => {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState<boolean>(false);
-  const [categories, setCategories] = React.useState<Category[]>([]);
+  const [comCategories, setComCategories] = React.useState<CommonCategory[]>([]);
 
   const anchorRef = React.useRef<HTMLDivElement>(null);
 
@@ -83,9 +84,9 @@ const CategorySelector: React.FC = () => {
   React.useEffect(() => {
     let isMounted = true;
     const getCategs = async () => {
-      const res = await getCategories();
+      const res = await getCommonCategories();
       if (isMounted) {
-        setCategories(res);
+        setComCategories(res);
       }
     };
     getCategs();
@@ -155,17 +156,17 @@ const CategorySelector: React.FC = () => {
         <Paper>
           <ClickAwayListener onClickAway={handleClose}>
             <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown} className={classes.menu}>
-              {categories instanceof Array &&
-                categories.map((category, index) => (
+              {comCategories instanceof Array &&
+                comCategories.map((comCategory, index) => (
                   <MenuItem
                     className={classes.item}
                     key={index}
                     onClick={() => {
-                      document.location.href = `/category/${category.name}`;
+                      document.location.href = `/category/${comCategory.name}`;
                     }}
                   >
                     <Typography variant="h6" component="h6">
-                      {category.name}
+                      {comCategory.name}
                     </Typography>
                   </MenuItem>
                 ))}
