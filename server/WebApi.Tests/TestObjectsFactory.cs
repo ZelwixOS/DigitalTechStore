@@ -2,7 +2,7 @@
 {
     using System;
     using Application.DTO.Request;
-    using Application.ViewModels;
+    using Application.DTO.Response;
     using Domain.Models;
 
     public class TestObjectsFactory

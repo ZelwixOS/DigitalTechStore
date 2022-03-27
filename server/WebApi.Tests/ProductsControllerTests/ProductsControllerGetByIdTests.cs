@@ -1,7 +1,7 @@
 ﻿namespace WebApi.Tests.ProductsControllerTests
 {
     using System;
-    using Application.ViewModels;
+    using Application.DTO.Response;
     using Domain.Models;
     using Microsoft.AspNetCore.Mvc;
     using WebApi.Tests.Mock;

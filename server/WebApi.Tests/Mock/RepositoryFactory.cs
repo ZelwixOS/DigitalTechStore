@@ -1,8 +1,8 @@
 ﻿namespace WebApi.Tests.Mock
 {
-    using CleanArchitecture.Infra.Data.Repositories;
     using Domain.Repository;
     using Infrastructure.Interfaces;
+    using Infrastructure.Repository;
 
     internal class RepositoryFactory
     {
