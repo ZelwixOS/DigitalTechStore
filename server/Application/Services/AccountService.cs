@@ -23,13 +23,17 @@
         private readonly SignInManager<User> signInManager;
         private readonly IConfiguration config;
         private readonly IUserRepository userRepository;
+        private readonly ICartRepository cartRepository;
+        private readonly IWishRepository wishRepository;
 
-        public AccountService(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, IUserRepository userRepository)
+        public AccountService(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, IUserRepository userRepository, ICartRepository cartRepository, IWishRepository wishRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.config = config;
             this.userRepository = userRepository;
+            this.cartRepository = cartRepository;
+            this.wishRepository = wishRepository;
         }
 
         public async Task<MessageResultDto> Login(LogInDto model)
@@ -195,7 +199,10 @@
                 string role = (await this.userManager.GetRolesAsync(usr)).FirstOrDefault();
                 if (role != null)
                 {
-                    return new UserInfo(usr, role);
+                    var userInfo = new UserInfo(usr, role);
+                    userInfo.CartCount = cartRepository.GetItemsByUser(usr.Id).Count();
+                    userInfo.WishListCount = wishRepository.GetItemsByUser(usr.Id).Count();
+                    return userInfo;
                 }
             }
 

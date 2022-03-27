@@ -6,46 +6,50 @@
     using Domain.Repository;
     using Infrastructure.EF;
     using Infrastructure.Interfaces;
-
     using Microsoft.EntityFrameworkCore;
 
-    public class ProductRepository : BaseRepository, IProductRepository, IDisposable
+    public class WishRepository : BaseRepository, IWishRepository, IDisposable
     {
         private readonly DatabaseContext context;
         private bool disposed = false;
 
-        public ProductRepository(string connectionString, IDatabaseContextFactory contextFactory)
-         : base(connectionString, contextFactory)
+        public WishRepository(string connectionString, IDatabaseContextFactory contextFactory)
+            : base(connectionString, contextFactory)
         {
             this.context = this.ContextFactory.CreateDbContext(this.ConnectionString);
         }
 
-        public Product CreateItem(Product product)
+        public Wish CreateItem(Wish item)
         {
-            var entity = context.Add(product);
+            var entity = context.Add(item);
             context.SaveChanges();
             return entity.Entity;
         }
 
-        public IQueryable<Product> GetItems()
+        public int DeleteItem(Wish item)
         {
-            return context.Products.Include(p => p.ProductParameters).AsNoTracking();
-        }
-
-        public Product GetItem(Guid id)
-        {
-            return context.Products.Include(p => p.Category).AsNoTracking().FirstOrDefault(p => p.Id == id);
-        }
-
-        public int DeleteItem(Product product)
-        {
-            context.Products.Remove(product);
+            context.Wishes.Remove(item);
             return context.SaveChanges();
         }
 
-        public Product UpdateItem(Product product)
+        public Wish GetItem(Guid id)
         {
-            var entity = context.Products.Update(product);
+            return context.Wishes.FirstOrDefault(w => w.Id == id);
+        }
+
+        public IQueryable<Wish> GetItemsByUser(Guid userId)
+        {
+            return context.Wishes.Where(w => w.UserId == userId);
+        }
+
+        public IQueryable<Wish> GetItems()
+        {
+            return context.Wishes.AsNoTracking();
+        }
+
+        public Wish UpdateItem(Wish item)
+        {
+            var entity = context.Wishes.Update(item);
             context.SaveChanges();
             return entity.Entity;
         }

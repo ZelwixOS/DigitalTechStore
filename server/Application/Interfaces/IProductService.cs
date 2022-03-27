@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using Application.DTO.Request;
+    using Application.DTO.Response;
     using Application.DTO.Response.WithExtraInfo;
-    using Application.ViewModels;
 
     public interface IProductService
     {

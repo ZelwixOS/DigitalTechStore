@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Infra.Data.Repositories
+﻿namespace Infrastructure.Repository
 {
     using System;
     using System.Linq;
@@ -6,7 +6,7 @@
     using Domain.Repository;
     using Infrastructure.EF;
     using Infrastructure.Interfaces;
-    using Infrastructure.Repository;
+
     using Microsoft.EntityFrameworkCore;
 
     public class ProductParameterRepository : BaseRepository, IProductParameterRepository

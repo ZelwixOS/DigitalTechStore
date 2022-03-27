@@ -39,5 +39,9 @@
         public Category Category { get; set; }
 
         public HashSet<ProductParameter> ProductParameters { get; set; }
+
+        public HashSet<Cart> CartItems { get; set; }
+
+        public HashSet<Wish> WishedItems { get; set; }
     }
 }

@@ -4,10 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using Application.DTO.Request;
+    using Application.DTO.Response;
     using Application.DTO.Response.WithExtraInfo;
     using Application.Helpers;
     using Application.Interfaces;
-    using Application.ViewModels;
     using Domain.Repository;
 
     public class ProductService : IProductService

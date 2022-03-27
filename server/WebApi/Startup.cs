@@ -5,11 +5,11 @@ namespace WebApi
     using Application.Helpers;
     using Application.Interfaces;
     using Application.Services;
-    using CleanArchitecture.Infra.Data.Repositories;
     using Domain.Models;
     using Domain.Repository;
     using Infrastructure.EF;
     using Infrastructure.Interfaces;
+    using Infrastructure.Repository;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Authentication.Google;
     using Microsoft.AspNetCore.Builder;
@@ -107,6 +107,8 @@ namespace WebApi
             services.AddScoped<IProductParameterRepository, ProductParameterRepository>(provider => new ProductParameterRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<ITechParameterRepository, TechParameterRepository>(provider => new TechParameterRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<IUserRepository, UserRepository>(provider => new UserRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
+            services.AddScoped<ICartRepository, CartRepository>(provider => new CartRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
+            services.AddScoped<IWishRepository, WishRepository>(provider => new WishRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
 
             services.AddSingleton<ProductHelpersContainer>();
 
@@ -114,6 +116,7 @@ namespace WebApi
             services.AddScoped<ICategoryService, CategoryService>(provider => new CategoryService(provider.GetService<ICategoryRepository>(), provider.GetService<IProductRepository>(), provider.GetService<ProductHelpersContainer>()));
             services.AddScoped<IProductParameterService, ProductParameterService>(provider => new ProductParameterService(provider.GetService<IProductParameterRepository>(), provider.GetService<IProductRepository>(), provider.GetService<ITechParameterRepository>()));
             services.AddScoped<ITechParameterService, TechParameterService>(provider => new TechParameterService(provider.GetService<ITechParameterRepository>(), provider.GetService<ICategoryRepository>()));
+            services.AddScoped<ICustomerListsService, CustomerListsService>(provider => new CustomerListsService(provider.GetService<ICartRepository>(), provider.GetService<IWishRepository>(), provider.GetService<IProductRepository>()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

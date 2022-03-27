@@ -6,46 +6,50 @@
     using Domain.Repository;
     using Infrastructure.EF;
     using Infrastructure.Interfaces;
-
     using Microsoft.EntityFrameworkCore;
 
-    public class ProductRepository : BaseRepository, IProductRepository, IDisposable
+    public class CartRepository : BaseRepository, ICartRepository, IDisposable
     {
         private readonly DatabaseContext context;
         private bool disposed = false;
 
-        public ProductRepository(string connectionString, IDatabaseContextFactory contextFactory)
-         : base(connectionString, contextFactory)
+        public CartRepository(string connectionString, IDatabaseContextFactory contextFactory)
+            : base(connectionString, contextFactory)
         {
             this.context = this.ContextFactory.CreateDbContext(this.ConnectionString);
         }
 
-        public Product CreateItem(Product product)
+        public Cart CreateItem(Cart item)
         {
-            var entity = context.Add(product);
+            var entity = context.Add(item);
             context.SaveChanges();
             return entity.Entity;
         }
 
-        public IQueryable<Product> GetItems()
+        public int DeleteItem(Cart item)
         {
-            return context.Products.Include(p => p.ProductParameters).AsNoTracking();
-        }
-
-        public Product GetItem(Guid id)
-        {
-            return context.Products.Include(p => p.Category).AsNoTracking().FirstOrDefault(p => p.Id == id);
-        }
-
-        public int DeleteItem(Product product)
-        {
-            context.Products.Remove(product);
+            context.Carts.Remove(item);
             return context.SaveChanges();
         }
 
-        public Product UpdateItem(Product product)
+        public Cart GetItem(Guid id)
         {
-            var entity = context.Products.Update(product);
+            return context.Carts.FirstOrDefault(w => w.Id == id);
+        }
+
+        public IQueryable<Cart> GetItemsByUser(Guid userId)
+        {
+            return context.Carts.Where(w => w.UserId == userId);
+        }
+
+        public IQueryable<Cart> GetItems()
+        {
+            return context.Carts.AsNoTracking();
+        }
+
+        public Cart UpdateItem(Cart item)
+        {
+            var entity = context.Carts.Update(item);
             context.SaveChanges();
             return entity.Entity;
         }

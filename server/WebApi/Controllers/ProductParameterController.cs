@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using Application.DTO.Request;
+    using Application.DTO.Response;
     using Application.Interfaces;
-    using Application.ViewModels;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
