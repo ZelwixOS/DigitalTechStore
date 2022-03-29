@@ -1,6 +1,7 @@
 ﻿namespace Application.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Application.DTO.Request.Cart;
     using Application.DTO.Response;
@@ -24,7 +25,7 @@
         public CartItemDto AddOrUpdateCartItem(Guid userId, Guid productId, int count)
         {
             var cart = this.cartRepository.GetItems().Where(c => c.UserId == userId && c.ProductId == productId).FirstOrDefault();
-            var product = productRepository.GetItem(cart.ProductId);
+            var product = productRepository.GetItem(productId);
 
             if (cart == null)
             {
@@ -45,15 +46,14 @@
             }
             else
             {
-                cart.Count = count;
-                cart = this.cartRepository.UpdateItem(cart);
+                if (count != 0)
+                {
+                    cart.Count = count;
+                    cart = this.cartRepository.UpdateItem(cart);
+                }
+
                 return new CartItemDto(cart, product);
             }
-        }
-
-        public CartItemDto AddOrUpdateCartItem(CartItemRequestDto cartItem)
-        {
-            return this.AddOrUpdateCartItem(cartItem.UserId, cartItem.ProductId, cartItem.Count);
         }
 
         public int AddToWishlist(Guid userId, Guid productId)
@@ -160,6 +160,27 @@
             {
                 return null;
             }
+        }
+
+        public List<ProductDto> MarkBoughtWished(List<ProductDto> products, Guid userId)
+        {
+            var inCart = this.cartRepository.GetItemsByUser(userId);
+            var inWishlist = this.wishRepository.GetItemsByUser(userId);
+            foreach (var product in products)
+            {
+                product.InCart = inCart.Any(c => c.ProductId == product.Id);
+                product.InWishlist = inWishlist.Any(c => c.ProductId == product.Id);
+            }
+
+            return products;
+        }
+
+        public ProductDto MarkBoughtWished(ProductDto product, Guid userId)
+        {
+            product.InCart = this.cartRepository.GetItemsByUser(userId).Any(c => c.ProductId == product.Id);
+            product.InWishlist = this.wishRepository.GetItemsByUser(userId).Any(c => c.ProductId == product.Id);
+
+            return product;
         }
     }
 }

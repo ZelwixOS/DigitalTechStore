@@ -47,6 +47,10 @@
 
         public CategoryOfProductDto Category { get; set; }
 
+        public bool InCart { get; set; }
+
+        public bool InWishlist { get; set; }
+
         public int CompareTo(object obj)
         {
             if (obj is ProductDto expected)

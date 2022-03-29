@@ -49,7 +49,13 @@ const DetailedProductCard: React.FC<IDetailedProductCard> = props => {
           <Typography variant="h6" component="h6">
             {strinTechParams}
           </Typography>
-          <PriceLikeBuyCard price={props.product?.price} rating={props.product?.mark} id={props.product?.id} />
+          <PriceLikeBuyCard
+            price={props.product?.price}
+            rating={props.product?.mark}
+            id={props.product?.id}
+            inCart={props.product?.inCart}
+            inWishlist={props.product?.inWishlist}
+          />
         </Grid>
       </Grid>
       <Grid direction="row" justify="center" alignItems="center" container />

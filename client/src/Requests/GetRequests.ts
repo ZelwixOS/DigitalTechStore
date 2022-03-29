@@ -12,6 +12,16 @@ async function getProducts(currentPage: number, itemsOnPage: number, sortType: s
   return await getRequest(url);
 }
 
+async function getCart() {
+  const url = `/api/CustomerLists/cart`;
+  return await getRequest(url);
+}
+
+async function getWishlist() {
+  const url = `/api/CustomerLists/wishlist`;
+  return await getRequest(url);
+}
+
 async function getCategories() {
   return await getRequest('/api/Category');
 }
@@ -42,4 +52,4 @@ function sortTypeParsing(sortType: string): Sorting {
 
 export default getRequest;
 
-export { getProducts, getRequest, getCategories, getProductsOfCategory, getProduct };
+export { getProducts, getRequest, getCategories, getProductsOfCategory, getProduct, getCart, getWishlist };

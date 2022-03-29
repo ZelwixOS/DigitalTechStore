@@ -7,6 +7,8 @@ type UseMainInfo = {
   googleMail: string;
   phoneNumber: string;
   avatar: string;
+  wishListCount: number;
+  cartCount: number;
 };
 
 export default UseMainInfo;

@@ -1,14 +1,13 @@
 ﻿namespace Application.Interfaces
 {
     using System;
+    using System.Collections.Generic;
     using Application.DTO.Request.Cart;
     using Application.DTO.Response;
 
     public interface ICustomerListsService
     {
         public CartItemDto AddOrUpdateCartItem(Guid userId, Guid productId, int count);
-
-        public CartItemDto AddOrUpdateCartItem(CartItemRequestDto cartItem);
 
         public CartItemDto UpdateCartItem(CartItemUpdateRequestDto cartItem);
 
@@ -25,5 +24,9 @@
         public int DeleteWish(Guid userId, Guid productId);
 
         public WishListDto GetUserWhishList(Guid userId);
+
+        public List<ProductDto> MarkBoughtWished(List<ProductDto> products, Guid userId);
+
+        public ProductDto MarkBoughtWished(ProductDto product, Guid userId);
     }
 }

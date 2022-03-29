@@ -27,6 +27,11 @@
         public async Task<ActionResult<CartDto>> GetCartAsync()
         {
             var user = await this.accountService.GetCurrentUserAsync(HttpContext);
+            if (user == null)
+            {
+                return this.Unauthorized();
+            }
+
             return this.Ok(customerListsService.GetUserCart(user.Id));
         }
 
@@ -34,13 +39,24 @@
         public async Task<ActionResult<WishListDto>> GetWishlistAsync()
         {
             var user = await this.accountService.GetCurrentUserAsync(HttpContext);
+            if (user == null)
+            {
+                return this.Unauthorized();
+            }
+
             return this.Ok(customerListsService.GetUserWhishList(user.Id));
         }
 
         [HttpPost("cart")]
-        public ActionResult<CartItemDto> CreateCartItem(CartItemRequestDto cart)
+        public async Task<ActionResult<CartItemDto>> CreateCartItemAsync([FromBody] CartItemCreateRequestDto cartItem)
         {
-            return this.Ok(customerListsService.AddOrUpdateCartItem(cart));
+            var user = await this.accountService.GetCurrentUserAsync(HttpContext);
+            if (user == null)
+            {
+                return this.Unauthorized();
+            }
+
+            return this.Ok(customerListsService.AddOrUpdateCartItem(user.Id, cartItem.ProductId, cartItem.Count));
         }
 
         [HttpPut("cart")]
@@ -49,10 +65,15 @@
             return this.Ok(customerListsService.UpdateCartItem(cart));
         }
 
-        [HttpPost("wishlist")]
+        [HttpPost("wishlist/{productId}")]
         public async Task<ActionResult<CartItemDto>> AddWishAsync(Guid productId)
         {
             var user = await this.accountService.GetCurrentUserAsync(HttpContext);
+            if (user == null)
+            {
+                return this.Unauthorized();
+            }
+
             return this.Ok(customerListsService.AddToWishlist(user.Id, productId));
         }
 
@@ -60,6 +81,11 @@
         public async Task<ActionResult<CartItemDto>> DeleteCartItemAsync(Guid productId)
         {
             var user = await this.accountService.GetCurrentUserAsync(HttpContext);
+            if (user == null)
+            {
+                return this.Unauthorized();
+            }
+
             return this.Ok(customerListsService.DeleteCartItem(user.Id, productId));
         }
 
@@ -67,6 +93,11 @@
         public async Task<ActionResult<CartItemDto>> DeleteWishlistItemAsync(Guid productId)
         {
             var user = await this.accountService.GetCurrentUserAsync(HttpContext);
+            if (user == null)
+            {
+                return this.Unauthorized();
+            }
+
             return this.Ok(customerListsService.DeleteWish(user.Id, productId));
         }
     }

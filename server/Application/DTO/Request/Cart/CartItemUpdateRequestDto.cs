@@ -12,7 +12,6 @@
             return new Cart()
             {
                 Id = this.Id,
-                UserId = this.UserId,
                 ProductId = this.ProductId,
                 Count = this.Count,
             };

@@ -8,7 +8,6 @@
         {
             return new Cart()
             {
-                UserId = this.UserId,
                 ProductId = this.ProductId,
                 Count = this.Count,
             };

@@ -6,14 +6,22 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Rating from '@material-ui/lab/Rating';
 import { Button } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import Close from '@mui/icons-material/Close';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 
 import Product from 'src/Types/Product';
+import { addToCart, addToWishlist } from 'src/Requests/PostRequests';
+import { deleteFromWishlist } from 'src/Requests/DeleteRequests';
 
 interface IProductCard {
   product: Product;
+  hideBuy?: boolean;
+  hideLike?: boolean;
+  onDelete?: (productId: string) => void;
+  onBuy?: () => void;
+  onWished?: () => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -67,6 +75,41 @@ const ProductCard: React.FC<IProductCard> = props => {
     };
   });
 
+  const [inCart, setInCart] = useState(props.product.inCart);
+  const [inWishlist, setInWishlist] = useState(props.product.inWishlist);
+
+  const addProductToCart = async () => {
+    const response = await addToCart(props.product.id, 0);
+    if (response !== null) {
+      setInCart(true);
+      if (props.onBuy) {
+        props.onBuy();
+      }
+    }
+  };
+
+  const addProductToWishlist = async () => {
+    const response = await addToWishlist(props.product.id);
+    if (response !== null) {
+      setInWishlist(true);
+      if (props.onWished) {
+        props.onWished();
+      }
+    }
+  };
+
+  const deleteProductFromWishlist = async () => {
+    const response = await deleteFromWishlist(props.product.id);
+    if (response === 1) {
+      setInWishlist(false);
+      if (props.onWished) {
+        props.onWished();
+      }
+    }
+  };
+
+  const onDelete = props.onDelete?.bind(this, props.product.id);
+
   return (
     <Card
       variant="outlined"
@@ -96,16 +139,45 @@ const ProductCard: React.FC<IProductCard> = props => {
         </Grid>
       </Grid>
       <Grid container direction="row" justify="center" alignItems="center" item xs={12} sm={3}>
-        <Grid item xs={12} sm={4}>
-          <IconButton aria-label="favourite" className={classes.button}>
-            <FavoriteIcon />
-          </IconButton>
-        </Grid>
-        <Grid item xs={12} sm={8}>
-          <Button className={classes.button} variant="outlined">
-            Купить
-          </Button>
-        </Grid>
+        {!props.hideLike && (
+          <Grid item xs={12} sm={4}>
+            {inWishlist ? (
+              <IconButton
+                aria-label="favourite"
+                color="primary"
+                className={classes.button}
+                onClick={deleteProductFromWishlist}
+              >
+                <FavoriteIcon />
+              </IconButton>
+            ) : (
+              <IconButton aria-label="favourite" className={classes.button} onClick={addProductToWishlist}>
+                <FavoriteIcon />
+              </IconButton>
+            )}
+          </Grid>
+        )}
+        {!props.hideBuy &&
+          (inCart ? (
+            <Grid item xs={12} sm={8}>
+              <Button className={classes.button} variant="contained" color="primary" href="/cart">
+                В Корзине
+              </Button>
+            </Grid>
+          ) : (
+            <Grid item xs={12} sm={8}>
+              <Button className={classes.button} variant="outlined" onClick={addProductToCart}>
+                Купить
+              </Button>
+            </Grid>
+          ))}
+        {props.onDelete && (
+          <Grid item xs={12} sm={4}>
+            <IconButton aria-label="favourite" className={classes.button} onClick={onDelete}>
+              <Close />
+            </IconButton>
+          </Grid>
+        )}
       </Grid>
     </Card>
   );

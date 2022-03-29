@@ -12,6 +12,8 @@ type Product = {
   categoryIdFk: string;
   category: Category | null;
   productParameter: Parameter[];
+  inCart: boolean;
+  inWishlist: boolean;
 };
 
 export default Product;
