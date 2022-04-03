@@ -52,7 +52,7 @@ const WishlistPage: React.FC = () => {
     return () => {
       isMounted = false;
     };
-  });
+  }, []);
 
   const classes = useStyles();
 

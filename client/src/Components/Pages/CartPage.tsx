@@ -9,6 +9,7 @@ import { getCart } from 'src/Requests/GetRequests';
 import CartItem from 'src/Types/CartItem';
 import Cart from 'src/Types/Cart';
 import { deleteFromCart } from 'src/Requests/DeleteRequests';
+import { updateCartItem } from 'src/Requests/PutRequests';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,6 +36,10 @@ const CartPage: React.FC = () => {
     }
   };
 
+  const onCount = (newCount: number, id?: string) => {
+    updateCartItem(newCount, id as string);
+  };
+
   const deleteItem = async (productId: string) => {
     const result = await deleteFromCart(productId);
     if (result === 1) {
@@ -52,7 +57,7 @@ const CartPage: React.FC = () => {
     return () => {
       isMounted = false;
     };
-  });
+  }, []);
 
   const classes = useStyles();
 
@@ -76,6 +81,9 @@ const CartPage: React.FC = () => {
                       key={cartItem.product.id}
                       hideBuy={true}
                       hideLike={true}
+                      showCounter={true}
+                      count={cartItem.count}
+                      onCount={onCount}
                       onDelete={deleteItem}
                     />
                   ))}

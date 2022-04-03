@@ -123,7 +123,7 @@ const NavigationBar: React.FC = () => {
               className={classes.logoButton}
               startIcon={<DevicesIcon />}
             >
-              DDoS
+              DTS
             </Button>
             <Button variant="text" size="large" color="secondary" href="/" className={classes.logoIcon}>
               <DevicesIcon />

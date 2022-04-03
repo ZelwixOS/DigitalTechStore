@@ -42,6 +42,7 @@
     <CodeAnalysisRuleSet>../_stylecop/stylecop.ruleset</CodeAnalysisRuleSet>
     <GenerateFullPaths>true</GenerateFullPaths>
     <UserSecretsId>93de4630-6fbe-41bb-81f4-bd5d9bc4bc3b</UserSecretsId>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>

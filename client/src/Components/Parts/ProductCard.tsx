@@ -15,10 +15,15 @@ import Product from 'src/Types/Product';
 import { addToCart, addToWishlist } from 'src/Requests/PostRequests';
 import { deleteFromWishlist } from 'src/Requests/DeleteRequests';
 
+import PoductCounter from './PoductCounter';
+
 interface IProductCard {
   product: Product;
   hideBuy?: boolean;
   hideLike?: boolean;
+  showCounter?: boolean;
+  count?: number;
+  onCount?: (newCount: number, productId?: string) => void;
   onDelete?: (productId: string) => void;
   onBuy?: () => void;
   onWished?: () => void;
@@ -171,6 +176,11 @@ const ProductCard: React.FC<IProductCard> = props => {
               </Button>
             </Grid>
           ))}
+        {props.showCounter && (
+          <Grid item xs={12} sm={4}>
+            <PoductCounter id={props.product.id} count={props.count as number} onCount={props.onCount} />
+          </Grid>
+        )}
         {props.onDelete && (
           <Grid item xs={12} sm={4}>
             <IconButton aria-label="favourite" className={classes.button} onClick={onDelete}>

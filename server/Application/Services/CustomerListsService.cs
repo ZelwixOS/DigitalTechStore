@@ -38,6 +38,11 @@
                         Count = count,
                     };
 
+                    if (count == 0)
+                    {
+                        cart.Count = 1;
+                    }
+
                     cart = this.cartRepository.CreateItem(cart);
                     return new CartItemDto(cart, product);
                 }

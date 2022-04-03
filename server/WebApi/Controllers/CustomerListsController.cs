@@ -60,9 +60,15 @@
         }
 
         [HttpPut("cart")]
-        public ActionResult<CartItemDto> UpdateCartItem(CartItemUpdateRequestDto cart)
+        public async Task<ActionResult<CartItemDto>> UpdateCartItemAsync([FromBody]CartItemUpdateRequestDto cart)
         {
-            return this.Ok(customerListsService.UpdateCartItem(cart));
+            var user = await this.accountService.GetCurrentUserAsync(HttpContext);
+            if (user == null)
+            {
+                return this.Unauthorized();
+            }
+
+            return this.Ok(customerListsService.AddOrUpdateCartItem(user.Id, cart.ProductId, cart.Count));
         }
 
         [HttpPost("wishlist/{productId}")]
