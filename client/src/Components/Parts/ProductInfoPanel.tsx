@@ -59,6 +59,10 @@ const ProductInfoPanel = (props: IVerticalTabs) => {
     setValue(newValue);
   };
 
+  const saveReviewed = () => {
+    props.product.reviewed = true;
+  };
+
   return (
     <div className={classes.root}>
       <Grid container direction="row" justify="center">
@@ -88,6 +92,7 @@ const ProductInfoPanel = (props: IVerticalTabs) => {
               productName={props.product.name}
               productId={props.product.id}
               reviewed={props.product.reviewed}
+              saveReviewed={saveReviewed}
             />
           </TabPanel>
         </Grid>

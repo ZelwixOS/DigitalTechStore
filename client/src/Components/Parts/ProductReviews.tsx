@@ -12,6 +12,7 @@ interface IProductReviews {
   productName: string;
   productId: string;
   reviewed: boolean;
+  saveReviewed: () => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -53,6 +54,7 @@ const ProductReviews: React.FC<IProductReviews> = props => {
     setReviews(newVar.reverse());
 
     setReviewed(true);
+    props.saveReviewed();
   };
 
   return (
