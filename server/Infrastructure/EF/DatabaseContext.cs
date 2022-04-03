@@ -27,6 +27,8 @@
 
         public DbSet<Wish> Wishes { get; set; }
 
+        public DbSet<Review> Reviews { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>(entity =>
@@ -58,6 +60,13 @@
             {
                 entity.HasOne(w => w.User).WithMany(u => u.WishedItems).HasForeignKey(w => w.UserId);
                 entity.HasOne(w => w.Product).WithMany(u => u.WishedItems).HasForeignKey(w => w.ProductId);
+            });
+
+            modelBuilder.Entity<Review>(entity =>
+            {
+                entity.HasOne(p => p.Product).WithMany(p => p.Reviews).HasForeignKey(p => p.ProductId);
+                entity.HasOne(p => p.User).WithMany(t => t.Reviews).HasForeignKey(p => p.UserId);
+                entity.HasKey(p => p.Id);
             });
 
             modelBuilder.Entity<Category>().HasKey(c => c.Id);

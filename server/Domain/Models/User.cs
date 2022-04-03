@@ -26,5 +26,7 @@
         public HashSet<Cart> CartItems { get; set; }
 
         public HashSet<Wish> WishedItems { get; set; }
+
+        public HashSet<Review> Reviews { get; set; }
     }
 }

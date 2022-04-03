@@ -26,6 +26,10 @@ async function getCategories() {
   return await getRequest('/api/Category');
 }
 
+async function getReviews(productId: string) {
+  return await getRequest(`/api/Review/${productId}`);
+}
+
 async function getProduct(id: string) {
   return await getRequest(`/api/Product/${id}`);
 }
@@ -52,4 +56,4 @@ function sortTypeParsing(sortType: string): Sorting {
 
 export default getRequest;
 
-export { getProducts, getRequest, getCategories, getProductsOfCategory, getProduct, getCart, getWishlist };
+export { getProducts, getRequest, getCategories, getProductsOfCategory, getProduct, getCart, getWishlist, getReviews };

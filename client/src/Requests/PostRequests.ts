@@ -12,4 +12,8 @@ async function addToWishlist(productId: string) {
   return await post(`/api/CustomerLists/wishlist/${productId}/`, null);
 }
 
-export { addToCart, addToWishlist };
+async function createReview(productId: string, mark: number, description: string) {
+  return await post(`/api/Review/`, { productId: productId, mark: mark, description: description });
+}
+
+export { addToCart, addToWishlist, createReview };

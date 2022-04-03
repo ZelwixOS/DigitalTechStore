@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import Review from 'src/Types/Review';
+import { createReview } from 'src/Requests/PostRequests';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,29 +22,31 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface ICreateReview {
   mark: number;
-  message: string;
+  description: string;
 }
 
 interface IReviewForm {
+  productId: string;
   addReview: (newReview: Review) => void;
 }
 
 const ReviewForm: React.FC<IReviewForm> = props => {
   const classes = useStyles();
 
-  const [review, setReview] = useState<ICreateReview>({ message: '', mark: 0 });
+  const [review, setReview] = useState<ICreateReview>({ description: '', mark: 5 });
   const handleMark = (event: unknown, value: unknown) => {
-    setReview({ message: review.message, mark: value as number });
+    setReview({ description: review.description, mark: value as number });
   };
   const handleMessage = (event: React.ChangeEvent<{ value: unknown }>) => {
     const value = event.target.value as string;
-    setReview({ message: value, mark: review.mark });
+    setReview({ description: value, mark: review.mark });
   };
 
-  const submit = () => {
-    // sent request, wait for result
-    props.addReview({ message: review.message, mark: review.mark, username: 'me' });
-    // if there is user's comment -> redraw form (new values) and button label = 'update'
+  const submit = async () => {
+    const result = await createReview(props.productId, review.mark, review.description);
+    if (result !== null) {
+      props.addReview({ description: review.description, mark: review.mark, userName: 'Я' });
+    }
   };
 
   return (
@@ -54,12 +57,12 @@ const ReviewForm: React.FC<IReviewForm> = props => {
         </Grid>
         <TextField
           id="outlined-multiline-static"
-          label="Review"
+          label="Отзыв"
           multiline
           rows={4}
-          placeholder="Write your review here"
+          placeholder="Оставьте свой отзыв здесь"
           variant="outlined"
-          value={review.message}
+          value={review.description}
           onChange={handleMessage}
           fullWidth
         />

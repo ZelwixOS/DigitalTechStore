@@ -14,6 +14,7 @@ type Product = {
   productParameter: Parameter[];
   inCart: boolean;
   inWishlist: boolean;
+  reviewed: boolean;
 };
 
 export default Product;

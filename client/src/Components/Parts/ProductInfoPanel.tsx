@@ -59,12 +59,6 @@ const ProductInfoPanel = (props: IVerticalTabs) => {
     setValue(newValue);
   };
 
-  const reviews = [
-    { username: 'user1', message: `Not funny, didn't laught`, mark: 3 },
-    { username: '-user2011-', message: 'The best thing happened with me!', mark: 5 },
-    { username: 'User1984', message: `It's not about the product - it's about lifestyle`, mark: 4 },
-  ];
-
   return (
     <div className={classes.root}>
       <Grid container direction="row" justify="center">
@@ -90,7 +84,11 @@ const ProductInfoPanel = (props: IVerticalTabs) => {
             <ProductParams productName={props.product.name} params={props.product.productParameter} />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <ProductReviews productName={props.product.name} reviews={reviews} />
+            <ProductReviews
+              productName={props.product.name}
+              productId={props.product.id}
+              reviewed={props.product.reviewed}
+            />
           </TabPanel>
         </Grid>
       </Grid>

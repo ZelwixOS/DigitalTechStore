@@ -1,7 +1,7 @@
 type Review = {
   mark: number;
-  message: string;
-  username: string;
+  description: string;
+  userName: string;
 };
 
 export default Review;

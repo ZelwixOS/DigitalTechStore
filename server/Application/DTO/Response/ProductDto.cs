@@ -15,6 +15,7 @@
             this.Mark = product.Mark;
             this.VendorCode = product.VendorCode;
             this.PicURL = product.PicURL;
+
             if (product.Category == null)
             {
                 this.Category = null;
@@ -50,6 +51,8 @@
         public bool InCart { get; set; }
 
         public bool InWishlist { get; set; }
+
+        public bool Reviewed { get; set; }
 
         public int CompareTo(object obj)
         {

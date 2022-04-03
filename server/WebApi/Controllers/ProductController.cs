@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Application.DTO.Request;
     using Application.DTO.Response;
@@ -19,14 +20,22 @@
         private IProductParameterService productParameterService;
         private ICustomerListsService customerListsService;
         private IAccountService accountService;
+        private IReviewService reviewService;
 
-        public ProductController(ILogger<ProductController> logger, IProductService productService, IProductParameterService productParameterService, ICustomerListsService customerListsService, IAccountService accountService)
+        public ProductController(
+            ILogger<ProductController> logger,
+            IProductService productService,
+            IProductParameterService productParameterService,
+            ICustomerListsService customerListsService,
+            IReviewService reviewService,
+            IAccountService accountService)
         {
             this.logger = logger;
             this.productService = productService;
             this.productParameterService = productParameterService;
             this.customerListsService = customerListsService;
             this.accountService = accountService;
+            this.reviewService = reviewService;
         }
 
         [HttpGet]
@@ -58,6 +67,7 @@
             if (user != null)
             {
                 product = this.customerListsService.MarkBoughtWished(product, user.Id);
+                product.Reviewed = this.reviewService.GetProductReviews(product.Id).Any(r => r.UserName == user.UserName);
             }
 
             return this.Ok(product);

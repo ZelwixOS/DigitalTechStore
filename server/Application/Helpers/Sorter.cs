@@ -14,6 +14,7 @@
                 {
                     case SortingType.Name: products = products.OrderBy(i => i.Name);  break;
                     case SortingType.Price: products = products.OrderBy(i => i.Price); break;
+                    case SortingType.Rating: products = products.OrderBy(i => i.Mark); break;
                     default: break;
                 }
 
