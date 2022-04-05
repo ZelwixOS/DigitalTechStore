@@ -60,7 +60,7 @@ const ProductPage: React.FC = () => {
       <Grid container direction="row" justify="center" alignItems="center">
         <Grid xs={12} sm={7} item direction="column" justify="center" alignItems="center" container>
           <Card>
-            <Grid>
+            <Grid justify="space-evenly">
               <Typography className={classes.prodName} variant="overline" component="h4">
                 {product?.name}
               </Typography>
