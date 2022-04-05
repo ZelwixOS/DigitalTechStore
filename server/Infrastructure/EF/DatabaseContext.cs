@@ -24,6 +24,12 @@
         public DbSet<User> StoreUsers { get; set; }
 
         public DbSet<CommonCategory> CommonCategories { get; set; }
+        
+        public DbSet<Cart> Carts { get; set; }
+
+        public DbSet<Wish> Wishes { get; set; }
+
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -62,6 +68,24 @@
             modelBuilder.Entity<ParameterBlock>().HasKey(c => c.Id);
 
             modelBuilder.Entity<CommonCategory>().HasKey(c => c.Id);
+            modelBuilder.Entity<Cart>(entity =>
+            {
+                entity.HasOne(c => c.User).WithMany(u => u.CartItems).HasForeignKey(c => c.UserId);
+                entity.HasOne(c => c.Product).WithMany(u => u.CartItems).HasForeignKey(c => c.ProductId);
+            });
+
+            modelBuilder.Entity<Wish>(entity =>
+            {
+                entity.HasOne(w => w.User).WithMany(u => u.WishedItems).HasForeignKey(w => w.UserId);
+                entity.HasOne(w => w.Product).WithMany(u => u.WishedItems).HasForeignKey(w => w.ProductId);
+            });
+
+            modelBuilder.Entity<Review>(entity =>
+            {
+                entity.HasOne(p => p.Product).WithMany(p => p.Reviews).HasForeignKey(p => p.ProductId);
+                entity.HasOne(p => p.User).WithMany(t => t.Reviews).HasForeignKey(p => p.UserId);
+                entity.HasKey(p => p.Id);
+            });
 
             modelBuilder.Entity<User>().HasKey(u => u.Id);
 

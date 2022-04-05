@@ -1,4 +1,4 @@
-﻿namespace Application.ViewModels
+﻿namespace Application.DTO.Response
 {
     using System;
     using System.Collections.Generic;
@@ -15,6 +15,7 @@
             this.Mark = product.Mark;
             this.VendorCode = product.VendorCode;
             this.PicURL = product.PicURL;
+
             if (product.Category == null)
             {
                 this.Category = null;
@@ -46,6 +47,12 @@
         public List<ParameterOfProductDto> ProductParameter { get; set; }
 
         public CategoryOfProductDto Category { get; set; }
+
+        public bool InCart { get; set; }
+
+        public bool InWishlist { get; set; }
+
+        public bool Reviewed { get; set; }
 
         public int CompareTo(object obj)
         {

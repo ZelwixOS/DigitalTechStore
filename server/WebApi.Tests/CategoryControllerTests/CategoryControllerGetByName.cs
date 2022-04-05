@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using Application.DTO.Request;
+    using Application.DTO.Response;
     using Application.DTO.Response.WithExtraInfo;
-    using Application.ViewModels;
     using Domain.Models;
     using Microsoft.AspNetCore.Mvc;
     using WebApi.Tests.Mock;

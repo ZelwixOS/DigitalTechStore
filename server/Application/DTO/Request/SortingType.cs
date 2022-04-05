@@ -4,5 +4,6 @@
     {
         Price,
         Name,
+        Rating,
     }
 }

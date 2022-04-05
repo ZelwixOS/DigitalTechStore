@@ -1,6 +1,7 @@
 ﻿namespace Domain.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Identity;
 
@@ -21,5 +22,11 @@
 
         [MaxLength(100)]
         public string Avatar { get; set; }
+
+        public HashSet<Cart> CartItems { get; set; }
+
+        public HashSet<Wish> WishedItems { get; set; }
+
+        public HashSet<Review> Reviews { get; set; }
     }
 }

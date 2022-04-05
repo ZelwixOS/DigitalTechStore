@@ -14,6 +14,8 @@
             this.Email = user.Email;
             this.GoogleMail = user.GoogleMail;
             this.Avatar = user.Avatar;
+            this.CartCount = user.CartItems?.Count;
+            this.WishListCount = user.WishedItems?.Count;
         }
 
         public string UserName { get; set; }
@@ -31,5 +33,9 @@
         public string PhoneNumber { get; set; }
 
         public string Avatar { get; set; }
+
+        public int? CartCount { get; set; }
+
+        public int? WishListCount { get; set; }
     }
 }

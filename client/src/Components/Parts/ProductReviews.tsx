@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -6,10 +6,13 @@ import Grid from '@material-ui/core/Grid';
 import ReviewBlock from 'src/Components/Parts/ReviewBlock';
 import Review from 'src/Types/Review';
 import ReviewForm from 'src/Components/Parts/ReviewForm';
+import { getReviews } from 'src/Requests/GetRequests';
 
 interface IProductReviews {
   productName: string;
-  reviews: Review[];
+  productId: string;
+  reviewed: boolean;
+  saveReviewed: () => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -23,22 +26,44 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ProductReviews: React.FC<IProductReviews> = props => {
   const classes = useStyles();
-  const [reviews, setRerviews] = useState<Review[]>(props.reviews);
+
+  const getProductReviews = async (isMounted: boolean) => {
+    const res = await getReviews(props.productId);
+    if (isMounted !== false) {
+      setReviews(res as Review[]);
+    }
+  };
+
+  useEffect(() => {
+    let isMounted = true;
+    getProductReviews(isMounted);
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const [reviewed, setReviewed] = useState<boolean>(props.reviewed);
+  const [reviews, setReviews] = useState<Review[]>([]);
+
   const addReview = (newReview: Review): void => {
     const newVar: Review[] = [];
     while (reviews.length > 0) {
       newVar.push(reviews.pop() as Review);
     }
     newVar.push(newReview);
-    setRerviews(newVar.reverse());
+    setReviews(newVar.reverse());
+
+    setReviewed(true);
+    props.saveReviewed();
   };
+
   return (
     <Grid container direction="column" alignItems="center" justify="center">
       <Typography className={classes.prodName} variant="overline">
         {`Отзывы на ${props.productName}`}
       </Typography>
       <Grid item xs={12} direction="column" container justify="center">
-        <ReviewForm addReview={addReview} />
+        {!reviewed && <ReviewForm addReview={addReview} productId={props.productId} />}
         {reviews?.map((review, index) => (
           <ReviewBlock review={review} key={index} />
         ))}

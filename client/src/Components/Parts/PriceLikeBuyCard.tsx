@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -8,10 +8,17 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 
+import { addToCart, addToWishlist } from 'src/Requests/PostRequests';
+import { deleteFromWishlist } from 'src/Requests/DeleteRequests';
+
 interface IPriceLikeBuyCard {
   price?: number;
   id?: string;
   rating?: number;
+  onBuy?: () => void;
+  onWished?: () => void;
+  inCart?: boolean;
+  inWishlist?: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -46,8 +53,40 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const PriceLikeBuyCard: React.FC<IPriceLikeBuyCard> = props => {
-  const classes = useStyles();
+  const [inCart, setInCart] = useState(props.inCart);
+  const [inWishlist, setInWishlist] = useState(props.inWishlist);
 
+  const addProductToCart = async () => {
+    const response = await addToCart(props.id as string, 0);
+    if (response !== null) {
+      setInCart(true);
+      if (props.onBuy) {
+        props.onBuy();
+      }
+    }
+  };
+
+  const addProductToWishlist = async () => {
+    const response = await addToWishlist(props.id as string);
+    if (response !== null) {
+      setInWishlist(true);
+      if (props.onWished) {
+        props.onWished();
+      }
+    }
+  };
+
+  const deleteProductFromWishlist = async () => {
+    const response = await deleteFromWishlist(props.id as string);
+    if (response === 1) {
+      setInWishlist(false);
+      if (props.onWished) {
+        props.onWished();
+      }
+    }
+  };
+
+  const classes = useStyles();
   return (
     <Card variant="outlined" className={classes.root}>
       <Grid justify="center" alignItems="center" container direction="column">
@@ -62,14 +101,26 @@ const PriceLikeBuyCard: React.FC<IPriceLikeBuyCard> = props => {
           </Grid>
           <Grid item xs={12} sm={6} container direction="row" justify="center" alignItems="center">
             <Grid item xs={12} sm={3} container justify="flex-start">
-              <IconButton aria-label="favourite">
-                <FavoriteIcon />
-              </IconButton>
+              {inWishlist ? (
+                <IconButton aria-label="favourite" color="primary" onClick={deleteProductFromWishlist}>
+                  <FavoriteIcon />
+                </IconButton>
+              ) : (
+                <IconButton aria-label="favourite" onClick={addProductToWishlist}>
+                  <FavoriteIcon />
+                </IconButton>
+              )}
             </Grid>
             <Grid item xs={12} sm={9}>
-              <Button color="primary" variant="contained">
-                Купить
-              </Button>
+              {inCart ? (
+                <Button color="primary" variant="outlined" href="/cart">
+                  Корзина
+                </Button>
+              ) : (
+                <Button color="primary" variant="contained" onClick={addProductToCart}>
+                  Купить
+                </Button>
+              )}
             </Grid>
           </Grid>
         </Grid>

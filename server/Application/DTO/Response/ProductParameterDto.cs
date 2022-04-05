@@ -1,4 +1,4 @@
-﻿namespace Application.ViewModels
+﻿namespace Application.DTO.Response
 {
     using System;
     using System.Collections.Generic;

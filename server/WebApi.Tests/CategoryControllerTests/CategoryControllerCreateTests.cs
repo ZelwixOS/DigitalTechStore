@@ -1,7 +1,7 @@
 ﻿namespace WebApi.Tests.CategoryControllerTests
 {
     using Application.DTO.Request;
-    using Application.ViewModels;
+    using Application.DTO.Response;
     using Microsoft.AspNetCore.Mvc;
     using WebApi.Tests.Mock;
     using Xunit;

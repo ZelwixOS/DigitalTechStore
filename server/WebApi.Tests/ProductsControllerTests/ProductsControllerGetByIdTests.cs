@@ -1,7 +1,7 @@
 ﻿namespace WebApi.Tests.ProductsControllerTests
 {
     using System;
-    using Application.ViewModels;
+    using Application.DTO.Response;
     using Domain.Models;
     using Microsoft.AspNetCore.Mvc;
     using WebApi.Tests.Mock;
@@ -43,7 +43,7 @@
             var productController = controllerFactory.CreateProductController();
 
             // Act
-            var result = productController.Get(product1.Id);
+            var result = productController.GetAsync(product1.Id);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<ProductDto>>(result);
@@ -74,7 +74,7 @@
             var productController = controllerFactory.CreateProductController();
 
             // Act
-            var result = productController.Get(argument);
+            var result = productController.GetAsync(argument);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<ProductDto>>(result);

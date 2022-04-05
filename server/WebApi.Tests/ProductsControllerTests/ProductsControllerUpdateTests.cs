@@ -2,7 +2,7 @@
 {
     using System;
     using Application.DTO.Request;
-    using Application.ViewModels;
+    using Application.DTO.Response;
     using Domain.Models;
     using Microsoft.AspNetCore.Mvc;
     using WebApi.Tests.Mock;

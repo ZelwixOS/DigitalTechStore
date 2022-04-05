@@ -38,7 +38,7 @@ const CategoryPage: React.FC = () => {
   const params: ICategoryPage = useParams();
 
   const getProducts = async (isMounted: boolean) => {
-    const res = await getProductsOfCategory(params.categoryName, data.currentPage, 9, data.sortType, data.pickedPrice);
+    const res = await getProductsOfCategory(params.categoryName, data.currentPage, 3, data.sortType, data.pickedPrice);
     if (isMounted !== false && res.container !== undefined) {
       const qParams = new URLSearchParams(location.search);
       data.setInfo(res.container.products, res.maxPage, res.minPrice, res.maxPrice);
@@ -47,7 +47,7 @@ const CategoryPage: React.FC = () => {
   };
 
   const object = createProdParams(async () => {
-    const res = await getProductsOfCategory(params.categoryName, data.currentPage, 9, data.sortType, data.pickedPrice);
+    const res = await getProductsOfCategory(params.categoryName, data.currentPage, 3, data.sortType, data.pickedPrice);
     data.setInfo(res.container.products, res.maxPage, res.minPrice, res.maxPrice);
   });
   const data = useLocalObservable(() => object);

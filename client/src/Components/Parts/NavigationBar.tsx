@@ -155,10 +155,10 @@ const NavigationBar: React.FC = () => {
               size="large"
               aria-label="text primary button group"
             >
-              <Button>
+              <Button href="/wishlist">
                 <FavoriteBorderIcon />
               </Button>
-              <Button>
+              <Button href="/cart">
                 <ShoppingCartOutlinedIcon />
               </Button>
             </ButtonGroup>
@@ -169,8 +169,12 @@ const NavigationBar: React.FC = () => {
               size="large"
               aria-label="text primary button group"
             >
-              <Button startIcon={<FavoriteBorderIcon />}>Избранное</Button>
-              <Button startIcon={<ShoppingCartOutlinedIcon />}>Корзина</Button>
+              <Button href="/wishlist" startIcon={<FavoriteBorderIcon />}>
+                Избранное
+              </Button>
+              <Button href="/cart" startIcon={<ShoppingCartOutlinedIcon />}>
+                Корзина
+              </Button>
             </ButtonGroup>
           </Grid>
           <Grid item xs={12} sm={2}>
