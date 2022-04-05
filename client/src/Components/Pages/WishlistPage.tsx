@@ -39,7 +39,9 @@ const WishlistPage: React.FC = () => {
     const result = await deleteFromWishlist(productId);
     if (result === 1) {
       const deleted = wishlistItems.findIndex(item => item.id === productId);
-      const newWishlistItems = wishlistItems.slice().splice(deleted, 1);
+      const newWishlistItems = [...wishlistItems];
+      newWishlistItems.splice(deleted, 1);
+      console.log(newWishlistItems);
       setWishlistItems(newWishlistItems);
     }
   };
