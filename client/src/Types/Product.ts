@@ -11,7 +11,6 @@ type Product = {
   picURL: string;
   categoryIdFk: string;
   category: Category | null;
-  productParameter: Parameter[];
   inCart: boolean;
   inWishlist: boolean;
   reviewed: boolean;

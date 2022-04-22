@@ -8,6 +8,7 @@ import Product from 'src/Types/Product';
 import ProductDescription from 'src/Components/Parts/ProductDescription';
 import ProductParams from 'src/Components/Parts/ProductParams';
 import ProductReviews from 'src/Components/Parts/ProductReviews';
+import ParameterBlock from 'src/Types/ParameterBlock';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -49,6 +50,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface IVerticalTabs {
   product: Product;
+  paramBlocks: ParameterBlock[];
 }
 
 const ProductInfoPanel = (props: IVerticalTabs) => {
@@ -85,7 +87,7 @@ const ProductInfoPanel = (props: IVerticalTabs) => {
             <ProductDescription productName={props.product.name} productDescription={props.product.description} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <ProductParams productName={props.product.name} params={props.product.productParameter} />
+            <ProductParams productName={props.product.name} params={props.paramBlocks} />
           </TabPanel>
           <TabPanel value={value} index={2}>
             <ProductReviews

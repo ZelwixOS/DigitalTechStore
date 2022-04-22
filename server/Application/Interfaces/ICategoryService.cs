@@ -10,6 +10,8 @@
     {
         List<CategoryDto> GetCategories();
 
+        List<CategoryDto> GetCategories(string commonName);
+
         CategoryDto GetCategory(Guid id);
 
         WrapperExtraInfo<CategoryDto> GetCategory(string name, GetCategoryProductsRequest parameters);

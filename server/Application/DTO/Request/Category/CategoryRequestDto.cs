@@ -1,5 +1,6 @@
 ﻿namespace Application.DTO.Request
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using Application.Interfaces;
     using Domain.Models;
@@ -13,6 +14,9 @@
         [Required]
         [MaxLength(200)]
         public string Description { get; set; }
+
+        [Required]
+        public Guid CommonCategoryId { get; set; }
 
         public abstract Category ToModel();
     }

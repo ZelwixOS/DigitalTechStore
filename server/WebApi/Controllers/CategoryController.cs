@@ -28,10 +28,16 @@
             return this.Ok(_categoryService.GetCategories());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("id/{id}")]
         public ActionResult<CategoryDto> Get(Guid id)
         {
             return this.Ok(_categoryService.GetCategory(id));
+        }
+
+        [HttpGet("{commonName}")]
+        public ActionResult<CategoryDto> Get(string commonName)
+        {
+            return this.Ok(_categoryService.GetCategories(commonName));
         }
 
         [HttpGet("name/{name}")]

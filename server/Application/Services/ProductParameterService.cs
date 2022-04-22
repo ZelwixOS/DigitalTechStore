@@ -6,6 +6,7 @@
     using Application.DTO.Request;
     using Application.DTO.Response;
     using Application.Interfaces;
+    using Domain.Models;
     using Domain.Repository;
 
     public class ProductParameterService : IProductParameterService
@@ -14,7 +15,10 @@
         private IProductRepository _productRepository;
         private ITechParameterRepository _techParameterRepository;
 
-        public ProductParameterService(IProductParameterRepository prodParamRepository, IProductRepository productRepository, ITechParameterRepository techParameterRepository)
+        public ProductParameterService(
+            IProductParameterRepository prodParamRepository,
+            IProductRepository productRepository,
+            ITechParameterRepository techParameterRepository)
         {
             _prodParamRepository = prodParamRepository;
             _productRepository = productRepository;
@@ -74,6 +78,29 @@
             {
                 return 0;
             }
+        }
+
+        public List<ProductParameterBlockDto> GetProductParameters(Guid id)
+        {
+            var product = _productRepository.GetProductWithParameters(id);
+            var parametersByBlock = new Dictionary<Guid, List<ProductParameter>>();
+            foreach (var parameter in product.ProductParameters)
+            {
+                if (parametersByBlock.ContainsKey(parameter.TechParameter.ParameterBlockIdFk))
+                {
+                    parametersByBlock[parameter.TechParameter.ParameterBlockIdFk].Add(parameter);
+                }
+                else
+                {
+                    parametersByBlock[parameter.TechParameter.ParameterBlockIdFk] = new List<ProductParameter> { parameter };
+                }
+            }
+
+            return product.Category.CategoryParameterBlocks
+                .Select(c => c.ParameterBlock)
+                .Where(b => parametersByBlock.ContainsKey(b.Id))
+                .Select(b => new ProductParameterBlockDto(b, parametersByBlock[b.Id]))
+                .ToList();
         }
 
         private bool ProductParameterModelCheck(ProductParameterRequestDto prodParam)

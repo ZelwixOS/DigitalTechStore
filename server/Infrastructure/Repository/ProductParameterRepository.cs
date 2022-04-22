@@ -4,54 +4,50 @@
     using System.Linq;
     using Domain.Models;
     using Domain.Repository;
-    using Infrastructure.EF;
     using Infrastructure.Interfaces;
 
     using Microsoft.EntityFrameworkCore;
 
     public class ProductParameterRepository : BaseRepository, IProductParameterRepository
     {
-        private DatabaseContext context;
-
         public ProductParameterRepository(string connectionString, IDatabaseContextFactory contextFactory)
             : base(connectionString, contextFactory)
         {
-            this.context = this.ContextFactory.CreateDbContext(this.ConnectionString);
         }
 
         public IQueryable<ProductParameter> GetItems()
         {
-            return context.ProductParameters.AsNoTracking();
+            return this.Context.ProductParameters.AsNoTracking();
         }
 
         public IQueryable<ProductParameter> GetItems(Guid id)
         {
-            return context.ProductParameters.Where(p => p.Product.Id == id).Include(p => p.TechParameter).AsNoTracking();
+            return this.Context.ProductParameters.Where(p => p.Product.Id == id).Include(p => p.TechParameter).AsNoTracking();
         }
 
         public ProductParameter GetItem(Guid id)
         {
-            return context.ProductParameters.AsNoTracking().FirstOrDefault(p => p.Id == id);
+            return this.Context.ProductParameters.AsNoTracking().FirstOrDefault(p => p.Id == id);
         }
 
         public ProductParameter CreateItem(ProductParameter productParameter)
         {
-            var entity = context.Add(productParameter);
-            context.SaveChanges();
+            var entity = this.Context.Add(productParameter);
+            this.Context.SaveChanges();
             return entity.Entity;
         }
 
         public ProductParameter UpdateItem(ProductParameter productParameter)
         {
-            var entity = context.ProductParameters.Update(productParameter);
-            context.SaveChanges();
+            var entity = this.Context.ProductParameters.Update(productParameter);
+            this.Context.SaveChanges();
             return entity.Entity;
         }
 
         public int DeleteItem(ProductParameter productParameter)
         {
-            context.ProductParameters.Remove(productParameter);
-            return context.SaveChanges();
+            this.Context.ProductParameters.Remove(productParameter);
+            return this.Context.SaveChanges();
         }
     }
 }

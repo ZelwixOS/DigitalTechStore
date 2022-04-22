@@ -9,6 +9,7 @@ import ProductPage from './Components/Pages/ProductPage';
 import RegistrationPage from './Components/Pages/RegistrationPage';
 import CartPage from './Components/Pages/CartPage';
 import WishlistPage from './Components/Pages/WishlistPage';
+import CommonCategoryPage from './Components/Pages/CommonCategoryPage';
 
 const innerTheme = createMuiTheme({
   palette: {
@@ -27,6 +28,7 @@ const App: React.FC = () => (
       <BrowserRouter>
         <div>
           <Route exact path="/" component={ProductsPage} />
+          <Route path="/common/:commonCategoryName" component={CommonCategoryPage} />
           <Route path="/category/:categoryName" component={CategoryPage} />
           <Route path="/cart" component={CartPage} />
           <Route path="/wishlist" component={WishlistPage} />

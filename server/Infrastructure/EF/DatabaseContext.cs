@@ -24,7 +24,11 @@
         public DbSet<User> StoreUsers { get; set; }
 
         public DbSet<CommonCategory> CommonCategories { get; set; }
-        
+
+        public DbSet<CategoryParameterBlock> CategoryParameterBlocks { get; set; }
+
+        public DbSet<ParameterBlock> ParameterBlocks { get; set; }
+
         public DbSet<Cart> Carts { get; set; }
 
         public DbSet<Wish> Wishes { get; set; }
@@ -55,6 +59,7 @@
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasOne(c => c.CommonCategory).WithMany(c => c.Categories).HasForeignKey(c => c.CommonCategoryIdFk);
+                entity.HasMany(c => c.CategoryParameterBlocks).WithOne(pb => pb.Category).HasForeignKey(pb => pb.CategoryIdFk);
                 entity.HasKey(c => c.Id);
             });
 

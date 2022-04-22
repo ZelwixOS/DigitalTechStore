@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const ProductDescription: React.FC<IProductDescription> = props => {
   const classes = useStyles();
   return (
-    <Grid container direction="column" alignItems="center" justify="center">
+    <Grid container direction="column" alignItems="center" justify="space-around" item xs={12}>
       <Typography className={classes.prodName} variant="overline">
         {`Описание ${props.productName}`}
       </Typography>

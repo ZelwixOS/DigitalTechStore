@@ -13,8 +13,8 @@
             {
                 Id = this.Id,
                 Name = this.Name,
+                ParameterBlockIdFk = this.ParameterBlockId,
                 Important = this.Important,
-                ParameterType = this.ParameterType,
             };
         }
     }

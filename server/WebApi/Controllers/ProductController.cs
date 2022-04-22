@@ -57,10 +57,6 @@
         public async Task<ActionResult<ProductDto>> GetAsync(Guid id)
         {
             var product = productService.GetProduct(id);
-            if (product != null)
-            {
-                product.ProductParameter = productParameterService.GetParametersOfProduct(product.Id);
-            }
 
             var user = await this.accountService.GetCurrentUserAsync(HttpContext);
 
@@ -71,6 +67,12 @@
             }
 
             return this.Ok(product);
+        }
+
+        [HttpGet("parameters/{id}")]
+        public ActionResult<List<ProductParameterBlockDto>> GetProductParameters(Guid id)
+        {
+            return this.productParameterService.GetProductParameters(id);
         }
 
         [HttpPost]

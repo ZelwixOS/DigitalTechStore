@@ -90,7 +90,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ParameterBlockIdFk");
 
-                    b.ToTable("CategoryParameterBlock");
+                    b.ToTable("CategoryParameterBlocks");
                 });
 
             modelBuilder.Entity("Domain.Models.CommonCategory", b =>
@@ -131,7 +131,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("ParameterBlock");
+                    b.ToTable("ParameterBlocks");
                 });
 
             modelBuilder.Entity("Domain.Models.Product", b =>
@@ -467,6 +467,25 @@ namespace Infrastructure.Migrations
                     b.ToTable("UserTokens");
                 });
 
+            modelBuilder.Entity("Domain.Models.Cart", b =>
+                {
+                    b.HasOne("Domain.Models.Product", "Product")
+                        .WithMany("CartItems")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.User", "User")
+                        .WithMany("CartItems")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Models.Category", b =>
                 {
                     b.HasOne("Domain.Models.CommonCategory", "CommonCategory")
@@ -502,23 +521,6 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Models.Category", null)
                         .WithMany("ParameterBlocks")
                         .HasForeignKey("CategoryId");
-            modelBuilder.Entity("Domain.Models.Cart", b =>
-                {
-                    b.HasOne("Domain.Models.Product", "Product")
-                        .WithMany("CartItems")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.User", "User")
-                        .WithMany("CartItems")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Models.Product", b =>

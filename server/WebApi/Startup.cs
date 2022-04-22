@@ -106,18 +106,20 @@ namespace WebApi
             services.AddScoped<IProductRepository, ProductRepository>(provider => new ProductRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<IProductParameterRepository, ProductParameterRepository>(provider => new ProductParameterRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<ITechParameterRepository, TechParameterRepository>(provider => new TechParameterRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
+            services.AddScoped<IParameterBlockRepository, ParameterBlockRepository>(provider => new ParameterBlockRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<IUserRepository, UserRepository>(provider => new UserRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<ICommonCategoryRepository, CommonCategoryRepository>(provider => new CommonCategoryRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<ICartRepository, CartRepository>(provider => new CartRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<IWishRepository, WishRepository>(provider => new WishRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<IReviewRepository, ReviewRepository>(provider => new ReviewRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
+            services.AddScoped<ICategoryParameterBlockRepository, CategoryParameterBlockRepository>(provider => new CategoryParameterBlockRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
 
             services.AddSingleton<ProductHelpersContainer>();
 
             services.AddScoped<IProductService, ProductService>(provider => new ProductService(provider.GetService<IProductRepository>(), provider.GetService<ICategoryRepository>(), provider.GetService<ProductHelpersContainer>()));
-            services.AddScoped<ICategoryService, CategoryService>(provider => new CategoryService(provider.GetService<ICategoryRepository>(), provider.GetService<IProductRepository>(), provider.GetService<ProductHelpersContainer>()));
+            services.AddScoped<ICategoryService, CategoryService>(provider => new CategoryService(provider.GetService<ICategoryRepository>(), provider.GetService<IProductRepository>(), provider.GetService<ICommonCategoryRepository>(), provider.GetService<ProductHelpersContainer>()));
             services.AddScoped<IProductParameterService, ProductParameterService>(provider => new ProductParameterService(provider.GetService<IProductParameterRepository>(), provider.GetService<IProductRepository>(), provider.GetService<ITechParameterRepository>()));
-            services.AddScoped<ITechParameterService, TechParameterService>(provider => new TechParameterService(provider.GetService<ITechParameterRepository>(), provider.GetService<ICategoryRepository>()));
+            services.AddScoped<ITechParameterService, TechParameterService>(provider => new TechParameterService(provider.GetService<ITechParameterRepository>(), provider.GetService<IParameterBlockRepository>(), provider.GetService<ICategoryParameterBlockRepository>()));
             services.AddScoped<ICommonCategoryService, CommonCategoryService>(provider => new CommonCategoryService(provider.GetService<ICommonCategoryRepository>()));
             services.AddScoped<ICustomerListsService, CustomerListsService>(provider => new CustomerListsService(provider.GetService<ICartRepository>(), provider.GetService<IWishRepository>(), provider.GetService<IProductRepository>()));
             services.AddScoped<IReviewService, ReviewService>(provider => new ReviewService(provider.GetService<IReviewRepository>(), provider.GetService<IUserRepository>(), provider.GetService<IProductRepository>()));

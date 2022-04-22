@@ -3,12 +3,12 @@
     using System;
     using Microsoft.EntityFrameworkCore.Migrations;
 
-    public partial class Initial : Migration
+    public partial class ParameterUpdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "CommonCategories",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -17,7 +17,7 @@
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.PrimaryKey("PK_CommonCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,6 +56,8 @@
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     SecondName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    GoogleMail = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Avatar = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -132,6 +134,45 @@
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    CommonCategoryIdFk = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Categories_CommonCategories_CommonCategoryIdFk",
+                        column: x => x.CommonCategoryIdFk,
+                        principalTable: "CommonCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ParameterBlock",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ParameterBlock", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ParameterBlock_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -157,21 +198,127 @@
                 });
 
             migrationBuilder.CreateTable(
+                name: "CategoryParameterBlock",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Important = table.Column<bool>(type: "bit", nullable: false),
+                    CategoryIdFk = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParameterBlockIdFk = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategoryParameterBlock", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CategoryParameterBlock_Categories_CategoryIdFk",
+                        column: x => x.CategoryIdFk,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CategoryParameterBlock_ParameterBlock_ParameterBlockIdFk",
+                        column: x => x.ParameterBlockIdFk,
+                        principalTable: "ParameterBlock",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TechParameters",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    ParameterBlockIdFk = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Important = table.Column<bool>(type: "bit", nullable: false),
-                    CategoryIdFk = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParameterType = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TechParameters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TechParameters_Categories_CategoryIdFk",
-                        column: x => x.CategoryIdFk,
-                        principalTable: "Categories",
+                        name: "FK_TechParameters_ParameterBlock_ParameterBlockIdFk",
+                        column: x => x.ParameterBlockIdFk,
+                        principalTable: "ParameterBlock",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Carts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Carts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Carts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Carts_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Mark = table.Column<double>(type: "float", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Banned = table.Column<bool>(type: "bit", nullable: false),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reviews_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Wishes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Wishes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Wishes_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Wishes_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -199,8 +346,38 @@
                         column: x => x.ParameterIdFk,
                         principalTable: "TechParameters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Carts_ProductId",
+                table: "Carts",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Carts_UserId",
+                table: "Carts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_CommonCategoryIdFk",
+                table: "Categories",
+                column: "CommonCategoryIdFk");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoryParameterBlock_CategoryIdFk",
+                table: "CategoryParameterBlock",
+                column: "CategoryIdFk");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoryParameterBlock_ParameterBlockIdFk",
+                table: "CategoryParameterBlock",
+                column: "ParameterBlockIdFk");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ParameterBlock_CategoryId",
+                table: "ParameterBlock",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductParameters_ParameterIdFk",
@@ -218,24 +395,50 @@
                 column: "CategoryIdFk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TechParameters_CategoryIdFk",
+                name: "IX_Reviews_ProductId",
+                table: "Reviews",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_UserId",
+                table: "Reviews",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TechParameters_ParameterBlockIdFk",
                 table: "TechParameters",
-                column: "CategoryIdFk");
+                column: "ParameterBlockIdFk");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Wishes_ProductId",
+                table: "Wishes",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Wishes_UserId",
+                table: "Wishes",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Carts");
+
+            migrationBuilder.DropTable(
+                name: "CategoryParameterBlock");
+
+            migrationBuilder.DropTable(
                 name: "ProductParameters");
+
+            migrationBuilder.DropTable(
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims");
 
             migrationBuilder.DropTable(
                 name: "Roles");
-
-            migrationBuilder.DropTable(
-                name: "User");
 
             migrationBuilder.DropTable(
                 name: "UserClaims");
@@ -250,13 +453,25 @@
                 name: "UserTokens");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Wishes");
 
             migrationBuilder.DropTable(
                 name: "TechParameters");
 
             migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "User");
+
+            migrationBuilder.DropTable(
+                name: "ParameterBlock");
+
+            migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "CommonCategories");
         }
     }
 }

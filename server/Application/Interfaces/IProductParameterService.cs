@@ -11,6 +11,8 @@
 
         List<ParameterOfProductDto> GetParametersOfProduct(Guid id);
 
+        List<ProductParameterBlockDto> GetProductParameters(Guid id);
+
         ProductParameterDto CreateProductParameters(ProductParameterCreateRequestDto prodParam);
 
         ProductParameterDto UpdateProductParameters(ProductParameterUpdateRequestDto prodParam);

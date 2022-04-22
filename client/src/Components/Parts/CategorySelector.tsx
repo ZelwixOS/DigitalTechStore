@@ -10,7 +10,6 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import { Typography } from '@material-ui/core';
 
-import Category from 'src/Types/Category';
 import CommonCategory from 'src/Types/CommonCategory';
 import { getCommonCategories } from 'src/Requests/GetRequests';
 
@@ -162,7 +161,7 @@ const CategorySelector: React.FC = () => {
                     className={classes.item}
                     key={index}
                     onClick={() => {
-                      document.location.href = `/category/${comCategory.name}`;
+                      document.location.href = `/common/${comCategory.name}`;
                     }}
                   >
                     <Typography variant="h6" component="h6">

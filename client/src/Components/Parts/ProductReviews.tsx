@@ -58,7 +58,7 @@ const ProductReviews: React.FC<IProductReviews> = props => {
   };
 
   return (
-    <Grid container direction="column" alignItems="center" justify="center">
+    <Grid container direction="column" alignItems="center" justify="space-around" item xs={12}>
       <Typography className={classes.prodName} variant="overline">
         {`Отзывы на ${props.productName}`}
       </Typography>

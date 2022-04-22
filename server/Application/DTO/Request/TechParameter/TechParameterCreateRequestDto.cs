@@ -10,8 +10,8 @@
             {
                 Name = this.Name,
                 Important = this.Important,
+                ParameterBlockIdFk = this.ParameterBlockId,
                 ParameterBlock = null,
-                ParameterType = this.ParameterType,
                 ProductParameters = null,
             };
         }

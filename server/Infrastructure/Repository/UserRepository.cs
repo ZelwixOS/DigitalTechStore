@@ -4,29 +4,25 @@
     using System.Linq;
     using Domain.Models;
     using Domain.Repository;
-    using Infrastructure.EF;
     using Infrastructure.Interfaces;
 
     using Microsoft.EntityFrameworkCore;
 
     public class UserRepository : BaseRepository, IUserRepository
     {
-        private DatabaseContext context;
-
         public UserRepository(string connectionString, IDatabaseContextFactory contextFactory)
             : base(connectionString, contextFactory)
         {
-            this.context = this.ContextFactory.CreateDbContext(this.ConnectionString);
         }
 
         public IQueryable<User> GetItems()
         {
-            return context.Users.AsNoTracking();
+            return this.Context.Users.AsNoTracking();
         }
 
         public User GetItem(Guid id)
         {
-            return context.Users.AsNoTracking().FirstOrDefault(c => c.Id == id);
+            return this.Context.Users.AsNoTracking().FirstOrDefault(c => c.Id == id);
         }
     }
 }

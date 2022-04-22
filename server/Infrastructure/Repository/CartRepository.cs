@@ -4,74 +4,49 @@
     using System.Linq;
     using Domain.Models;
     using Domain.Repository;
-    using Infrastructure.EF;
     using Infrastructure.Interfaces;
     using Microsoft.EntityFrameworkCore;
 
     public class CartRepository : BaseRepository, ICartRepository, IDisposable
     {
-        private readonly DatabaseContext context;
-        private bool disposed = false;
-
         public CartRepository(string connectionString, IDatabaseContextFactory contextFactory)
             : base(connectionString, contextFactory)
         {
-            this.context = this.ContextFactory.CreateDbContext(this.ConnectionString);
         }
 
         public Cart CreateItem(Cart item)
         {
-            var entity = context.Add(item);
-            context.SaveChanges();
+            var entity = this.Context.Add(item);
+            this.Context.SaveChanges();
             return entity.Entity;
         }
 
         public int DeleteItem(Cart item)
         {
-            context.Carts.Remove(item);
-            return context.SaveChanges();
+            this.Context.Carts.Remove(item);
+            return this.Context.SaveChanges();
         }
 
         public Cart GetItem(Guid id)
         {
-            return context.Carts.FirstOrDefault(w => w.Id == id);
+            return this.Context.Carts.FirstOrDefault(w => w.Id == id);
         }
 
         public IQueryable<Cart> GetItemsByUser(Guid userId)
         {
-            return context.Carts.Where(w => w.UserId == userId);
+            return this.Context.Carts.Where(w => w.UserId == userId);
         }
 
         public IQueryable<Cart> GetItems()
         {
-            return context.Carts.AsNoTracking();
+            return this.Context.Carts.AsNoTracking();
         }
 
         public Cart UpdateItem(Cart item)
         {
-            var entity = context.Carts.Update(item);
-            context.SaveChanges();
+            var entity = this.Context.Carts.Update(item);
+            this.Context.SaveChanges();
             return entity.Entity;
-        }
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    this.context.Dispose();
-                }
-
-                this.disposed = true;
-            }
         }
     }
 }

@@ -13,19 +13,26 @@
     public class CategoryService : ICategoryService
     {
         private ICategoryRepository _categoryRepository;
+        private ICommonCategoryRepository _commonRepository;
         private IProductRepository _productRepository;
         private ProductHelpersContainer _productHelper;
 
-        public CategoryService(ICategoryRepository categoryRepository, IProductRepository productRepository, ProductHelpersContainer helper)
+        public CategoryService(ICategoryRepository categoryRepository, IProductRepository productRepository, ICommonCategoryRepository commonRepository, ProductHelpersContainer helper)
         {
             _productHelper = helper;
             _categoryRepository = categoryRepository;
             _productRepository = productRepository;
+            _commonRepository = commonRepository;
         }
 
         public List<CategoryDto> GetCategories()
         {
             return _categoryRepository.GetItems().Select(x => new CategoryDto(x)).ToList();
+        }
+
+        public List<CategoryDto> GetCategories(string commonName)
+        {
+            return _commonRepository.GetItem(commonName)?.Categories?.Select(x => new CategoryDto(x)).ToList();
         }
 
         public CategoryDto GetCategory(Guid id)

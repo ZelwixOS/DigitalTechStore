@@ -6,9 +6,11 @@ import Grid from '@material-ui/core/Grid';
 
 import Product from 'src/Types/Product';
 import PriceLikeBuyCard from 'src/Components/Parts/PriceLikeBuyCard';
+import ParameterBlock from 'src/Types/ParameterBlock';
 
 interface IDetailedProductCard {
   product?: Product;
+  paramBlocks?: ParameterBlock[];
   image?: string;
 }
 
@@ -29,11 +31,13 @@ const DetailedProductCard: React.FC<IDetailedProductCard> = props => {
   const classes = useStyles();
   const paramString = (): string => {
     let string = '';
-    props.product?.productParameter.map(param => {
-      if (param.important) {
-        string += `${param.name}:${param.value}, `;
-      }
-    });
+    props.paramBlocks?.map(block =>
+      block.parameters.map(param => {
+        if (param.important) {
+          string += `${param.name}:${param.value}, `;
+        }
+      }),
+    );
     return string.substring(0, string.length - 2);
   };
 
