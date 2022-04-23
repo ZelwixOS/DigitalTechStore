@@ -9,6 +9,7 @@
     using Application.Helpers;
     using Application.Interfaces;
     using Domain.Repository;
+    using Microsoft.AspNetCore.Http;
 
     public class CategoryService : ICategoryService
     {
@@ -27,7 +28,7 @@
 
         public List<CategoryDto> GetCategories()
         {
-            return _categoryRepository.GetItems().Select(x => new CategoryDto(x)).ToList();
+            return _categoryRepository.GetItems().Select(x => new CategoryDto(x, true)).ToList();
         }
 
         public List<CategoryDto> GetCategories(string commonName)
@@ -48,21 +49,21 @@
             }
         }
 
-        public WrapperExtraInfo<CategoryDto> GetCategory(string name, GetCategoryProductsRequest parameters)
+        public WrapperExtraInfo<CategoryDto> GetCategory(string name, GetCategoryProductsRequest parameters, IQueryCollection queryCollection)
         {
             var category = _categoryRepository.GetItem(name);
             if (category != null)
             {
-                var filtersWithCodes = _productHelper.Filter.ConvertParameters(category.ParameterBlocks.SelectMany(p => p.Parameters), parameters.ParameterFilters);
                 var allProducts = _productRepository.GetItems();
-                var productByParams = _productHelper.Filter.FilterByParameters(allProducts, filtersWithCodes, category.Id);
-                var filterResult = _productHelper.Filter.FilterByPrice(productByParams, (decimal)parameters.MinPrice, parameters.MaxPrice);
+                var filters = _productHelper.Filter.ConvertParameters(queryCollection);
+                allProducts = _productHelper.Filter.FilterByParameters(allProducts, filters.Range, filters.ListValue);
+                var filterResult = _productHelper.Filter.FilterByPrice(allProducts, (decimal)parameters.MinPrice, parameters.MaxPrice);
                 var productsSorted = _productHelper.Sorter.SortProducts(filterResult.Products, parameters.SortingType, parameters.ReverseSorting);
                 var prodList = _productHelper.Paginator.ElementsOfPage(productsSorted, parameters.PageNumber, parameters.ItemsOnPage);
 
                 category.Products = new HashSet<Domain.Models.Product>(prodList.Products);
 
-                return new WrapperExtraInfo<CategoryDto>(new CategoryDto(category), prodList.MaxPage, filterResult.MinPrice, filterResult.MaxPrice);
+                return new WrapperExtraInfo<CategoryDto>(new CategoryDto(category, true), prodList.MaxPage, filterResult.MinPrice, filterResult.MaxPrice);
             }
             else
             {

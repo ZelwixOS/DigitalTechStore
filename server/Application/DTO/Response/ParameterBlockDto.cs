@@ -7,11 +7,13 @@
 
     public class ParameterBlockDto
     {
-        public ParameterBlockDto(ParameterBlock parameterBlock)
+        public ParameterBlockDto(ParameterBlock parameterBlock, bool onlyImportantParams = false)
         {
             Id = parameterBlock.Id;
             Name = parameterBlock.Name;
-            Parameters = parameterBlock.Parameters?.Select(p => new TechParameterDto(p)).ToList();
+            Parameters = onlyImportantParams
+                ? parameterBlock.Parameters?.Where(p => p.Important).Select(p => new TechParameterDto(p)).ToList()
+                : parameterBlock.Parameters?.Select(p => new TechParameterDto(p)).ToList();
         }
 
         public ParameterBlockDto()

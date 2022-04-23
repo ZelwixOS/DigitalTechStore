@@ -21,6 +21,8 @@
 
         public DbSet<ProductParameter> ProductParameters { get; set; }
 
+        public DbSet<ParameterValue> ParameterValues { get; set; }
+
         public DbSet<User> StoreUsers { get; set; }
 
         public DbSet<CommonCategory> CommonCategories { get; set; }
@@ -47,6 +49,7 @@
             {
                 entity.HasOne(p => p.Product).WithMany(p => p.ProductParameters).HasForeignKey(p => p.ProductIdFk);
                 entity.HasOne(p => p.TechParameter).WithMany(t => t.ProductParameters).HasForeignKey(p => p.ParameterIdFk);
+                entity.HasOne(p => p.ParameterValue).WithMany(pv => pv.ProductParameters).HasForeignKey(p => p.ParameterValueIdFk);
                 entity.HasKey(p => p.Id);
             });
 
@@ -67,6 +70,12 @@
             {
                 entity.HasOne(p => p.ParameterBlock).WithMany(c => c.CategoryParameterBlocks).HasForeignKey(t => t.ParameterBlockIdFk);
                 entity.HasOne(p => p.Category).WithMany(c => c.CategoryParameterBlocks).HasForeignKey(t => t.CategoryIdFk);
+                entity.HasKey(p => p.Id);
+            });
+
+            modelBuilder.Entity<ParameterValue>(entity =>
+            {
+                entity.HasOne(p => p.TechParameter).WithMany(tp => tp.ParameterValues).HasForeignKey(t => t.TechParameterIdFk);
                 entity.HasKey(p => p.Id);
             });
 

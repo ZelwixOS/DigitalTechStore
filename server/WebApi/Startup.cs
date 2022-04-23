@@ -113,6 +113,7 @@ namespace WebApi
             services.AddScoped<IWishRepository, WishRepository>(provider => new WishRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<IReviewRepository, ReviewRepository>(provider => new ReviewRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
             services.AddScoped<ICategoryParameterBlockRepository, CategoryParameterBlockRepository>(provider => new CategoryParameterBlockRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
+            services.AddScoped<IParameterValueRepository, ParameterValueRepository>(provider => new ParameterValueRepository(dbconectionString, provider.GetService<IDatabaseContextFactory>()));
 
             services.AddSingleton<ProductHelpersContainer>();
 
@@ -123,6 +124,7 @@ namespace WebApi
             services.AddScoped<ICommonCategoryService, CommonCategoryService>(provider => new CommonCategoryService(provider.GetService<ICommonCategoryRepository>()));
             services.AddScoped<ICustomerListsService, CustomerListsService>(provider => new CustomerListsService(provider.GetService<ICartRepository>(), provider.GetService<IWishRepository>(), provider.GetService<IProductRepository>()));
             services.AddScoped<IReviewService, ReviewService>(provider => new ReviewService(provider.GetService<IReviewRepository>(), provider.GetService<IUserRepository>(), provider.GetService<IProductRepository>()));
+            services.AddScoped<IParameterValueService, ParameterValueService>(provider => new ParameterValueService(provider.GetService<IParameterValueRepository>(), provider.GetService<ITechParameterRepository>()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

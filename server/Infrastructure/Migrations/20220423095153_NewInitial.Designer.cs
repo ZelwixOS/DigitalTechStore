@@ -4,14 +4,16 @@ using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220423095153_NewInitial")]
+    partial class NewInitial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -207,14 +209,15 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("ParameterIdFk")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ParameterValueIdFk")
+                    b.Property<Guid>("ParameterValueIdFk")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductIdFk")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Value")
-                        .HasColumnType("float");
+                    b.Property<string>("Value")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -583,7 +586,9 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Models.ParameterValue", "ParameterValue")
                         .WithMany("ProductParameters")
-                        .HasForeignKey("ParameterValueIdFk");
+                        .HasForeignKey("ParameterValueIdFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Models.Product", "Product")
                         .WithMany("ProductParameters")

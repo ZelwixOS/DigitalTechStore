@@ -13,6 +13,9 @@
             {
                 Id = this.Id,
                 Name = this.Name,
+                Range = this.Range,
+                MinValue = this.MinValue,
+                MaxValue = this.MaxValue,
                 ParameterBlockIdFk = this.ParameterBlockId,
                 Important = this.Important,
             };

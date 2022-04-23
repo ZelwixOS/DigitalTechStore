@@ -3,7 +3,7 @@
     using System;
     using Microsoft.EntityFrameworkCore.Migrations;
 
-    public partial class ParameterUpdate : Migration
+    public partial class NewInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -154,7 +154,7 @@
                 });
 
             migrationBuilder.CreateTable(
-                name: "ParameterBlock",
+                name: "ParameterBlocks",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -163,9 +163,9 @@
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ParameterBlock", x => x.Id);
+                    table.PrimaryKey("PK_ParameterBlocks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ParameterBlock_Categories_CategoryId",
+                        name: "FK_ParameterBlocks_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
@@ -198,7 +198,7 @@
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryParameterBlock",
+                name: "CategoryParameterBlocks",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -208,17 +208,17 @@
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryParameterBlock", x => x.Id);
+                    table.PrimaryKey("PK_CategoryParameterBlocks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CategoryParameterBlock_Categories_CategoryIdFk",
+                        name: "FK_CategoryParameterBlocks_Categories_CategoryIdFk",
                         column: x => x.CategoryIdFk,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CategoryParameterBlock_ParameterBlock_ParameterBlockIdFk",
+                        name: "FK_CategoryParameterBlocks_ParameterBlocks_ParameterBlockIdFk",
                         column: x => x.ParameterBlockIdFk,
-                        principalTable: "ParameterBlock",
+                        principalTable: "ParameterBlocks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -231,15 +231,17 @@
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     ParameterBlockIdFk = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Important = table.Column<bool>(type: "bit", nullable: false),
-                    ParameterType = table.Column<int>(type: "int", nullable: false),
+                    Range = table.Column<bool>(type: "bit", nullable: false),
+                    MinValue = table.Column<double>(type: "float", nullable: false),
+                    MaxValue = table.Column<double>(type: "float", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TechParameters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TechParameters_ParameterBlock_ParameterBlockIdFk",
+                        name: "FK_TechParameters_ParameterBlocks_ParameterBlockIdFk",
                         column: x => x.ParameterBlockIdFk,
-                        principalTable: "ParameterBlock",
+                        principalTable: "ParameterBlocks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -324,17 +326,43 @@
                 });
 
             migrationBuilder.CreateTable(
+                name: "ParameterValues",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TechParameterIdFk = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ParameterValues", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ParameterValues_TechParameters_TechParameterIdFk",
+                        column: x => x.TechParameterIdFk,
+                        principalTable: "TechParameters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductParameters",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    ParameterValueIdFk = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ParameterIdFk = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductIdFk = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductParameters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductParameters_ParameterValues_ParameterValueIdFk",
+                        column: x => x.ParameterValueIdFk,
+                        principalTable: "ParameterValues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ProductParameters_Products_ProductIdFk",
                         column: x => x.ProductIdFk,
@@ -365,24 +393,34 @@
                 column: "CommonCategoryIdFk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryParameterBlock_CategoryIdFk",
-                table: "CategoryParameterBlock",
+                name: "IX_CategoryParameterBlocks_CategoryIdFk",
+                table: "CategoryParameterBlocks",
                 column: "CategoryIdFk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryParameterBlock_ParameterBlockIdFk",
-                table: "CategoryParameterBlock",
+                name: "IX_CategoryParameterBlocks_ParameterBlockIdFk",
+                table: "CategoryParameterBlocks",
                 column: "ParameterBlockIdFk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ParameterBlock_CategoryId",
-                table: "ParameterBlock",
+                name: "IX_ParameterBlocks_CategoryId",
+                table: "ParameterBlocks",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ParameterValues_TechParameterIdFk",
+                table: "ParameterValues",
+                column: "TechParameterIdFk");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductParameters_ParameterIdFk",
                 table: "ProductParameters",
                 column: "ParameterIdFk");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductParameters_ParameterValueIdFk",
+                table: "ProductParameters",
+                column: "ParameterValueIdFk");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductParameters_ProductIdFk",
@@ -426,7 +464,7 @@
                 name: "Carts");
 
             migrationBuilder.DropTable(
-                name: "CategoryParameterBlock");
+                name: "CategoryParameterBlocks");
 
             migrationBuilder.DropTable(
                 name: "ProductParameters");
@@ -456,7 +494,7 @@
                 name: "Wishes");
 
             migrationBuilder.DropTable(
-                name: "TechParameters");
+                name: "ParameterValues");
 
             migrationBuilder.DropTable(
                 name: "Products");
@@ -465,7 +503,10 @@
                 name: "User");
 
             migrationBuilder.DropTable(
-                name: "ParameterBlock");
+                name: "TechParameters");
+
+            migrationBuilder.DropTable(
+                name: "ParameterBlocks");
 
             migrationBuilder.DropTable(
                 name: "Categories");

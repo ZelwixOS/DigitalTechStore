@@ -7,9 +7,9 @@
     {
         public Guid Id { get; set; }
 
-        [Required]
-        [MaxLength(30)]
-        public string Value { get; set; }
+        public double Value { get; set; }
+
+        public Guid? ParameterValueIdFk { get; set; }
 
         [Required]
         public Guid ParameterIdFk { get; set; }
@@ -20,5 +20,7 @@
         public Product Product { get; set; }
 
         public TechParameter TechParameter { get; set; }
+
+        public ParameterValue ParameterValue { get; set; }
     }
 }

@@ -20,7 +20,7 @@
 
         public Guid Id { get; set; }
 
-        public string Value { get; set; }
+        public double Value { get; set; }
 
         public Guid ProductId { get; set; }
 

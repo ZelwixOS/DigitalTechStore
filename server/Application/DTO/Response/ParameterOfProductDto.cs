@@ -23,6 +23,6 @@
 
         public bool Important { get; set; }
 
-        public string Value { get; set; }
+        public double Value { get; set; }
     }
 }

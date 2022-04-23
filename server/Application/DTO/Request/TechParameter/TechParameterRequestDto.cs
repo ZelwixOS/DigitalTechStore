@@ -17,6 +17,12 @@
         [Required]
         public Guid ParameterBlockId { get; set; }
 
+        public bool Range { get; set; }
+
+        public double MinValue { get; set; }
+
+        public double MaxValue { get; set; }
+
         public abstract TechParameter ToModel();
     }
 }

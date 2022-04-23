@@ -12,7 +12,8 @@
             return new ProductParameter()
             {
                 Id = this.Id,
-                Value = this.Value,
+                Value = this.Value ?? 0,
+                ParameterValueIdFk = this.ParameterValueId,
                 ParameterIdFk = this.ParameterId,
                 ProductIdFk = this.ProductId,
                 Product = null,

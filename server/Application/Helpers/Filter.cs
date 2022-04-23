@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Application.DTO.Request;
     using Application.Helpers.HelperModels;
     using Domain.Models;
+    using Microsoft.AspNetCore.Http;
 
     public class Filter
     {
@@ -37,62 +37,60 @@
             return new ProductsWithPriceRange(null, 0, 0);
         }
 
-        public IQueryable<Product> FilterByParameters(IQueryable<Product> products, HashSet<ProductParameter> prodParameters, Guid categoryId)
+        public IQueryable<Product> FilterByParameters(
+            IQueryable<Product> products,
+            Dictionary<Guid, List<double>> range,
+            Dictionary<Guid, List<Guid>> listValue)
         {
-            if (products != null)
+            foreach (var param in range)
             {
-                if (prodParameters.Count == 0)
-                {
-                    return products.Where(p => p.CategoryIdFk == categoryId);
-                }
-
-                foreach (var param in prodParameters)
-                {
-                    products = products.Where(p => p.ProductParameters.FirstOrDefault(i => (i.ParameterIdFk == param.ParameterIdFk && i.Value == param.Value)) != null);
-                }
-
-                return products;
+                products = products.Where(
+                    p => p.ProductParameters.Any(
+                        par => par.ParameterIdFk == param.Key &&
+                        (param.Value[0] <= par.Value || param.Value[0] <= 0) &&
+                        (param.Value[1] >= par.Value || param.Value[1] <= 0)));
             }
 
-            return null;
+            foreach (var param in listValue)
+            {
+                products = products.Where(
+                    p => p.ProductParameters.Any(
+                        par => par.ParameterIdFk == param.Key && par.ParameterValueIdFk.HasValue && param.Value.Contains(par.ParameterValueIdFk.Value)));
+            }
+
+            return products;
         }
 
-        public HashSet<ProductParameter> ConvertParameters(IEnumerable<TechParameter> techParameters, List<string> filters)
+        public (Dictionary<Guid, List<double>> Range, Dictionary<Guid, List<Guid>> ListValue) ConvertParameters(IQueryCollection queryCollection)
         {
-            var existingParams = new HashSet<ProductParameter>();
+            var range = new Dictionary<Guid, List<double>>();
+            var listValue = new Dictionary<Guid, List<Guid>>();
 
-            if (techParameters != null && filters != null)
+            Guid key;
+            Guid value;
+            double numValue;
+            List<string> values;
+
+            foreach (var param in queryCollection)
             {
-                foreach (var filter in filters)
+                if (Guid.TryParse(param.Key, out key))
                 {
-                    var filterNormal = StringToFiltrationParameter(filter);
-                    if (filterNormal != null)
+                    values = param.Value.First()?.Split(",")?.ToList();
+                    if (values != null && values.Count > 0)
                     {
-                        var matchedParam = techParameters.FirstOrDefault(i => i.Name == filterNormal.Name);
-                        if (matchedParam != null)
+                        if (Guid.TryParse(values.First(), out value))
                         {
-                            existingParams.Add(new ProductParameter() { ParameterIdFk = matchedParam.Id, Value = filterNormal.Value });
+                            listValue[key] = values.Select(s => Guid.Parse(s)).ToList();
+                        }
+                        else if (double.TryParse(values.First(), out numValue) && values.Count == 2)
+                        {
+                            range[key] = values.Select(s => double.Parse(s)).ToList();
                         }
                     }
                 }
-
-                return existingParams;
             }
 
-            return existingParams;
-        }
-
-        private FiltrationParameter StringToFiltrationParameter(string filter)
-        {
-            if (filter != null && filter.Contains('='))
-            {
-                var parts = filter.Split('=');
-                return new FiltrationParameter() { Name = parts[0], Value = parts[1] };
-            }
-            else
-            {
-                return null;
-            }
+            return (range, listValue);
         }
     }
 }

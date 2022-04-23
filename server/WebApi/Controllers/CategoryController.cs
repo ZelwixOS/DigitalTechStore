@@ -43,7 +43,8 @@
         [HttpGet("name/{name}")]
         public ActionResult<WrapperExtraInfo<CategoryDto>> Get(string name, [FromQuery] GetCategoryProductsRequest parameters)
         {
-            return this.Ok(_categoryService.GetCategory(name, parameters));
+            var query = this.Request.Query;
+            return this.Ok(_categoryService.GetCategory(name, parameters, query));
         }
 
         [HttpPost]

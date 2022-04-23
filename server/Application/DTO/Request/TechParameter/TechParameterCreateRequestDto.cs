@@ -11,6 +11,9 @@
                 Name = this.Name,
                 Important = this.Important,
                 ParameterBlockIdFk = this.ParameterBlockId,
+                Range = this.Range,
+                MinValue = this.MinValue,
+                MaxValue = this.MaxValue,
                 ParameterBlock = null,
                 ProductParameters = null,
             };

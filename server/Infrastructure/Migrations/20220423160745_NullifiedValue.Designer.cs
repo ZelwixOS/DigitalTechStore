@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220410163722_categoryBlock")]
-    partial class CategoryBlock
+    [Migration("20220423160745_NullifiedValue")]
+    partial class NullifiedValue
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -136,6 +136,25 @@ namespace Infrastructure.Migrations
                     b.ToTable("ParameterBlocks");
                 });
 
+            modelBuilder.Entity("Domain.Models.ParameterValue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TechParameterIdFk")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TechParameterIdFk");
+
+                    b.ToTable("ParameterValues");
+                });
+
             modelBuilder.Entity("Domain.Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -190,17 +209,20 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("ParameterIdFk")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ParameterValueIdFk")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("ProductIdFk")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ParameterIdFk");
+
+                    b.HasIndex("ParameterValueIdFk");
 
                     b.HasIndex("ProductIdFk");
 
@@ -246,6 +268,12 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("Important")
                         .HasColumnType("bit");
 
+                    b.Property<double>("MaxValue")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MinValue")
+                        .HasColumnType("float");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -254,8 +282,8 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("ParameterBlockIdFk")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ParameterType")
-                        .HasColumnType("int");
+                    b.Property<bool>("Range")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -525,6 +553,17 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("CategoryId");
                 });
 
+            modelBuilder.Entity("Domain.Models.ParameterValue", b =>
+                {
+                    b.HasOne("Domain.Models.TechParameter", "TechParameter")
+                        .WithMany("ParameterValues")
+                        .HasForeignKey("TechParameterIdFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TechParameter");
+                });
+
             modelBuilder.Entity("Domain.Models.Product", b =>
                 {
                     b.HasOne("Domain.Models.Category", "Category")
@@ -544,11 +583,17 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Models.ParameterValue", "ParameterValue")
+                        .WithMany("ProductParameters")
+                        .HasForeignKey("ParameterValueIdFk");
+
                     b.HasOne("Domain.Models.Product", "Product")
                         .WithMany("ProductParameters")
                         .HasForeignKey("ProductIdFk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ParameterValue");
 
                     b.Navigation("Product");
 
@@ -625,6 +670,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Parameters");
                 });
 
+            modelBuilder.Entity("Domain.Models.ParameterValue", b =>
+                {
+                    b.Navigation("ProductParameters");
+                });
+
             modelBuilder.Entity("Domain.Models.Product", b =>
                 {
                     b.Navigation("CartItems");
@@ -638,6 +688,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.TechParameter", b =>
                 {
+                    b.Navigation("ParameterValues");
+
                     b.Navigation("ProductParameters");
                 });
 

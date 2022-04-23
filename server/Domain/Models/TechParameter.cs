@@ -17,11 +17,16 @@
 
         public bool Important { get; set; }
 
-        [Required]
-        public ParameterType ParameterType { get; set; }
+        public bool Range { get; set; }
+
+        public double MinValue { get; set; }
+
+        public double MaxValue { get; set; }
 
         public HashSet<ProductParameter> ProductParameters { get; set; }
 
         public ParameterBlock ParameterBlock { get; set; }
+
+        public HashSet<ParameterValue> ParameterValues { get; set; }
     }
 }

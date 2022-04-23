@@ -56,7 +56,7 @@
 
         public List<ParameterBlockDto> GetParameterBlocks()
         {
-            return _parameterBlockRepository.GetItems().Select(p => new ParameterBlockDto(p)).ToList();
+            return _parameterBlockRepository.GetItems().Select(p => new ParameterBlockDto(p, false)).ToList();
         }
 
         public ParameterBlockDto CreateParameterBlock(ParameterBlockCreateRequestDto block)
@@ -95,7 +95,7 @@
         public int SetBlockImportantStatus(Guid id, bool status)
         {
             var categoryParameterBlock = _categoryParameterBlockRepository.GetItem(id);
-            if (categoryParameterBlock != null)
+            if (categoryParameterBlock == null)
             {
                 return 0;
             }

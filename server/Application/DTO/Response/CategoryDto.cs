@@ -7,19 +7,18 @@
 
     public class CategoryDto : IComparable
     {
-        public CategoryDto(Category category)
+        public CategoryDto(Category category, bool onlyImportantParameters = false)
         {
             this.Id = category.Id;
             this.Name = category.Name;
             this.Description = category.Description;
-            if (category.Products == null)
-            {
-                this.Products = null;
-            }
-            else
-            {
-                this.Products = category.Products.Select(p => new ProductOfCategoryDto(p)).ToHashSet();
-            }
+            this.Products = category.Products?.Select(p => new ProductOfCategoryDto(p)).ToHashSet();
+
+            var blocks = onlyImportantParameters
+                ? category.CategoryParameterBlocks?.Where(cp => cp.ParameterBlock != null && cp.Important)
+                : category.CategoryParameterBlocks?.Where(cp => cp.ParameterBlock != null);
+            this.ParameterBlocks = blocks?.Select(cp => new ParameterBlockDto(cp.ParameterBlock, onlyImportantParameters))
+                    .ToList();
         }
 
         public CategoryDto()
@@ -33,6 +32,8 @@
         public string Description { get; set; }
 
         public HashSet<ProductOfCategoryDto> Products { get; set; }
+
+        public List<ParameterBlockDto> ParameterBlocks { get; set; }
 
         public int CompareTo(object obj)
         {

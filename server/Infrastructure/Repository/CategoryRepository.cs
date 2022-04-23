@@ -29,15 +29,30 @@
 
         public Category GetItem(Guid id)
         {
-            var category = this.Context.Categories.Include(c => c.Products).Include(c => c.CategoryParameterBlocks).ThenInclude(p => p.ParameterBlock).ThenInclude(b => b.Parameters).FirstOrDefault(c => c.Id == id);
+            var category = this.Context.Categories
+                .Include(c => c.Products)
+                .Include(c => c.CategoryParameterBlocks)
+                    .ThenInclude(p => p.ParameterBlock)
+                        .ThenInclude(b => b.Parameters)
+                .FirstOrDefault(c => c.Id == id);
             category.ParameterBlocks = category.CategoryParameterBlocks.Select(p => p.ParameterBlock).ToHashSet();
             return category;
         }
 
         public Category GetItem(string name)
         {
-            var category = this.Context.Categories.Include(c => c.CategoryParameterBlocks).ThenInclude(p => p.ParameterBlock).ThenInclude(b => b.Parameters).AsNoTracking().FirstOrDefault(c => c.Name == name);
-            category.ParameterBlocks = category.CategoryParameterBlocks.Select(p => p.ParameterBlock).ToHashSet();
+            var category = this.Context.Categories
+                .Include(c => c.CategoryParameterBlocks)
+                    .ThenInclude(p => p.ParameterBlock)
+                        .ThenInclude(b => b.Parameters)
+                            .ThenInclude(p => p.ParameterValues)
+                .AsNoTracking()
+                .FirstOrDefault(c => c.Name == name);
+            if (category != null)
+            {
+                category.ParameterBlocks = category.CategoryParameterBlocks?.Select(p => p.ParameterBlock).ToHashSet();
+            }
+
             return category;
         }
 
