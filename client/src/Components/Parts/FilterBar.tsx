@@ -11,6 +11,11 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Observer } from 'mobx-react';
 
+import ParameterBlock from 'src/Types/ParameterBlock';
+import FilterValue from 'src/Types/FilterValue';
+
+import FilterBlock from './FilterBlock';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     rightTextField: {
@@ -25,8 +30,11 @@ const useStyles = makeStyles((theme: Theme) =>
 interface IFilterBar {
   priceRange: number[];
   pickedPrices: number[];
+  parameterBlocks: ParameterBlock[];
+  pickedParams: FilterValue[];
   applyChanges: () => void;
   setPrices: (i: number, newValue: unknown) => void;
+  setParameter: (newValue: FilterValue) => void;
 }
 
 const FilterBar: React.FC<IFilterBar> = props => {
@@ -49,7 +57,7 @@ const FilterBar: React.FC<IFilterBar> = props => {
               Фильтры
             </Typography>
           </ListItem>
-          <Divider />
+          <Divider variant="middle" />
           <ListItem>
             <Typography id="price-slider" gutterBottom>
               Цена
@@ -91,7 +99,25 @@ const FilterBar: React.FC<IFilterBar> = props => {
               )}
             </Observer>
           </ListItem>
-          <Divider />
+          <Observer>
+            {() => (
+              <React.Fragment>
+                {props.parameterBlocks &&
+                  props.parameterBlocks.map((val, index) => (
+                    <React.Fragment key={index}>
+                      <ListItem>
+                        <FilterBlock
+                          parameterBlock={val}
+                          setParameter={props.setParameter}
+                          pickedParams={props.pickedParams}
+                        />
+                      </ListItem>
+                    </React.Fragment>
+                  ))}
+              </React.Fragment>
+            )}
+          </Observer>
+          <Divider variant="middle" />
           <ListItem>
             <Grid container justify="center">
               <Button variant="contained" color="primary" onClick={props.applyChanges}>

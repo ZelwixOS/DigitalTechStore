@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import Category from 'src/Types/Category';
 import CommonCategory from 'src/Types/CommonCategory';
+import FilterValue from 'src/Types/FilterValue';
 import ParameterBlock from 'src/Types/ParameterBlock';
 import Product from 'src/Types/Product';
 import Sorting from 'src/Types/Sorting';
@@ -52,9 +53,29 @@ async function getProductsOfCategory(
   itemsOnPage: number,
   sortType: string,
   price: number[],
+  filters: FilterValue[],
 ) {
   const sortparams: Sorting = sortTypeParsing(sortType);
-  const url = `/api/Category/name/${categoryName}?PageNumber=${currentPage}&ItemsOnPage=${itemsOnPage}&SortingType=${sortparams.type}&ReverseSorting=${sortparams.reverse}&MinPrice=${price[0]}&MaxPrice=${price[1]}`;
+  let url = `/api/Category/name/${categoryName}?PageNumber=${currentPage}&ItemsOnPage=${itemsOnPage}&SortingType=${sortparams.type}&ReverseSorting=${sortparams.reverse}&MinPrice=${price[0]}&MaxPrice=${price[1]}`;
+
+  for (const filter of filters) {
+    if (filter.range) {
+      if (filter.minValue || filter.maxValue) {
+        if (!filter.minValue) {
+          filter.minValue = '0';
+        }
+        if (!filter.maxValue) {
+          filter.maxValue = '0';
+        }
+        url += `&${filter.id}=${filter.minValue},${filter.maxValue}`;
+      }
+    } else {
+      if (filter.itemIds && filter.itemIds.length > 0) {
+        url += `&${filter.id}=${filter.itemIds?.join(',')}`;
+      }
+    }
+  }
+
   return await getRequest(url);
 }
 

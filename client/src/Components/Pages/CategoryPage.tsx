@@ -37,20 +37,37 @@ const useStyles = makeStyles((theme: Theme) =>
 const CategoryPage: React.FC = () => {
   const params: ICategoryPage = useParams();
 
-  const getProducts = async (isMounted: boolean) => {
-    const res = await getProductsOfCategory(params.categoryName, data.currentPage, 3, data.sortType, data.pickedPrice);
-    if (isMounted !== false && res.container !== undefined) {
-      const qParams = new URLSearchParams(location.search);
-      data.setInfo(res.container.products, res.maxPage, res.minPrice, res.maxPrice);
-      data.setParams(qParams.get('page'), qParams.get('minPrice'), qParams.get('maxPrice'), qParams.get('sort'));
-    }
-  };
-
   const object = createProdParams(async () => {
-    const res = await getProductsOfCategory(params.categoryName, data.currentPage, 3, data.sortType, data.pickedPrice);
-    data.setInfo(res.container.products, res.maxPage, res.minPrice, res.maxPrice);
+    const res = await getProductsOfCategory(
+      params.categoryName,
+      data.currentPage,
+      10,
+      data.sortType,
+      data.pickedPrice,
+      data.pickedParams,
+    );
+
+    data.setInfo(res.container.products, res.maxPage, res.minPrice, res.maxPrice, res.container.parameterBlocks);
   });
   const data = useLocalObservable(() => object);
+
+  const getProducts = async (isMounted: boolean) => {
+    const qParams = new URLSearchParams(location.search);
+    data.setParams(qParams.get('page'), qParams.get('minPrice'), qParams.get('maxPrice'), qParams.get('sort'));
+    data.setFilters(qParams);
+
+    const res = await getProductsOfCategory(
+      params.categoryName,
+      data.currentPage,
+      10,
+      data.sortType,
+      data.pickedPrice,
+      data.pickedParams,
+    );
+    if (isMounted !== false && res.container !== undefined) {
+      data.setInfo(res.container.products, res.maxPage, res.minPrice, res.maxPrice, res.container.parameterBlocks);
+    }
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -58,7 +75,7 @@ const CategoryPage: React.FC = () => {
     return () => {
       isMounted = false;
     };
-  });
+  }, []);
 
   const classes = useStyles();
   return (
@@ -82,8 +99,11 @@ const CategoryPage: React.FC = () => {
                     <FilterBar
                       priceRange={data.priceRange}
                       pickedPrices={data.pickedPrice}
+                      parameterBlocks={data.filters}
+                      pickedParams={data.pickedParams}
                       setPrices={data.checkPickedPrices}
                       applyChanges={data.filtersApplied}
+                      setParameter={data.setParameterValue}
                     />
                   </Grid>
                 )}

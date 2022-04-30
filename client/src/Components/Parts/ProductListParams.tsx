@@ -1,3 +1,5 @@
+import FilterValue from 'src/Types/FilterValue';
+import ParameterBlock from 'src/Types/ParameterBlock';
 import Product from 'src/Types/Product';
 
 interface ISettings {
@@ -5,16 +7,20 @@ interface ISettings {
   sortType: string;
   pickedPrice: number[];
   productList: Product[];
+  filters: ParameterBlock[];
   lastPage: number;
   priceRange: number[];
+  pickedParams: FilterValue[];
 
   handlePageChange(event: React.ChangeEvent<unknown>, value: number): void;
   setPage(value: number): void;
   setSortType(type: string): void;
   filtersApplied(): void;
-  setInfo(prodList: unknown, maxPage: number, minPrice: number, maxPrice: number): void;
+  setParameterValue(newValue: FilterValue): void;
+  setInfo(prodList: unknown, maxPage: number, minPrice: number, maxPrice: number, filters: ParameterBlock[]): void;
   checkPickedPrices(i: number, newValue: unknown): void;
   setParams(currPage: unknown, minPrice: unknown, maxPrice: unknown, sort: unknown): void;
+  setFilters(params: URLSearchParams): void;
   isItNumber(value: unknown): boolean;
   createURL(): void;
 }
@@ -25,12 +31,13 @@ function createProdParams(getItems: () => void): ISettings {
     sortType: 'price',
     pickedPrice: [0, 0],
     productList: [],
+    filters: [],
     lastPage: 0,
     priceRange: [0, 0],
+    pickedParams: [],
 
     handlePageChange(event: React.ChangeEvent<unknown>, value: number) {
       this.setPage(value);
-      getItems();
     },
 
     setPage(value: number) {
@@ -47,18 +54,17 @@ function createProdParams(getItems: () => void): ISettings {
         this.setPage(1);
         this.sortType = type;
         this.createURL();
-        getItems();
       }
     },
 
     filtersApplied() {
       this.setPage(1);
       this.createURL();
-      getItems();
     },
 
-    setInfo(prodList: Product[], maxPage: number, minPrice: number, maxPrice: number) {
+    setInfo(prodList: Product[], maxPage: number, minPrice: number, maxPrice: number, filters: ParameterBlock[]) {
       this.productList = prodList;
+      this.filters = filters;
       this.lastPage = maxPage;
       this.priceRange = [minPrice, maxPrice];
       if (this.pickedPrice[0] === 0) {
@@ -95,7 +101,6 @@ function createProdParams(getItems: () => void): ISettings {
         this.setPage(parseInt(currPage as string));
       }
       this.createURL();
-      getItems();
     },
 
     isItNumber(value: unknown): boolean {
@@ -103,6 +108,36 @@ function createProdParams(getItems: () => void): ISettings {
         return true;
       } else {
         return false;
+      }
+    },
+
+    setParameterValue(newValue: FilterValue) {
+      const param = this.pickedParams.find(f => f.id === newValue.id);
+      if (param) {
+        param.itemIds = newValue.itemIds;
+        param.maxValue = newValue.maxValue;
+        param.minValue = newValue.minValue;
+      } else {
+        this.pickedParams.push(newValue);
+      }
+    },
+
+    setFilters(params: URLSearchParams) {
+      this.pickedParams.splice(0, this.pickedParams.length);
+      const keys = params.keys();
+      let key = keys.next();
+      let value;
+      while (!key.done) {
+        value = params.get(key.value as string)?.split(',');
+        if (value && value.length > 0) {
+          if (!isNaN(parseInt(value[0] as string))) {
+            this.pickedParams.push({ id: key.value as string, range: true, minValue: value[0], maxValue: value[1] });
+          } else {
+            this.pickedParams.push({ id: key.value as string, range: false, itemIds: value });
+          }
+        }
+
+        key = keys.next();
       }
     },
 
@@ -125,7 +160,27 @@ function createProdParams(getItems: () => void): ISettings {
         params.set('minPrice', this.pickedPrice[0].toString());
         params.set('maxPrice', this.pickedPrice[1].toString());
       }
+
+      for (const filter of this.pickedParams) {
+        if (filter.range) {
+          if (filter.minValue || filter.maxValue) {
+            if (!filter.minValue) {
+              filter.minValue = '0';
+            }
+            if (!filter.maxValue) {
+              filter.maxValue = '0';
+            }
+            params.set(filter.id, `${filter.minValue},${filter.maxValue}`);
+          }
+        } else {
+          if (filter.itemIds && filter.itemIds.length > 0) {
+            params.set(filter.id, filter.itemIds?.join(','));
+          }
+        }
+      }
+
       history.pushState({}, 'Products', `?${params.toString()}`);
+      getItems();
     },
   };
 

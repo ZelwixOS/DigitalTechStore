@@ -8,13 +8,11 @@ import ProductCard from 'src/Components/Parts/ProductCard';
 import NavigationBar from 'src/Components/Parts/NavigationBar';
 import { getProducts } from 'src/Requests/GetRequests';
 import SortBar from 'src/Components/Parts/SortBar';
-import FilterBar from 'src/Components/Parts/FilterBar';
 import { createProdParams } from 'src/Components/Parts/ProductListParams';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     productGrid: {
-      paddingLeft: theme.spacing(1),
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(2),
     },
@@ -29,14 +27,14 @@ const ProductsPage: React.FC = () => {
     const res = await getProducts(data.currentPage, 9, data.sortType, data.pickedPrice);
     if (isMounted) {
       const params = new URLSearchParams(location.search);
-      data.setInfo(res.container, res.maxPage, res.minPrice, res.maxPrice);
+      data.setInfo(res.container, res.maxPage, res.minPrice, res.maxPrice, []);
       data.setParams(params.get('page'), params.get('minPrice'), params.get('maxPrice'), params.get('sort'));
     }
   };
 
   const object = createProdParams(async () => {
     const res = await getProducts(data.currentPage, 9, data.sortType, data.pickedPrice);
-    data.setInfo(res.container, res.maxPage, res.minPrice, res.maxPrice);
+    data.setInfo(res.container, res.maxPage, res.minPrice, res.maxPrice, []);
   });
 
   const data = useLocalObservable(() => object);
@@ -61,19 +59,7 @@ const ProductsPage: React.FC = () => {
               <Observer>{() => <SortBar type={data.sortType} onChange={data.setSortType} />}</Observer>
             </Grid>
             <Grid item direction="row" justify="center" container>
-              <Observer>
-                {() => (
-                  <Grid xs={12} sm={3} item className={classes.filterPanel}>
-                    <FilterBar
-                      priceRange={data.priceRange}
-                      pickedPrices={data.pickedPrice}
-                      setPrices={data.checkPickedPrices}
-                      applyChanges={data.filtersApplied}
-                    />
-                  </Grid>
-                )}
-              </Observer>
-              <Grid className={classes.productGrid} xs={12} sm={9} item container direction="column">
+              <Grid className={classes.productGrid} xs={12} sm={12} item container direction="column">
                 <Observer>
                   {() => (
                     <Grid>

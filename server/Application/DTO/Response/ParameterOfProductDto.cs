@@ -9,7 +9,7 @@
         {
             this.Id = productParam.Id;
             this.Name = productParam.TechParameter.Name;
-            this.Value = productParam.Value;
+            this.Value = productParam.TechParameter.Range ? productParam.Value.ToString() : productParam.ParameterValue.Value;
             this.Important = productParam.TechParameter.Important;
         }
 
@@ -23,6 +23,6 @@
 
         public bool Important { get; set; }
 
-        public double Value { get; set; }
+        public string Value { get; set; }
     }
 }

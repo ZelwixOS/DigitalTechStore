@@ -75,7 +75,7 @@
             {
                 if (Guid.TryParse(param.Key, out key))
                 {
-                    values = param.Value.First()?.Split(",")?.ToList();
+                    values = param.Value.First()?.Split(new string[] { ",", "%2C" }, StringSplitOptions.RemoveEmptyEntries)?.ToList();
                     if (values != null && values.Count > 0)
                     {
                         if (Guid.TryParse(values.First(), out value))

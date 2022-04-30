@@ -39,7 +39,9 @@
                     .ThenInclude(c => c.CategoryParameterBlocks)
                     .ThenInclude(cb => cb.ParameterBlock)
                 .Include(p => p.ProductParameters)
-                .ThenInclude(pp => pp.TechParameter)
+                    .ThenInclude(pp => pp.TechParameter)
+                .Include(p => p.ProductParameters)
+                    .ThenInclude(pp => pp.ParameterValue)
                 .AsNoTracking()
                 .FirstOrDefault(p => p.Id == id);
         }
