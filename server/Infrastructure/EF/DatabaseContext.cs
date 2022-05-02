@@ -31,6 +31,18 @@
 
         public DbSet<ParameterBlock> ParameterBlocks { get; set; }
 
+        public DbSet<Warehouse> Warehouses { get; set; }
+
+        public DbSet<Outlet> Outlets { get; set; }
+
+        public DbSet<OutletProduct> OutletProducts { get; set; }
+
+        public DbSet<WarehouseProduct> WarehouseProducts { get; set; }
+
+        public DbSet<Region> Regions { get; set; }
+
+        public DbSet<City> Cities { get; set; }
+
         public DbSet<Cart> Carts { get; set; }
 
         public DbSet<Wish> Wishes { get; set; }
@@ -98,6 +110,40 @@
             {
                 entity.HasOne(p => p.Product).WithMany(p => p.Reviews).HasForeignKey(p => p.ProductId);
                 entity.HasOne(p => p.User).WithMany(t => t.Reviews).HasForeignKey(p => p.UserId);
+                entity.HasKey(p => p.Id);
+            });
+
+            modelBuilder.Entity<Outlet>(entity =>
+            {
+                entity.HasOne(p => p.City).WithMany(p => p.Outlets).HasForeignKey(p => p.CityId);
+                entity.HasKey(p => p.Id);
+            });
+
+            modelBuilder.Entity<Warehouse>(entity =>
+            {
+                entity.HasOne(p => p.City).WithMany(p => p.Warehouses).HasForeignKey(p => p.CityId);
+                entity.HasKey(p => p.Id);
+            });
+
+            modelBuilder.Entity<OutletProduct>(entity =>
+            {
+                entity.HasOne(p => p.Product).WithMany(p => p.OutletProducts).HasForeignKey(p => p.ProductId);
+                entity.HasOne(p => p.Outlet).WithMany(p => p.OutletProducts).HasForeignKey(p => p.UnitId);
+                entity.HasKey(p => p.Id);
+            });
+
+            modelBuilder.Entity<WarehouseProduct>(entity =>
+            {
+                entity.HasOne(p => p.Product).WithMany(p => p.WarehouseProducts).HasForeignKey(p => p.ProductId);
+                entity.HasOne(p => p.Warehouse).WithMany(p => p.WarehouseProducts).HasForeignKey(p => p.UnitId);
+                entity.HasKey(p => p.Id);
+            });
+
+            modelBuilder.Entity<Region>().HasKey(p => p.Id);
+
+            modelBuilder.Entity<City>(entity =>
+            {
+                entity.HasOne(p => p.Region).WithMany(p => p.Cities).HasForeignKey(p => p.RegionId);
                 entity.HasKey(p => p.Id);
             });
 

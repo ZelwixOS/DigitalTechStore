@@ -10,7 +10,7 @@
     {
         WrapperExtraInfo<List<ProductDto>> GetProducts(GetProductsRequest parameters);
 
-        ProductDto GetProduct(Guid id);
+        ProductDto GetProduct(Guid id, int cityId, int regionId);
 
         ProductDto CreateProduct(ProductCreateRequestDto product);
 

@@ -34,12 +34,12 @@
             return new WrapperExtraInfo<List<ProductDto>>(prodList.Products.Select(x => new ProductDto(x)).ToList(), prodList.MaxPage, filterResult.MinPrice, filterResult.MaxPrice);
         }
 
-        public ProductDto GetProduct(Guid id)
+        public ProductDto GetProduct(Guid id, int cityId, int regionId)
         {
             var product = _productRepository.GetItem(id);
             if (product != null)
             {
-                return new ProductDto(product);
+                return new ProductDto(product, cityId, regionId);
             }
             else
             {

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220423155720_valueToDouble")]
-    partial class ValueToDouble
+    [Migration("20220501160209_FixEstate")]
+    partial class FixEstate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,6 +95,26 @@ namespace Infrastructure.Migrations
                     b.ToTable("CategoryParameterBlocks");
                 });
 
+            modelBuilder.Entity("Domain.Models.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RegionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RegionId");
+
+                    b.ToTable("Cities");
+                });
+
             modelBuilder.Entity("Domain.Models.CommonCategory", b =>
                 {
                     b.Property<Guid>("Id")
@@ -114,6 +134,65 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CommonCategories");
+                });
+
+            modelBuilder.Entity("Domain.Models.Outlet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Building")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NoteForUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RegionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StreetName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.ToTable("Outlets");
+                });
+
+            modelBuilder.Entity("Domain.Models.OutletProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("UnitId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("OutletProducts");
                 });
 
             modelBuilder.Entity("Domain.Models.ParameterBlock", b =>
@@ -209,7 +288,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("ParameterIdFk")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ParameterValueIdFk")
+                    b.Property<Guid?>("ParameterValueIdFk")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductIdFk")
@@ -227,6 +306,21 @@ namespace Infrastructure.Migrations
                     b.HasIndex("ProductIdFk");
 
                     b.ToTable("ProductParameters");
+                });
+
+            modelBuilder.Entity("Domain.Models.Region", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Regions");
                 });
 
             modelBuilder.Entity("Domain.Models.Review", b =>
@@ -361,6 +455,62 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("Domain.Models.Warehouse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Building")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RegionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StreetName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.ToTable("Warehouses");
+                });
+
+            modelBuilder.Entity("Domain.Models.WarehouseProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("UnitId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("WarehouseProducts");
                 });
 
             modelBuilder.Entity("Domain.Models.Wish", b =>
@@ -546,6 +696,55 @@ namespace Infrastructure.Migrations
                     b.Navigation("ParameterBlock");
                 });
 
+            modelBuilder.Entity("Domain.Models.City", b =>
+                {
+                    b.HasOne("Domain.Models.Region", "Region")
+                        .WithMany("Cities")
+                        .HasForeignKey("RegionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Region");
+                });
+
+            modelBuilder.Entity("Domain.Models.Outlet", b =>
+                {
+                    b.HasOne("Domain.Models.City", "City")
+                        .WithMany("Outlets")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Region", "Region")
+                        .WithMany("Outlets")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+
+                    b.Navigation("Region");
+                });
+
+            modelBuilder.Entity("Domain.Models.OutletProduct", b =>
+                {
+                    b.HasOne("Domain.Models.Product", "Product")
+                        .WithMany("OutletProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Outlet", "Outlet")
+                        .WithMany("OutletProducts")
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Outlet");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Domain.Models.ParameterBlock", b =>
                 {
                     b.HasOne("Domain.Models.Category", null)
@@ -585,9 +784,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Models.ParameterValue", "ParameterValue")
                         .WithMany("ProductParameters")
-                        .HasForeignKey("ParameterValueIdFk")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParameterValueIdFk");
 
                     b.HasOne("Domain.Models.Product", "Product")
                         .WithMany("ProductParameters")
@@ -632,6 +829,44 @@ namespace Infrastructure.Migrations
                     b.Navigation("ParameterBlock");
                 });
 
+            modelBuilder.Entity("Domain.Models.Warehouse", b =>
+                {
+                    b.HasOne("Domain.Models.City", "City")
+                        .WithMany("Warehouses")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Region", "Region")
+                        .WithMany("Warehouses")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+
+                    b.Navigation("Region");
+                });
+
+            modelBuilder.Entity("Domain.Models.WarehouseProduct", b =>
+                {
+                    b.HasOne("Domain.Models.Product", "Product")
+                        .WithMany("WarehouseProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Warehouse", "Warehouse")
+                        .WithMany("WarehouseProducts")
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Warehouse");
+                });
+
             modelBuilder.Entity("Domain.Models.Wish", b =>
                 {
                     b.HasOne("Domain.Models.Product", "Product")
@@ -660,9 +895,21 @@ namespace Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("Domain.Models.City", b =>
+                {
+                    b.Navigation("Outlets");
+
+                    b.Navigation("Warehouses");
+                });
+
             modelBuilder.Entity("Domain.Models.CommonCategory", b =>
                 {
                     b.Navigation("Categories");
+                });
+
+            modelBuilder.Entity("Domain.Models.Outlet", b =>
+                {
+                    b.Navigation("OutletProducts");
                 });
 
             modelBuilder.Entity("Domain.Models.ParameterBlock", b =>
@@ -681,11 +928,24 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("CartItems");
 
+                    b.Navigation("OutletProducts");
+
                     b.Navigation("ProductParameters");
 
                     b.Navigation("Reviews");
 
+                    b.Navigation("WarehouseProducts");
+
                     b.Navigation("WishedItems");
+                });
+
+            modelBuilder.Entity("Domain.Models.Region", b =>
+                {
+                    b.Navigation("Cities");
+
+                    b.Navigation("Outlets");
+
+                    b.Navigation("Warehouses");
                 });
 
             modelBuilder.Entity("Domain.Models.TechParameter", b =>
@@ -702,6 +962,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Reviews");
 
                     b.Navigation("WishedItems");
+                });
+
+            modelBuilder.Entity("Domain.Models.Warehouse", b =>
+                {
+                    b.Navigation("WarehouseProducts");
                 });
 #pragma warning restore 612, 618
         }

@@ -29,7 +29,14 @@
 
         public Product GetItem(Guid id)
         {
-            return this.Context.Products.Include(p => p.Category).AsNoTracking().FirstOrDefault(p => p.Id == id);
+            return this.Context.Products
+                .Include(p => p.Category)
+                .Include(p => p.OutletProducts)
+                    .ThenInclude(op => op.Outlet)
+                .Include(p => p.WarehouseProducts)
+                    .ThenInclude(wp => wp.Warehouse)
+                    .ThenInclude(w => w.City)
+                .AsNoTracking().FirstOrDefault(p => p.Id == id);
         }
 
         public Product GetProductWithParameters(Guid id)

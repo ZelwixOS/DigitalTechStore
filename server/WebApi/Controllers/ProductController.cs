@@ -21,6 +21,7 @@
         private ICustomerListsService customerListsService;
         private IAccountService accountService;
         private IReviewService reviewService;
+        private IGeographyService geographyService;
 
         public ProductController(
             ILogger<ProductController> logger,
@@ -28,7 +29,8 @@
             IProductParameterService productParameterService,
             ICustomerListsService customerListsService,
             IReviewService reviewService,
-            IAccountService accountService)
+            IAccountService accountService,
+            IGeographyService geographyService)
         {
             this.logger = logger;
             this.productService = productService;
@@ -36,6 +38,7 @@
             this.customerListsService = customerListsService;
             this.accountService = accountService;
             this.reviewService = reviewService;
+            this.geographyService = geographyService;
         }
 
         [HttpGet]
@@ -54,9 +57,10 @@
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductDto>> GetAsync(Guid id)
+        public async Task<ActionResult<ProductDto>> GetAsync(Guid id, int cityId)
         {
-            var product = productService.GetProduct(id);
+            var region = this.geographyService.GetCityRegion(cityId)?.Id ?? 0;
+            var product = this.productService.GetProduct(id, cityId, region);
 
             var user = await this.accountService.GetCurrentUserAsync(HttpContext);
 

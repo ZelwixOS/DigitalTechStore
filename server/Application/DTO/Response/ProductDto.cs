@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Domain.Models;
 
     public class ProductDto : IComparable
@@ -23,6 +24,23 @@
             else
             {
                 this.Category = new CategoryOfProductDto(product.Category);
+            }
+        }
+
+        public ProductDto(Product product, int cityId, int regionId)
+            : this(product)
+        {
+            if (product.OutletProducts != null)
+            {
+                this.OutletProducts = product.OutletProducts
+                    .Where(o => o.Outlet != null && o.Outlet.CityId == cityId && o.Count > 0)
+                    .Select(o => new OutletProductDto(o)).ToList();
+            }
+
+            if (product.WarehouseProducts != null)
+            {
+                this.IsInWarehouse = product.WarehouseProducts
+                    .Any(o => o.Warehouse != null && o.Warehouse.City != null && o.Warehouse.City.RegionId == regionId && o.Count > 0);
             }
         }
 
@@ -53,6 +71,10 @@
         public bool InWishlist { get; set; }
 
         public bool Reviewed { get; set; }
+
+        public List<OutletProductDto> OutletProducts { get; set; }
+
+        public bool IsInWarehouse { get; set; }
 
         public int CompareTo(object obj)
         {

@@ -45,5 +45,9 @@
         public HashSet<Wish> WishedItems { get; set; }
 
         public HashSet<Review> Reviews { get; set; }
+
+        public HashSet<OutletProduct> OutletProducts { get; set; }
+
+        public HashSet<WarehouseProduct> WarehouseProducts { get; set; }
     }
 }

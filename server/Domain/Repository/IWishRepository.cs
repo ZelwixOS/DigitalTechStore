@@ -4,7 +4,7 @@
     using System.Linq;
     using Domain.Models;
 
-    public interface IWishRepository : IRepository<Wish>
+    public interface IWishRepository : IRepository<Wish, Guid>
     {
         public IQueryable<Wish> GetItemsByUser(Guid userId);
     }

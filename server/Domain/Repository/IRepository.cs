@@ -1,14 +1,13 @@
 ﻿namespace Domain.Repository
 {
-    using System;
     using System.Linq;
 
-    public interface IRepository<T>
+    public interface IRepository<T, TKey>
         where T : class
     {
         IQueryable<T> GetItems();
 
-        T GetItem(Guid id);
+        T GetItem(TKey id);
 
         T CreateItem(T item);
 
