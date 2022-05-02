@@ -79,6 +79,15 @@ const ProductCard: React.FC<IProductCard> = props => {
     const img = new Image();
     img.src = `${picUrl}${props.product.picURL}`;
 
+    const role = sessionStorage.getItem('signed');
+    if (!role) {
+      const cart = localStorage.getItem('cartItems');
+      if (cart) {
+        props.product.inCart = cart.includes(props.product.id);
+        setInCart(props.product.inCart);
+      }
+    }
+
     if (isMounted) {
       img.onerror = () => setPicture(`${picUrl}noPic.jpg`);
     }
@@ -92,11 +101,26 @@ const ProductCard: React.FC<IProductCard> = props => {
   const [inWishlist, setInWishlist] = useState(props.product.inWishlist);
 
   const addProductToCart = async () => {
-    const response = await addToCart(props.product.id, 0);
-    if (response !== null) {
-      setInCart(true);
-      if (props.onBuy) {
-        props.onBuy();
+    const role = sessionStorage.getItem('signed');
+
+    if (role) {
+      const response = await addToCart(props.product.id, 0);
+      if (response !== null) {
+        setInCart(true);
+        if (props.onBuy) {
+          props.onBuy();
+        }
+      }
+    } else {
+      const items = localStorage.getItem('cartItems');
+
+      if (items) {
+        if (items.includes(props.product.id)) {
+          return;
+        }
+        localStorage.setItem('cartItems', `${items},${props.product.id}`);
+      } else {
+        localStorage.setItem('cartItems', props.product.id);
       }
     }
   };

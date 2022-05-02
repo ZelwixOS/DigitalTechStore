@@ -35,6 +35,12 @@
             return this.Ok(customerListsService.GetUserCart(user.Id));
         }
 
+        [HttpGet("cart/unsigned")]
+        public ActionResult<CartDto> GetCartUnsigned([FromQuery] string productIds)
+        {
+            return this.Ok(customerListsService.GetProductCart(productIds));
+        }
+
         [HttpGet("wishlist")]
         public async Task<ActionResult<WishListDto>> GetWishlistAsync()
         {

@@ -87,6 +87,7 @@ const UserMiniPanel: React.FC = () => {
 
   const signOut = async () => {
     await logOut();
+    sessionStorage.removeItem('signed');
     document.location.href = `/`;
   };
 

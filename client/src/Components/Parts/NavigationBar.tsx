@@ -106,6 +106,7 @@ const NavigationBar: React.FC = () => {
 
     if (isMounted) {
       if (authres !== Roles.guest) {
+        sessionStorage.setItem('signed', authres);
         setAuth(true);
       } else {
         setAuth(false);

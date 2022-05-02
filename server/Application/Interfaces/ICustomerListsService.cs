@@ -17,6 +17,8 @@
 
         public CartDto GetUserCart(Guid userId);
 
+        public CartDto GetProductCart(string ids);
+
         public int AddToWishlist(Guid userId, Guid productId);
 
         public int DeleteWish(Guid wishId);

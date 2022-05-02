@@ -58,15 +58,40 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const PriceLikeBuyCard: React.FC<IPriceLikeBuyCard> = props => {
-  const [inCart, setInCart] = useState(props.inCart);
+  const checkInCart = () => {
+    const role = sessionStorage.getItem('signed');
+    if (!role) {
+      const cart = localStorage.getItem('cartItems');
+      if (cart) {
+        return cart.includes(props.id as string);
+      }
+    }
+    return props.inCart;
+  };
+
+  const [inCart, setInCart] = useState(checkInCart());
   const [inWishlist, setInWishlist] = useState(props.inWishlist);
 
   const addProductToCart = async () => {
-    const response = await addToCart(props.id as string, 0);
-    if (response !== null) {
-      setInCart(true);
-      if (props.onBuy) {
-        props.onBuy();
+    const role = sessionStorage.getItem('signed');
+
+    if (role) {
+      const response = await addToCart(props.id as string, 0);
+      if (response !== null) {
+        setInCart(true);
+        if (props.onBuy) {
+          props.onBuy();
+        }
+      }
+    } else {
+      const items = localStorage.getItem('cartItems');
+      if (items) {
+        if (items.includes(props.id as string)) {
+          return;
+        }
+        localStorage.setItem('cartItems', `${items},${props.id}`);
+      } else {
+        localStorage.setItem('cartItems', props.id as string);
       }
     }
   };

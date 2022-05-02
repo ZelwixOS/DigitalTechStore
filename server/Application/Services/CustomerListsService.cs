@@ -187,5 +187,23 @@
 
             return product;
         }
+
+        public CartDto GetProductCart(string ids)
+        {
+            if (ids == null)
+            {
+                return null;
+            }
+
+            var idArray = ids.Split(new string[] { ",", "%2C" }, StringSplitOptions.RemoveEmptyEntries);
+            var guidArray = idArray.Where(id => Guid.TryParse(id, out Guid guid)).Select(id => Guid.Parse(id)).ToList();
+            var products = productRepository.GetItems().Where(c => guidArray.Contains(c.Id));
+            var cart = new CartDto()
+            {
+                Products = products.Select(products => new CartItemDto(1, products)).ToList(),
+            };
+
+            return cart;
+        }
     }
 }

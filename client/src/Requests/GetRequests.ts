@@ -23,6 +23,12 @@ async function getCart() {
   return await getRequest(url);
 }
 
+async function getCartUnsigned() {
+  const items = localStorage.getItem('cartItems');
+  const url = `/api/CustomerLists/cart/unsigned?productIds=${items}`;
+  return await getRequest(url);
+}
+
 async function getWishlist() {
   const url = `/api/CustomerLists/wishlist`;
   return await getRequest(url);
@@ -107,4 +113,5 @@ export {
   getReviews,
   getParameters,
   getRegions,
+  getCartUnsigned,
 };

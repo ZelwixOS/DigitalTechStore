@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 
 import ProductCard from 'src/Components/Parts/ProductCard';
 import NavigationBar from 'src/Components/Parts/NavigationBar';
-import { getCart } from 'src/Requests/GetRequests';
+import { getCart, getCartUnsigned } from 'src/Requests/GetRequests';
 import CartItem from 'src/Types/CartItem';
 import Cart from 'src/Types/Cart';
 import { deleteFromCart } from 'src/Requests/DeleteRequests';
@@ -32,7 +32,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const CartPage: React.FC = () => {
   const getProd = async (isMounted: boolean) => {
-    const res = (await getCart()) as Cart;
+    let res: Cart;
+    const role = sessionStorage.getItem('signed');
+    if (role) {
+      res = (await getCart()) as Cart;
+    } else {
+      res = await getCartUnsigned();
+    }
+
     if (isMounted) {
       setCartItems(res.products);
     }
@@ -53,7 +60,11 @@ const CartPage: React.FC = () => {
   };
 
   const onCount = (newCount: number, id?: string) => {
-    updateCartItem(newCount, id as string);
+    const role = sessionStorage.getItem('signed');
+    if (!role) {
+      updateCartItem(newCount, id as string);
+    }
+
     const itemId = cartItems.findIndex(item => item.product.id === (id as string));
     cartItems[itemId].count = newCount;
     updateCurrentSumm(pickedProducts, cartItems);
@@ -119,19 +130,20 @@ const CartPage: React.FC = () => {
             <Grid item direction="row" justify="center" container>
               <Grid className={classes.productGrid} xs={12} sm={10} item container direction="column">
                 <Grid>
-                  {cartItems.map(cartItem => (
-                    <ProductCard
-                      product={cartItem.product}
-                      key={cartItem.product.id}
-                      hideBuy={true}
-                      hideLike={true}
-                      showCounter={true}
-                      count={cartItem.count}
-                      onCount={onCount}
-                      onDelete={deleteItem}
-                      onChecked={onChecked}
-                    />
-                  ))}
+                  {cartItems &&
+                    cartItems.map(cartItem => (
+                      <ProductCard
+                        product={cartItem.product}
+                        key={cartItem.product.id}
+                        hideBuy={true}
+                        hideLike={true}
+                        showCounter={true}
+                        count={cartItem.count}
+                        onCount={onCount}
+                        onDelete={deleteItem}
+                        onChecked={onChecked}
+                      />
+                    ))}
                 </Grid>
               </Grid>
             </Grid>
