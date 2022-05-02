@@ -17,6 +17,7 @@ import Roles from 'src/Types/Roles';
 import CategorySelector from './CategorySelector';
 import LoginModal from './LoginModal';
 import UserMiniPanel from './UserMiniPanel';
+import CityNavigation from './CityNavigation';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -80,6 +81,9 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'none',
       },
     },
+    realElement: {
+      height: 25,
+    },
   }),
 );
 
@@ -113,6 +117,7 @@ const NavigationBar: React.FC = () => {
   return (
     <React.Fragment>
       <AppBar>
+        <CityNavigation />
         <Toolbar>
           <Grid item xs={12} sm={2}>
             <Button
@@ -183,6 +188,7 @@ const NavigationBar: React.FC = () => {
         </Toolbar>
       </AppBar>
       <Toolbar />
+      <div className={classes.realElement} />
     </React.Fragment>
   );
 };

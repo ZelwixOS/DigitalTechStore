@@ -59,6 +59,8 @@ const DetailedProductCard: React.FC<IDetailedProductCard> = props => {
             id={props.product?.id}
             inCart={props.product?.inCart}
             inWishlist={props.product?.inWishlist}
+            outlets={props.product?.outletProducts}
+            isInWarehouse={props.product?.isInWarehouse}
           />
         </Grid>
       </Grid>

@@ -10,6 +10,9 @@ import Grid from '@material-ui/core/Grid';
 
 import { addToCart, addToWishlist } from 'src/Requests/PostRequests';
 import { deleteFromWishlist } from 'src/Requests/DeleteRequests';
+import OutletProduct from 'src/Types/OutletProduct';
+
+import UnitProducts from './UnitProducts';
 
 interface IPriceLikeBuyCard {
   price?: number;
@@ -19,6 +22,8 @@ interface IPriceLikeBuyCard {
   onWished?: () => void;
   inCart?: boolean;
   inWishlist?: boolean;
+  outlets?: OutletProduct[];
+  isInWarehouse?: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -89,7 +94,7 @@ const PriceLikeBuyCard: React.FC<IPriceLikeBuyCard> = props => {
   const classes = useStyles();
   return (
     <Card variant="outlined" className={classes.root}>
-      <Grid justify="center" alignItems="center" container direction="column">
+      <Grid justify="center" alignItems="center" container>
         <Grid className={classes.grid} container direction="row" justify="center" alignItems="center">
           <Grid item container direction="column" justify="center" alignItems="center" xs={12} sm={6}>
             <Typography component="h5" variant="h5" className={classes.bold}>
@@ -125,6 +130,7 @@ const PriceLikeBuyCard: React.FC<IPriceLikeBuyCard> = props => {
           </Grid>
         </Grid>
         <Rating className={classes.rating} name="read-only" value={props.rating} readOnly />
+        <UnitProducts outlets={props.outlets} isInWarehouse={props.isInWarehouse} />
       </Grid>
     </Card>
   );

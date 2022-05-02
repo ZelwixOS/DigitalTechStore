@@ -67,6 +67,12 @@ const SortBar: React.FC<ISortBar> = props => {
                   <MenuItem value={'name reverse'}>
                     <ArrowUpwardIcon fontSize="small" /> Название
                   </MenuItem>
+                  <MenuItem value={'rating'}>
+                    <ArrowDownwardIcon fontSize="small" /> Оценка
+                  </MenuItem>
+                  <MenuItem value={'rating reverse'}>
+                    <ArrowUpwardIcon fontSize="small" /> Оценка
+                  </MenuItem>
                 </Select>
               )}
             </Observer>

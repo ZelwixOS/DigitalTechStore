@@ -27,21 +27,21 @@
 
         public static class AnswerMessage
         {
-            public const string LoggedAs = "Logged as: ";
+            public const string LoggedAs = "Вы вошли как: ";
 
-            public const string WrongCreds = "Wrong login or password";
+            public const string WrongCreds = "Неверный логин или пароль";
 
-            public const string LoginError = "Sorry, can't log in.";
+            public const string LoginError = "Не удалось войти в систему";
 
-            public const string NotConnectedGoogle = "Account with this e-mail is not connected to the Google account.";
+            public const string NotConnectedGoogle = "Аккаунт с указаным адрессом не привязан к аккаунту Google";
 
-            public const string LogOutSucceed = "Log out completed";
+            public const string LogOutSucceed = "Выполнен выход";
 
-            public const string RegisteredSuccessfully = "New customer was registered: ";
+            public const string RegisteredSuccessfully = "Зарегистрирован новый покупатель: ";
 
-            public const string RegisteredUnsuccessfully = "Error. Customer wasn't registered.";
+            public const string RegisteredUnsuccessfully = "Ошибка. Не удалось зарегистрировать покупателя";
 
-            public const string Redirection = "Redirecting...";
+            public const string Redirection = "Перенаправление...";
         }
     }
 }

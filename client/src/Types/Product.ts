@@ -1,4 +1,5 @@
 import Category from './Category';
+import OutletProduct from './OutletProduct';
 import Parameter from './Parameter';
 
 type Product = {
@@ -14,6 +15,8 @@ type Product = {
   inCart: boolean;
   inWishlist: boolean;
   reviewed: boolean;
+  isInWarehouse: boolean;
+  outletProducts: OutletProduct[];
 };
 
 export default Product;

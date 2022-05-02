@@ -12,7 +12,7 @@
             Id = parameterBlock.Id;
             Name = parameterBlock.Name;
             Parameters = onlyImportantParams
-                ? parameterBlock.Parameters?.Where(p => p.Important).Select(p => new TechParameterDto(p)).ToList()
+                ? parameterBlock.Parameters?.Where(p => p.Important && (p.Range || p.ParameterValues.Count > 0)).Select(p => new TechParameterDto(p)).ToList()
                 : parameterBlock.Parameters?.Select(p => new TechParameterDto(p)).ToList();
         }
 

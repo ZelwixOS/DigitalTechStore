@@ -17,7 +17,9 @@
             var blocks = onlyImportantParameters
                 ? category.CategoryParameterBlocks?.Where(cp => cp.ParameterBlock != null && cp.Important)
                 : category.CategoryParameterBlocks?.Where(cp => cp.ParameterBlock != null);
-            this.ParameterBlocks = blocks?.Select(cp => new ParameterBlockDto(cp.ParameterBlock, onlyImportantParameters))
+            this.ParameterBlocks = blocks?
+                .Where(pb => pb.ParameterBlock.Parameters.Any(p => p.Range || p.ParameterValues.Count > 0))
+                .Select(cp => new ParameterBlockDto(cp.ParameterBlock, onlyImportantParameters))
                     .ToList();
         }
 

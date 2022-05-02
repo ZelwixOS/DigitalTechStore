@@ -5,6 +5,7 @@ import CommonCategory from 'src/Types/CommonCategory';
 import FilterValue from 'src/Types/FilterValue';
 import ParameterBlock from 'src/Types/ParameterBlock';
 import Product from 'src/Types/Product';
+import Region from 'src/Types/Region';
 import Sorting from 'src/Types/Sorting';
 
 async function getRequest(url: string) {
@@ -40,11 +41,16 @@ async function getReviews(productId: string) {
 }
 
 async function getProduct(id: string) {
-  return (await getRequest(`/api/Product/${id}`)) as Product;
+  const cityId = localStorage.getItem('cityId');
+  return (await getRequest(`/api/Product/${id}?cityId=${cityId}`)) as Product;
 }
 
 async function getParameters(id: string) {
   return (await getRequest(`/api/Product/parameters/${id}`)) as ParameterBlock[];
+}
+
+async function getRegions() {
+  return (await getRequest('/api/Geography/regions')) as Region[];
 }
 
 async function getProductsOfCategory(
@@ -100,4 +106,5 @@ export {
   getWishlist,
   getReviews,
   getParameters,
+  getRegions,
 };
