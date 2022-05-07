@@ -28,5 +28,17 @@
         public HashSet<Wish> WishedItems { get; set; }
 
         public HashSet<Review> Reviews { get; set; }
+
+        public int? OutletId { get; set; }
+
+        public int? WarehouseId { get; set; }
+
+        public Outlet Outlet { get; set; }
+
+        public Warehouse Warehouse { get; set; }
+
+        public HashSet<Purchase> SoldItems { get; set; }
+
+        public HashSet<Purchase> PurchasedItems { get; set; }
     }
 }

@@ -4,14 +4,16 @@ using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220507092008_Purchases")]
+    partial class Purchases
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,9 +53,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<Guid>("CommonCategoryIdFk")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("DeliveryCost")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -143,14 +142,11 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("DeliveryAdress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("DeliveryCost")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("DeliveryCost")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("PurchaseId")
                         .HasColumnType("uniqueidentifier");
@@ -159,8 +155,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CityId");
 
                     b.HasIndex("PurchaseId")
                         .IsUnique()
@@ -283,9 +277,6 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
-                    b.Property<decimal?>("DiscountPrice")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<double>("Mark")
                         .HasColumnType("float");
 
@@ -360,9 +351,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CustomerTelephone")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("DeliveryId")
                         .HasColumnType("uniqueidentifier");
@@ -841,17 +829,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Delivery", b =>
                 {
-                    b.HasOne("Domain.Models.City", "City")
-                        .WithMany("Deliveries")
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Models.Purchase", "Purchase")
                         .WithOne("Delivery")
                         .HasForeignKey("Domain.Models.Delivery", "PurchaseId");
-
-                    b.Navigation("City");
 
                     b.Navigation("Purchase");
                 });
@@ -1099,8 +1079,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.City", b =>
                 {
-                    b.Navigation("Deliveries");
-
                     b.Navigation("Outlets");
 
                     b.Navigation("Warehouses");

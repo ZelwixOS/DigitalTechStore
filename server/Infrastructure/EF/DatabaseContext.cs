@@ -49,6 +49,12 @@
 
         public DbSet<Review> Reviews { get; set; }
 
+        public DbSet<Purchase> Purchase { get; set; }
+
+        public DbSet<PurchaseItem> PurchaseItems { get; set; }
+
+        public DbSet<Delivery> Deliveries { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>(entity =>
@@ -94,6 +100,7 @@
             modelBuilder.Entity<ParameterBlock>().HasKey(c => c.Id);
 
             modelBuilder.Entity<CommonCategory>().HasKey(c => c.Id);
+
             modelBuilder.Entity<Cart>(entity =>
             {
                 entity.HasOne(c => c.User).WithMany(u => u.CartItems).HasForeignKey(c => c.UserId);
@@ -147,7 +154,35 @@
                 entity.HasKey(p => p.Id);
             });
 
-            modelBuilder.Entity<User>().HasKey(u => u.Id);
+            modelBuilder.Entity<Purchase>(entity =>
+            {
+                entity.HasOne(p => p.Outlet).WithMany(o => o.Purchases).HasForeignKey(p => p.OutletId);
+                entity.HasOne(p => p.Seller).WithMany(s => s.SoldItems).HasForeignKey(p => p.SellerId);
+                entity.HasOne(p => p.Customer).WithMany(c => c.PurchasedItems).HasForeignKey(p => p.CustomerId);
+                entity.HasOne(p => p.DeliveryOutlet).WithMany(d => d.DeliveredPurchases).HasForeignKey(p => p.DeliveryOutletId);
+                entity.HasOne(p => p.Delivery).WithOne(d => d.Purchase).HasForeignKey<Purchase>(p => p.DeliveryId);
+                entity.HasKey(p => p.Id);
+            });
+
+            modelBuilder.Entity<PurchaseItem>(entity =>
+            {
+                entity.HasOne(pi => pi.Purchase).WithMany(p => p.PurchaseItems).HasForeignKey(pi => pi.PurchaseId);
+                entity.HasOne(pi => pi.Product).WithMany(p => p.PurchaseItems).HasForeignKey(pi => pi.ProductId);
+                entity.HasKey(pi => pi.Id);
+            });
+
+            modelBuilder.Entity<Delivery>(entity =>
+            {
+                entity.HasOne(d => d.Purchase).WithOne(p => p.Delivery).HasForeignKey<Delivery>(d => d.PurchaseId);
+                entity.HasOne(d => d.City).WithMany(c => c.Deliveries).HasForeignKey(d => d.CityId);
+                entity.HasKey(d => d.Id);
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasOne(u => u.Outlet).WithMany(o => o.Workers).HasForeignKey(u => u.OutletId);
+                entity.HasKey(u => u.Id);
+            });
 
             modelBuilder.Entity<IdentityUserRole<Guid>>().HasKey(i => new { i.RoleId, i.UserId });
 

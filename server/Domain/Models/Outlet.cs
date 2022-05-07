@@ -7,5 +7,11 @@
         public string NoteForUser { get; set; }
 
         public HashSet<OutletProduct> OutletProducts { get; set; }
+
+        public HashSet<User> Workers { get; set; }
+
+        public HashSet<Purchase> Purchases { get; set; }
+
+        public HashSet<Purchase> DeliveredPurchases { get; set; }
     }
 }

@@ -14,6 +14,8 @@
         [Required]
         public decimal Price { get; set; }
 
+        public decimal? DiscountPrice { get; set; }
+
         [Required]
         [MaxLength(1000)]
         public string Description { get; set; }

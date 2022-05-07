@@ -23,6 +23,14 @@
             public const string Admin = "Admin";
 
             public const string Customer = "Customer";
+
+            public const string Courier = "Courier";
+
+            public const string Manager = "Manager";
+
+            public const string ShopAssistant = "ShopAssistant";
+
+            public const string WarehouseWorker = "WarehouseWorker";
         }
 
         public static class AnswerMessage
