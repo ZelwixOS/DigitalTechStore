@@ -1,8 +1,8 @@
-import Outlet from "./Outlet";
+import Outlet from './Outlet';
 
 type OutletProduct = {
-    outlet: Outlet;
-    count: number;
+  outlet: Outlet;
+  count: number;
 };
 
 export default OutletProduct;

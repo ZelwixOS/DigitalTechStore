@@ -107,7 +107,7 @@ const UserMiniPanel: React.FC = () => {
                   onKeyDown={handleListKeyDown}
                   className={classes.menu}
                 >
-                  <Typography variant="h6" color="primary" component="h6">
+                  <Typography variant="h5" color="primary" component="h5">
                     {userInfo.userName}
                   </Typography>
                   <Typography variant="subtitle2" component="h6">
@@ -120,24 +120,18 @@ const UserMiniPanel: React.FC = () => {
                       document.location.href = `/profile`;
                     }}
                   >
-                    <Typography variant="h6" component="h6">
-                      Профиль
-                    </Typography>
+                    <Typography variant="h5">Профиль</Typography>
                   </MenuItem>
                   <MenuItem
                     className={classes.item}
                     onClick={() => {
-                      document.location.href = `/settings`;
+                      document.location.href = `/myPurchases`;
                     }}
                   >
-                    <Typography variant="h6" component="h6">
-                      Настройки
-                    </Typography>
+                    <Typography variant="h5">Мои заказы</Typography>
                   </MenuItem>
                   <MenuItem className={classes.item} onClick={signOut}>
-                    <Typography variant="h6" component="h6">
-                      Выйти
-                    </Typography>
+                    <Typography variant="h5">Выйти</Typography>
                   </MenuItem>
                 </MenuList>
               </ClickAwayListener>

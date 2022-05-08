@@ -102,6 +102,19 @@ const CartPage: React.FC = () => {
     updateCurrentSumm(newPicked, cartItems);
   };
 
+  const onPuchaseClick = () => {
+    if (pickedProducts.length > 0) {
+      let picked = '';
+      for (const item of pickedProducts) {
+        picked += `${item.id}_${cartItems.find(p => p.product.id === item.id)?.count},`;
+      }
+      picked = picked.substring(0, picked.length - 1);
+
+      history.pushState({}, 'DTS', `/purchasing?items=${picked}`);
+      window.location.replace(`/purchasing?items=${picked}`);
+    }
+  };
+
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [pickedProducts, setPickedProducts] = useState<Product[]>([]);
   const [currentSumm, setCurrentSumm] = useState<number>(0);
@@ -151,7 +164,7 @@ const CartPage: React.FC = () => {
               <Typography className={classes.pageName} variant="h6" component="h6">
                 Сумма: {currentSumm} ₽
               </Typography>
-              <Button variant="contained" disabled={pickedProducts.length < 1} color="primary">
+              <Button variant="contained" disabled={pickedProducts.length < 1} onClick={onPuchaseClick} color="primary">
                 Оформить заказ
               </Button>
             </Grid>

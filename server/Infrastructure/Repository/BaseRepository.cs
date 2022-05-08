@@ -15,6 +15,11 @@
             this.Context = this.ContextFactory.CreateDbContext(this.ConnectionString);
         }
 
+        public BaseRepository(DatabaseContext context)
+        {
+            this.Context = context;
+        }
+
         protected string ConnectionString { get; }
 
         protected IDatabaseContextFactory ContextFactory { get; }

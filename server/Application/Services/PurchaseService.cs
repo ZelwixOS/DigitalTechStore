@@ -6,6 +6,7 @@
     using Application.DTO.Request.Purchase;
     using Application.DTO.Request.PurchaseItem;
     using Application.DTO.Response;
+    using Application.DTO.Response.Estate;
     using Application.Interfaces;
     using Domain.Models;
     using Domain.Repository;
@@ -62,15 +63,34 @@
             else
             {
                 purchaseEntity.CustomerId = user.Id;
+                purchaseEntity.CustomerFullName = null;
+                purchaseEntity.CustomerTelephone = null;
             }
 
-            var result = CreatePurchase(purchase, purchaseEntity);
+            var entity = CreatePurchase(purchase, purchaseEntity);
+
+            if (user.OutletId.HasValue)
+            {
+                purchaseEntity.Seller = user;
+            }
+            else
+            {
+                purchaseEntity.Customer = user;
+            }
+
+            var result = new PurchaseDto(entity);
+
             var items = purchase.PurchaseItems.Select(k => k.ProductId).ToList();
 
-            var cartItemsToDelete = cartRepository.GetItems().Where(c => items.Contains(c.ProductId));
-            foreach (var item in cartItemsToDelete)
+            var cartItemsToDelete = cartRepository.GetItems().Where(c => c.UserId == user.Id && items.Contains(c.ProductId));
+
+            try
             {
-                cartRepository.DeleteItem(item);
+                cartRepository.DeleteItems(cartItemsToDelete);
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
             }
 
             return result;
@@ -80,7 +100,7 @@
         {
             var purchaseEntity = purchase.ToModel();
 
-            return CreatePurchase(purchase, purchaseEntity);
+            return new PurchaseDto(CreatePurchase(purchase, purchaseEntity));
         }
 
         public decimal GetDeliveryCost(List<ItemOfPurchaseCreateRequestDto> products)
@@ -112,7 +132,18 @@
             return 1;
         }
 
-        private PurchaseDto CreatePurchase(PurchaseCreateRequestDto purchase, Purchase purchaseEntity)
+        public PrepurchaseInfoDto GetPrepurchaseInfo(List<ItemOfPurchaseCreateRequestDto> items, int cityId)
+        {
+            var result = new PrepurchaseInfoDto();
+            this.CheckProductsAvailability(cityId, items, null, out List<PurchaseItem> purchaseItems, out decimal deliveryCost);
+            result.PurchaseItems = purchaseItems.Select(p => new PurchaseItemDto(p)).ToList();
+            result.DeliveryPrice = deliveryCost;
+            result.Outlets = outletRepository.GetItems().Where(o => o.CityId == cityId).Select(o => new OutletDto(o)).ToList();
+            result.Sum = purchaseItems.Sum(p => p.Sum);
+            return result;
+        }
+
+        private Purchase CreatePurchase(PurchaseCreateRequestDto purchase, Purchase purchaseEntity)
         {
             if (purchase.PurchaseItems?.Count < 1)
             {
@@ -146,7 +177,12 @@
                 return null;
             }
 
-            purchaseEntity.PurchaseItems = purchaseItems.ToHashSet();
+            var prodDict = purchaseItems.ToDictionary(p => p.ProductId, p => p.Product);
+            purchaseEntity.PurchaseItems = purchaseItems.Select(p =>
+            {
+                p.Product = null;
+                return p;
+            }).ToHashSet();
 
             if (purchase.Delivery != null)
             {
@@ -159,7 +195,18 @@
             purchaseEntity.TotalCost = deliveryCost + purchaseItems.Sum(i => i.Sum);
 
             var model = purchsaseRepository.CreateItem(purchaseEntity);
-            return new PurchaseDto(model);
+            model.PurchaseItems = model.PurchaseItems.Select(i =>
+            {
+                i.Product = prodDict[i.ProductId];
+                return i;
+            }).ToHashSet();
+
+            if (model.DeliveryOutletId.HasValue)
+            {
+                model.DeliveryOutlet = outletRepository.GetItem(model.DeliveryOutletId.Value);
+            }
+
+            return model;
         }
 
         /// <summary>
@@ -222,6 +269,7 @@
 
                 purchaseItem = item.ToModel();
                 purchaseItem.Price = product.Price;
+                purchaseItem.Product = product;
                 purchaseItem.Sum = product.Price * item.Count;
                 purchaseItems.Add(purchaseItem);
                 deliveryCost += product.Category.DeliveryCost * item.Count;

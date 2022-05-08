@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Application.DTO.Request;
     using Application.DTO.Request.Purchase;
     using Application.DTO.Response;
     using Application.Helpers;
@@ -54,6 +55,13 @@
             var user = await accountService.GetCurrentUserAsync(HttpContext);
             var result = purchaseService.GetUserPurchases(user.Id);
 
+            return this.Ok(result);
+        }
+
+        [HttpPost("preinfo")]
+        public ActionResult<PrepurchaseInfoDto> GetPreInfo([FromBody] PrepurchaseRequestDto prepurchaseData)
+        {
+            var result = purchaseService.GetPrepurchaseInfo(prepurchaseData.PurchaseItems, prepurchaseData.CityId);
             return this.Ok(result);
         }
 

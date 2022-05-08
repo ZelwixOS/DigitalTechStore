@@ -27,6 +27,12 @@
             return this.Context.SaveChanges();
         }
 
+        public int DeleteItems(IQueryable<Cart> items)
+        {
+            this.Context.Carts.RemoveRange(items);
+            return this.Context.SaveChanges();
+        }
+
         public Cart GetItem(Guid id)
         {
             return this.Context.Carts.FirstOrDefault(w => w.Id == id);

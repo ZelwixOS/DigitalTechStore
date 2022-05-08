@@ -17,6 +17,8 @@
 
         decimal GetDeliveryCost(List<ItemOfPurchaseCreateRequestDto> products);
 
+        PrepurchaseInfoDto GetPrepurchaseInfo(List<ItemOfPurchaseCreateRequestDto> items, int cityId);
+
         PurchaseDto GetPurchase(Guid id);
 
         List<PurchaseDto> GetUserPurchases(Guid id);

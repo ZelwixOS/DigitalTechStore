@@ -24,6 +24,7 @@ interface IProductCard {
   hideLike?: boolean;
   showCounter?: boolean;
   count?: number;
+  isChecked?: boolean;
   onCount?: (newCount: number, productId?: string) => void;
   onDelete?: (productId: string) => void;
   onBuy?: () => void;
@@ -69,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ProductCard: React.FC<IProductCard> = props => {
   const [isShown, setIsShown] = useState(false);
-  const [isChecked, setChecked] = useState(false);
+  const [isChecked, setChecked] = useState(props.isChecked ?? false);
   const picUrl = 'https://localhost:5001/products/';
   const [picture, setPicture] = useState(`${picUrl}${props.product.picURL}`);
   const classes = useStyles();
@@ -165,7 +166,7 @@ const ProductCard: React.FC<IProductCard> = props => {
       <Grid container direction="row" alignItems="center" justify="center">
         {props.onChecked && (
           <Grid container direction="column" item alignItems="center" justify="center" xs={12} sm={1}>
-            <Checkbox color="primary" onChange={onChange} value={isChecked} />
+            <Checkbox color="primary" onChange={onChange} checked={isChecked} />
           </Grid>
         )}
         <Grid container direction="column" alignItems="center" justify="center" item xs={12} sm={3}>

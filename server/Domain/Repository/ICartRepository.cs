@@ -7,5 +7,7 @@
     public interface ICartRepository : IRepository<Cart, Guid>
     {
         public IQueryable<Cart> GetItemsByUser(Guid userId);
+
+        public int DeleteItems(IQueryable<Cart> items);
     }
 }

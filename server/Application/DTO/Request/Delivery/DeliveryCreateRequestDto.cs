@@ -16,6 +16,7 @@
                 DeliveryAdress = DeliveryAdress,
                 PurchaseId = PurchaseId,
                 RecieverName = RecieverName,
+                CityId = CityId,
             };
         }
     }
