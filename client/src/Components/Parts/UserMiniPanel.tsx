@@ -125,7 +125,7 @@ const UserMiniPanel: React.FC = () => {
                   <MenuItem
                     className={classes.item}
                     onClick={() => {
-                      document.location.href = `/myPurchases`;
+                      document.location.href = `/purchases`;
                     }}
                   >
                     <Typography variant="h5">Мои заказы</Typography>

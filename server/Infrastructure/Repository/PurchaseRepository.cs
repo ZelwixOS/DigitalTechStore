@@ -43,8 +43,14 @@
         {
             return this.Context.Purchase
                 .Include(o => o.PurchaseItems)
+                    .ThenInclude(pi => pi.Product)
                 .Include(o => o.Customer)
-                .Include(o => o.Seller).AsNoTracking();
+                .Include(o => o.Seller)
+                .Include(o => o.Delivery)
+                .Include(o => o.DeliveryOutlet)
+                    .ThenInclude(o => o.City)
+                    .ThenInclude(o => o.Region)
+                .AsNoTracking();
         }
 
         public Purchase UpdateItem(Purchase item)

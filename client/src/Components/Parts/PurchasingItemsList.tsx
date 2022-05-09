@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { Divider, List, ListItem } from '@material-ui/core';
+import { Button, Divider, List, ListItem } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import PurchaseItem from 'src/Types/PurchaseItem';
@@ -28,7 +28,7 @@ const PurchasingItemsList: React.FC<IPurchasingItemsList> = props => {
         <React.Fragment key={item.productId}>
           <ListItem>
             <Grid container direction="row" justify="space-around">
-              <Typography className={classes.text}>{`${item.productName}`}</Typography>
+              <Button className={classes.text} href={`product/${item.productId}`}>{`${item.productName}`}</Button>
               <Typography className={classes.text}>{`${item.price}₽ x${item.count}`}</Typography>
             </Grid>
           </ListItem>

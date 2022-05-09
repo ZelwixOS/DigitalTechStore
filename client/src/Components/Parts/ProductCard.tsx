@@ -4,13 +4,14 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Rating from '@material-ui/lab/Rating';
-import { Button } from '@material-ui/core';
+import { Button, Snackbar } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Close from '@mui/icons-material/Close';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import Checkbox from '@material-ui/core/Checkbox';
+import { Alert } from '@material-ui/lab';
 
 import Product from 'src/Types/Product';
 import { addToCart, addToWishlist } from 'src/Requests/PostRequests';
@@ -65,10 +66,14 @@ const useStyles = makeStyles((theme: Theme) =>
     rating: {
       margin: theme.spacing(1),
     },
+    ratingNum: {
+      marginLeft: theme.spacing(1),
+    },
   }),
 );
 
 const ProductCard: React.FC<IProductCard> = props => {
+  const role = sessionStorage.getItem('signed');
   const [isShown, setIsShown] = useState(false);
   const [isChecked, setChecked] = useState(props.isChecked ?? false);
   const picUrl = 'https://localhost:5001/products/';
@@ -80,7 +85,6 @@ const ProductCard: React.FC<IProductCard> = props => {
     const img = new Image();
     img.src = `${picUrl}${props.product.picURL}`;
 
-    const role = sessionStorage.getItem('signed');
     if (!role) {
       const cart = localStorage.getItem('cartItems');
       if (cart) {
@@ -102,8 +106,6 @@ const ProductCard: React.FC<IProductCard> = props => {
   const [inWishlist, setInWishlist] = useState(props.product.inWishlist);
 
   const addProductToCart = async () => {
-    const role = sessionStorage.getItem('signed');
-
     if (role) {
       const response = await addToCart(props.product.id, 0);
       if (response !== null) {
@@ -127,12 +129,16 @@ const ProductCard: React.FC<IProductCard> = props => {
   };
 
   const addProductToWishlist = async () => {
-    const response = await addToWishlist(props.product.id);
-    if (response !== null) {
-      setInWishlist(true);
-      if (props.onWished) {
-        props.onWished();
+    if (role) {
+      const response = await addToWishlist(props.product.id);
+      if (response !== null) {
+        setInWishlist(true);
+        if (props.onWished) {
+          props.onWished();
+        }
       }
+    } else {
+      setOpen(true);
     }
   };
 
@@ -156,6 +162,16 @@ const ProductCard: React.FC<IProductCard> = props => {
     setChecked(!isChecked);
   };
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   return (
     <Card
       variant="outlined"
@@ -163,6 +179,16 @@ const ProductCard: React.FC<IProductCard> = props => {
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
     >
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="info">
+          Зарегистрируйтесь для использования всех возможностей магазина!
+        </Alert>
+      </Snackbar>
       <Grid container direction="row" alignItems="center" justify="center">
         {props.onChecked && (
           <Grid container direction="column" item alignItems="center" justify="center" xs={12} sm={1}>
@@ -186,8 +212,17 @@ const ProductCard: React.FC<IProductCard> = props => {
               </Typography>
             </Grid>
           </CardContent>
-          <Grid className={classes.rating}>
+          <Grid
+            container
+            item
+            xs={12}
+            justify="center"
+            alignContent="center"
+            direction="row"
+            className={classes.rating}
+          >
             <Rating name="read-only" value={props.product.mark} readOnly />
+            <Typography className={`${classes.bold} ${classes.ratingNum}`}>{props.product.mark}</Typography>
           </Grid>
         </Grid>
         <Grid container direction="row" justify="center" alignItems="center" item xs={12} sm={2}>

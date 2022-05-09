@@ -8,7 +8,7 @@
 
     public interface IProductService
     {
-        WrapperExtraInfo<List<ProductDto>> GetProducts(GetProductsRequest parameters);
+        WrapperExtraInfo<List<ProductDto>> GetProducts(GetProductsRequest parameters, string search);
 
         ProductDto GetProduct(Guid id, int cityId, int regionId);
 

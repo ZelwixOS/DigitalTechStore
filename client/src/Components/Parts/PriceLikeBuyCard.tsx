@@ -54,6 +54,9 @@ const useStyles = makeStyles((theme: Theme) =>
     rating: {
       margin: theme.spacing(2),
     },
+    ratingNum: {
+      marginLeft: theme.spacing(2),
+    },
   }),
 );
 
@@ -154,7 +157,10 @@ const PriceLikeBuyCard: React.FC<IPriceLikeBuyCard> = props => {
             </Grid>
           </Grid>
         </Grid>
-        <Rating className={classes.rating} name="read-only" value={props.rating} readOnly />
+        <Grid container item xs={12} justify="center" alignContent="center" direction="row" className={classes.rating}>
+          <Rating className={classes.rating} name="read-only" value={props.rating} readOnly />
+          <Typography className={`${classes.bold} ${classes.rating}`}>{props.rating}</Typography>
+        </Grid>
         <UnitProducts outlets={props.outlets} isInWarehouse={props.isInWarehouse} />
       </Grid>
     </Card>

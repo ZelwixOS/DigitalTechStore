@@ -36,14 +36,14 @@ const CommonCategoryPage: React.FC = () => {
   const [categories, setCategories] = React.useState<Category[]>([]);
 
   const createRow = (index: number, array: Category[]) => (
-    <Grid container item xs={12} alignItems="stretch" justify="space-evenly" spacing={2}>
-      <Grid item xs={4}>
+    <Grid container item xs={12} key={index} alignItems="stretch" justify="space-evenly" spacing={2}>
+      <Grid item xs={12} sm={4}>
         {array[index] && <CategoryCard category={array[index]} />}
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={12} sm={4}>
         {array[index + 1] && <CategoryCard category={array[index + 1]} />}
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={12} sm={4}>
         {array[index + 2] && <CategoryCard category={array[index + 2]} />}
       </Grid>
     </Grid>
@@ -68,16 +68,14 @@ const CommonCategoryPage: React.FC = () => {
   return (
     <React.Fragment>
       <NavigationBar />
-      <Grid container direction="row" justify="center" alignItems="center">
-        <Grid xs={12} sm={9} item direction="row" justify="center" alignItems="center" container>
-          <Grid item direction="column" justify="center" alignItems="center" container>
-            <Grid>
-              <Typography className={classes.categoryWord} variant="h5" component="h5">
-                {params.commonCategoryName}
-              </Typography>
-              <Grid container spacing={1}>
-                {categories.map((item, index, arr) => index % 3 === 0 && createRow(index, arr))}
-              </Grid>
+      <Grid xs={12} item container direction="row" justify="center">
+        <Grid sm={9} container>
+          <Grid item direction="column" justify="center" alignItems="stretch" container>
+            <Typography className={classes.categoryWord} variant="h5" component="h5">
+              {params.commonCategoryName}
+            </Typography>
+            <Grid container justify="space-evenly" alignItems="stretch" spacing={1}>
+              {categories.map((item, index, arr) => index % 3 === 0 && createRow(index, arr))}
             </Grid>
           </Grid>
         </Grid>

@@ -8,6 +8,7 @@
     using Application.DTO.Response.WithExtraInfo;
     using Application.Helpers;
     using Application.Interfaces;
+    using Domain.Models;
     using Domain.Repository;
 
     public class ProductService : IProductService
@@ -23,11 +24,21 @@
             _categoryRepository = categoryRepository;
         }
 
-        public WrapperExtraInfo<List<ProductDto>> GetProducts(GetProductsRequest parameters)
+        public WrapperExtraInfo<List<ProductDto>> GetProducts(GetProductsRequest parameters, string search)
         {
             var products = _productRepository.GetItems();
+            IQueryable<Product> searchedResult = products;
 
-            var filterResult = _productHelper.Filter.FilterByPrice(products, parameters.MinPrice, parameters.MaxPrice);
+            if (search != null && search != string.Empty)
+            {
+                var searchTags = search.Split(' ');
+                foreach (var tag in searchTags)
+                {
+                    searchedResult = searchedResult.Where(p => p.Name.Contains(tag) || p.Category.Name.Contains(tag));
+                }
+            }
+
+            var filterResult = _productHelper.Filter.FilterByPrice(searchedResult, parameters.MinPrice, parameters.MaxPrice);
             var productsSorted = _productHelper.Sorter.SortProducts(filterResult.Products, parameters.SortingType, parameters.ReverseSorting);
             var prodList = _productHelper.Paginator.ElementsOfPage(productsSorted, parameters.PageNumber, parameters.ItemsOnPage);
 

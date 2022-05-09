@@ -42,9 +42,9 @@
         }
 
         [HttpGet]
-        public async Task<ActionResult<WrapperExtraInfo<List<ProductDto>>>> Get([FromQuery] GetProductsRequest parameters)
+        public async Task<ActionResult<WrapperExtraInfo<List<ProductDto>>>> Get([FromQuery] GetProductsRequest parameters, string search)
         {
-            var result = productService.GetProducts(parameters);
+            var result = productService.GetProducts(parameters, search);
 
             var user = await this.accountService.GetCurrentUserAsync(HttpContext);
 

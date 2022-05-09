@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ProductsPage: React.FC = () => {
   const getProd = async (isMounted: boolean) => {
-    const res = await getProducts(data.currentPage, 9, data.sortType, data.pickedPrice);
+    const res = await getProducts(data.currentPage, 10, data.sortType, data.pickedPrice);
     if (isMounted) {
       const params = new URLSearchParams(location.search);
       data.setInfo(res.container, res.maxPage, res.minPrice, res.maxPrice, []);

@@ -200,6 +200,20 @@ const PurchasingPage: React.FC = () => {
       const result = await createPurchase(data);
       if (result) {
         setResult(result as Purchase);
+        if (!role) {
+          const items = localStorage.getItem('cartItems');
+          const itemArr = items?.split(',');
+          let index;
+          if (prepurchaseInfo && itemArr) {
+            for (const prod of prepurchaseInfo.purchaseItems) {
+              index = itemArr.findIndex(i => i === prod.productId);
+              if (index && index !== -1) {
+                itemArr?.splice(index, 1);
+              }
+            }
+            localStorage.setItem('cartItems', itemArr.join(','));
+          }
+        }
       } else {
         err.push('Произошла непредвиденная ошибка!');
         setErrors(err);
@@ -352,7 +366,7 @@ const PurchasingPage: React.FC = () => {
           )}
           {operationResult && (
             <React.Fragment>
-              <PurchaseDetailedInfo purchase={operationResult} />
+              <PurchaseDetailedInfo purchase={operationResult} cardName={'Заказ оформлен:'} />
               <Button variant="contained" color="primary" href="/">
                 К покупкам
               </Button>

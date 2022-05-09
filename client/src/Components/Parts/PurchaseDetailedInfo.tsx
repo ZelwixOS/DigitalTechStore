@@ -13,6 +13,7 @@ import PurchasingItemsList from './PurchasingItemsList';
 
 interface IPurchaseDetailedInfo {
   purchase: Purchase;
+  cardName: string;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -35,7 +36,7 @@ const PurchaseDetailedInfo: React.FC<IPurchaseDetailedInfo> = props => {
       <Grid xs={12} item justify="center" alignContent="flex-start" container>
         <Grid xs={12} sm={9} item direction="column" container>
           <Typography variant="h5" className={classes.text}>
-            Заказ оформлен:
+            {props.cardName}
           </Typography>
           <List>
             <Divider />

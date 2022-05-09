@@ -5,6 +5,7 @@ import CommonCategory from 'src/Types/CommonCategory';
 import FilterValue from 'src/Types/FilterValue';
 import ParameterBlock from 'src/Types/ParameterBlock';
 import Product from 'src/Types/Product';
+import Purchase from 'src/Types/Purchase';
 import Region from 'src/Types/Region';
 import Sorting from 'src/Types/Sorting';
 
@@ -14,7 +15,13 @@ async function getRequest(url: string) {
 
 async function getProducts(currentPage: number, itemsOnPage: number, sortType: string, price: number[]) {
   const sortparams: Sorting = sortTypeParsing(sortType);
-  const url = `/api/Product?PageNumber=${currentPage}&ItemsOnPage=${itemsOnPage}&SortingType=${sortparams.type}&ReverseSorting=${sortparams.reverse}&MinPrice=${price[0]}&MaxPrice=${price[1]}`;
+  const params = new URLSearchParams(location.search);
+  const search = params.get('search');
+  let url = `/api/Product?PageNumber=${currentPage}&ItemsOnPage=${itemsOnPage}&SortingType=${sortparams.type}&ReverseSorting=${sortparams.reverse}&MinPrice=${price[0]}&MaxPrice=${price[1]}`;
+  if (search) {
+    url += `&search=${search}`;
+  }
+
   return await getRequest(url);
 }
 
@@ -99,6 +106,10 @@ function sortTypeParsing(sortType: string): Sorting {
   }
 }
 
+async function getPurchases() {
+  return (await getRequest('/api/Purchase')) as Purchase[];
+}
+
 export default getRequest;
 
 export {
@@ -114,4 +125,5 @@ export {
   getParameters,
   getRegions,
   getCartUnsigned,
+  getPurchases,
 };

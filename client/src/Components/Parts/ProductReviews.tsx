@@ -42,6 +42,7 @@ const ProductReviews: React.FC<IProductReviews> = props => {
     };
   }, []);
 
+  const role = sessionStorage.getItem('signed');
   const [reviewed, setReviewed] = useState<boolean>(props.reviewed);
   const [reviews, setReviews] = useState<Review[]>([]);
 
@@ -63,7 +64,7 @@ const ProductReviews: React.FC<IProductReviews> = props => {
         {`Отзывы на ${props.productName}`}
       </Typography>
       <Grid item xs={12} direction="column" container justify="center">
-        {!reviewed && <ReviewForm addReview={addReview} productId={props.productId} />}
+        {role && !reviewed && <ReviewForm addReview={addReview} productId={props.productId} />}
         {reviews?.map((review, index) => (
           <ReviewBlock review={review} key={index} />
         ))}

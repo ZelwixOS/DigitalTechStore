@@ -92,6 +92,7 @@ const NavigationBar: React.FC = () => {
 
   const [isAuth, setAuth] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>('');
 
   useEffect(() => {
     let isMounted = true;
@@ -100,6 +101,18 @@ const NavigationBar: React.FC = () => {
       isMounted = false;
     };
   });
+
+  const onSearchChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const str = event.target.value as string;
+    setSearch(str);
+  };
+
+  const searchRequest = (event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      history.pushState({}, 'DTS', `/?search=${search}`);
+      window.location.replace(`/?search=${search}`);
+    }
+  };
 
   const checkAuth = async (isMounted: boolean) => {
     const authres = await getRole();
@@ -144,6 +157,9 @@ const NavigationBar: React.FC = () => {
                 <SearchIcon />
               </div>
               <InputBase
+                onKeyDown={searchRequest}
+                onChange={onSearchChange}
+                value={search}
                 placeholder="Поиск"
                 classes={{
                   root: classes.inputRoot,
