@@ -99,7 +99,7 @@ const CityNavigation: React.FC = () => {
   };
 
   return (
-    <Grid item xs={12} className={classes.bar}>
+    <Grid container justify="center" item xs={12} className={classes.bar}>
       <Button variant="text" size="small" color="primary" onClick={handleClickOpen}>
         {city?.name ?? 'Выберите город'}
       </Button>

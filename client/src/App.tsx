@@ -1,6 +1,8 @@
 import React from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Route, BrowserRouter } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+import { Admin, Resource } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
 
 import './App.css';
 import CategoryPage from './Components/Pages/CategoryPage';
@@ -25,23 +27,19 @@ const innerTheme = createMuiTheme({
 });
 
 const App: React.FC = () => (
-  <div className="App">
-    <ThemeProvider theme={innerTheme}>
-      <BrowserRouter>
-        <div>
-          <Route exact path="/" component={ProductsPage} />
-          <Route path="/common/:commonCategoryName" component={CommonCategoryPage} />
-          <Route path="/category/:categoryName" component={CategoryPage} />
-          <Route path="/cart" component={CartPage} />
-          <Route path="/wishlist" component={WishlistPage} />
-          <Route path="/product/:productID" component={ProductPage} />
-          <Route path="/registration" component={RegistrationPage} />
-          <Route path="/purchasing" component={PurchasingPage} />
-          <Route path="/purchases" component={UserPurchases} />
-        </div>
-      </BrowserRouter>
-    </ThemeProvider>
-  </div>
+  <ThemeProvider theme={innerTheme}>
+    <Routes>
+      <Route path="/" element={<ProductsPage />} />
+      <Route path="/common/:commonCategoryName" element={<CommonCategoryPage />} />
+      <Route path="/category/:categoryName" element={<CategoryPage />} />
+      <Route path="/cart" element={<CartPage />} />
+      <Route path="/wishlist" element={<WishlistPage />} />
+      <Route path="/product/:productID" element={<ProductPage />} />
+      <Route path="/registration" element={<RegistrationPage />} />
+      <Route path="/purchasing" element={<PurchasingPage />} />
+      <Route path="/purchases" element={<UserPurchases />} />
+    </Routes>
+  </ThemeProvider>
 );
 
 export default App;

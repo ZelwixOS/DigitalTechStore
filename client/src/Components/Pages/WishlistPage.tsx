@@ -65,7 +65,7 @@ const WishlistPage: React.FC = () => {
         <Grid xs={12} sm={9} item direction="row" justify="center" alignItems="center" container>
           <Grid item direction="column" justify="center" container>
             <Grid>
-              <Typography className={classes.pageName} variant="h5" component="h5">
+              <Typography align="center" className={classes.pageName} variant="h5" component="h5">
                 Избранное
               </Typography>
             </Grid>

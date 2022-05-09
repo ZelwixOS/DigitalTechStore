@@ -107,10 +107,10 @@ const UserMiniPanel: React.FC = () => {
                   onKeyDown={handleListKeyDown}
                   className={classes.menu}
                 >
-                  <Typography variant="h5" color="primary" component="h5">
+                  <Typography align="center" variant="h5" color="primary" component="h5">
                     {userInfo.userName}
                   </Typography>
-                  <Typography variant="subtitle2" component="h6">
+                  <Typography align="center" variant="subtitle2" component="h6">
                     {`${userInfo.firstName} ${userInfo.secondName}`}
                   </Typography>
                   <Divider />

@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ClientApp\static\**" />
-    <Content Remove="ClientApp\static\**" />
-    <EmbeddedResource Remove="ClientApp\static\**" />
-    <None Remove="ClientApp\static\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="WeatherForecast.cs" />
   </ItemGroup>
 
@@ -47,10 +40,6 @@
 
   <ItemGroup>
     <AdditionalFiles Include="../_stylecop/stylecop.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ClientApp\Новая папка\" />
   </ItemGroup>
 
 

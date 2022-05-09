@@ -35,7 +35,7 @@ const PurchaseDetailedInfo: React.FC<IPurchaseDetailedInfo> = props => {
     <Card className={classes.card} variant="outlined">
       <Grid xs={12} item justify="center" alignContent="flex-start" container>
         <Grid xs={12} sm={9} item direction="column" container>
-          <Typography variant="h5" className={classes.text}>
+          <Typography align="center" variant="h5" className={classes.text}>
             {props.cardName}
           </Typography>
           <List>
@@ -85,7 +85,9 @@ const PurchaseDetailedInfo: React.FC<IPurchaseDetailedInfo> = props => {
                 ) : (
                   <React.Fragment>
                     <Typography>Магазин получения:</Typography>
-                    <OutletInfo outlet={props.purchase.deliveryOutlet} />
+                    <Grid container justify="center">
+                      <OutletInfo outlet={props.purchase.deliveryOutlet} />
+                    </Grid>
                   </React.Fragment>
                 )}
               </AccordionDetails>

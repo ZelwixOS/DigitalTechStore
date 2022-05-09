@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const CommonCategoryPage: React.FC = () => {
-  const params: ICommonCategoryPage = useParams();
+  const params = useParams();
 
   const [categories, setCategories] = React.useState<Category[]>([]);
 
@@ -52,7 +52,7 @@ const CommonCategoryPage: React.FC = () => {
   React.useEffect(() => {
     let isMounted = true;
     const getCategs = async () => {
-      const res = await getCategories(params.commonCategoryName);
+      const res = await getCategories(params?.commonCategoryName as string);
       if (isMounted) {
         setCategories(res);
       }
@@ -69,9 +69,9 @@ const CommonCategoryPage: React.FC = () => {
     <React.Fragment>
       <NavigationBar />
       <Grid xs={12} item container direction="row" justify="center">
-        <Grid sm={9} container>
-          <Grid item direction="column" justify="center" alignItems="stretch" container>
-            <Typography className={classes.categoryWord} variant="h5" component="h5">
+        <Grid container justify="center" sm={9}>
+          <Grid item direction="column" justify="center" container>
+            <Typography align="center" className={classes.categoryWord} variant="h5" component="h5">
               {params.commonCategoryName}
             </Typography>
             <Grid container justify="space-evenly" alignItems="stretch" spacing={1}>

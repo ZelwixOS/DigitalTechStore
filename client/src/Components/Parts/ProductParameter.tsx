@@ -23,10 +23,14 @@ const ProductParameter: React.FC<IProductParameter> = props => {
   return (
     <Grid direction="row" container alignItems="center" justify="center" className={classes.line}>
       <Grid item xs={12} sm={6}>
-        <Typography variant="body2">{props.param.name}</Typography>
+        <Typography align="center" variant="body2">
+          {props.param.name}
+        </Typography>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Typography variant="body2">{props.param.value}</Typography>
+        <Typography align="center" variant="body2">
+          {props.param.value}
+        </Typography>
       </Grid>
     </Grid>
   );

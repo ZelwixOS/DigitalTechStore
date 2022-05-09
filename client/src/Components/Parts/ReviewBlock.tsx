@@ -38,7 +38,9 @@ const ReviewBlock: React.FC<IProductReviews> = props => {
       <Grid item xs={12} container direction="column" alignItems="flex-start" justify="flex-start">
         <Grid className={classes.reviewHeader} container direction="row" alignItems="center" justify="flex-start">
           <Grid item xs={12} sm={8}>
-            <Typography className={classes.userName}>{props.review.userName}</Typography>
+            <Typography align="center" className={classes.userName}>
+              {props.review.userName}
+            </Typography>
           </Grid>
           <Grid item xs={12} sm={4}>
             <Rating value={props.review.mark} readOnly />

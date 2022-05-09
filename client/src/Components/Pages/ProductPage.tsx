@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const ProductPage: React.FC = () => {
-  const params: IProductPage = useParams();
+  const params = useParams();
   const classes = useStyles();
 
   const [product, setProduct] = useState<Product>();
@@ -36,8 +36,8 @@ const ProductPage: React.FC = () => {
   useEffect(() => {
     let isMounted = true;
     const getProd = async () => {
-      const res = await getProduct(params.productID);
-      const param = await getParameters(params.productID);
+      const res = await getProduct(params?.productID as string);
+      const param = await getParameters(params?.productID as string);
 
       if (isMounted) {
         setProduct(res);

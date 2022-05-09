@@ -202,12 +202,12 @@ const ProductCard: React.FC<IProductCard> = props => {
         <Grid item xs={12} sm={6} container direction="column">
           <CardContent className={classes.content}>
             <Grid>
-              <Typography component="h5" variant="h5">
+              <Typography align="center" component="h5" variant="h5">
                 <Link href={`/product/${props.product.id}`} color="inherit">
                   {props.product.name}
                 </Link>
               </Typography>
-              <Typography component="h5" variant="h5" className={classes.bold}>
+              <Typography align="center" component="h5" variant="h5" className={classes.bold}>
                 {props.product.price}₽
               </Typography>
             </Grid>

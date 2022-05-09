@@ -244,14 +244,14 @@ const PurchasingPage: React.FC = () => {
           {!operationResult && (
             <React.Fragment>
               <Card className={classes.topCard} variant="outlined">
-                <Typography variant="h4" className={classes.pageName}>
+                <Typography align="center" variant="h4" className={classes.pageName}>
                   Оформление заказа
                 </Typography>
               </Card>
               <Card className={classes.card} variant="outlined">
                 <Grid xs={12} item justify="center" alignContent="flex-start" container>
                   <Grid xs={12} sm={9} item direction="column" container>
-                    <Typography variant="h5" className={classes.text}>
+                    <Typography align="center" variant="h5" className={classes.text}>
                       Состав заказа:
                     </Typography>
                     <Card>
@@ -260,7 +260,7 @@ const PurchasingPage: React.FC = () => {
                         {prepurchaseInfo && <PurchasingItemsList purchaseItems={prepurchaseInfo.purchaseItems} />}
                       </List>
                     </Card>
-                    <Typography variant="h6" className={classes.textSep}>
+                    <Typography align="right" variant="h6" className={classes.textSep}>
                       Всего: {prepurchaseInfo?.sum}₽
                     </Typography>
                   </Grid>
@@ -268,7 +268,7 @@ const PurchasingPage: React.FC = () => {
               </Card>
               {role !== 'Customer' && (
                 <Card className={classes.card} variant="outlined">
-                  <Typography variant="h5" className={classes.text}>
+                  <Typography align="center" variant="h5" className={classes.text}>
                     Данные покупателя:
                   </Typography>
                   <Grid xs={12} item justify="center" container>
@@ -292,7 +292,7 @@ const PurchasingPage: React.FC = () => {
                 </Card>
               )}
               <Card className={classes.card} variant="outlined">
-                <Typography variant="h5" className={classes.text}>
+                <Typography align="center" variant="h5" className={classes.text}>
                   Выбор доставки:
                 </Typography>
                 <Grid xs={12} item justify="space-evenly" direction="column" alignItems="center" container>
@@ -330,7 +330,7 @@ const PurchasingPage: React.FC = () => {
                   ) : (
                     <Grid xs={12} item justify="center" container>
                       <Grid xs={12} sm={6} item direction="column" container>
-                        <Typography variant="h5" className={classes.text}>
+                        <Typography align="center" variant="h5" className={classes.text}>
                           Стоимость доставки: {prepurchaseInfo?.deliveryPrice}₽
                         </Typography>
                         <TextField
@@ -353,14 +353,16 @@ const PurchasingPage: React.FC = () => {
                 </Grid>
               </Card>
               <Card className={classes.card} variant="outlined">
-                <Typography variant="h5" className={classes.pageName}>
+                <Typography align="center" variant="h5" className={classes.pageName}>
                   Итог: {sum}₽
                 </Typography>
               </Card>
               <Card className={classes.card} variant="outlined">
-                <Button color="primary" variant="contained" onClick={submit}>
-                  Купить
-                </Button>
+                <Grid container justify="center">
+                  <Button color="primary" variant="contained" onClick={submit}>
+                    Купить
+                  </Button>
+                </Grid>
               </Card>
             </React.Fragment>
           )}

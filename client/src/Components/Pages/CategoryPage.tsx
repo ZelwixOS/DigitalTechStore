@@ -35,11 +35,11 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const CategoryPage: React.FC = () => {
-  const params: ICategoryPage = useParams();
+  const params = useParams();
 
   const object = createProdParams(async () => {
     const res = await getProductsOfCategory(
-      params.categoryName,
+      params?.categoryName as string,
       data.currentPage,
       10,
       data.sortType,
@@ -57,7 +57,7 @@ const CategoryPage: React.FC = () => {
     data.setFilters(qParams);
 
     const res = await getProductsOfCategory(
-      params.categoryName,
+      params?.categoryName as string,
       data.currentPage,
       10,
       data.sortType,
