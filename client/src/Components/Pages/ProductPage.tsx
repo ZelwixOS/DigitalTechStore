@@ -11,10 +11,6 @@ import DetailedProductCard from 'src/Components/Parts/DetailedProductCard';
 import ProductInfoPanel from 'src/Components/Parts/ProductInfoPanel';
 import ParameterBlock from 'src/Types/ParameterBlock';
 
-interface IProductPage {
-  productID: string;
-}
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     prodName: {
@@ -62,7 +58,7 @@ const ProductPage: React.FC = () => {
     <React.Fragment>
       <NavigationBar />
       <Grid container direction="row" justify="center" alignItems="center">
-        <Grid xs={12} sm={7} item direction="column" justify="center" alignItems="center" container>
+        <Grid xs={12} sm={9} item direction="column" justify="center" alignItems="center" container>
           <Card>
             <Grid justify="space-evenly" container>
               <Typography className={classes.prodName} variant="overline" component="h4">

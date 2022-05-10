@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Application.DTO.Request;
     using Application.DTO.Request.ParameterBlock;
     using Application.DTO.Response;
     using Application.Interfaces;
@@ -37,6 +38,12 @@
         public ActionResult<ParameterBlockDto> Include(Guid id, [FromBody] Guid categoryId)
         {
             return this.Ok(_techParameterService.LinkCategoryParameterBlock(id, categoryId));
+        }
+
+        [HttpPost("setMany/{categoryId}")]
+        public ActionResult<ParameterBlockDto> SetMany([FromRoute] Guid categoryId, [FromBody] List<CategoryParameterBlockRequestDto> blocks)
+        {
+            return this.Ok(_techParameterService.SetCategoryParameterBlocks(blocks, categoryId));
         }
 
         [HttpPost("important/{id}")]

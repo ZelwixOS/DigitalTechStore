@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Application.DTO;
     using Application.DTO.Request;
     using Application.DTO.Response;
     using Application.DTO.Response.WithExtraInfo;
@@ -16,14 +17,16 @@
         private ICategoryRepository _categoryRepository;
         private ICommonCategoryRepository _commonRepository;
         private IProductRepository _productRepository;
+        private IParameterBlockRepository _parameterBlockRepository;
         private ProductHelpersContainer _productHelper;
 
-        public CategoryService(ICategoryRepository categoryRepository, IProductRepository productRepository, ICommonCategoryRepository commonRepository, ProductHelpersContainer helper)
+        public CategoryService(ICategoryRepository categoryRepository, IProductRepository productRepository, ICommonCategoryRepository commonRepository, IParameterBlockRepository parameterBlockRepository, ProductHelpersContainer helper)
         {
             _productHelper = helper;
             _categoryRepository = categoryRepository;
             _productRepository = productRepository;
             _commonRepository = commonRepository;
+            _parameterBlockRepository = parameterBlockRepository;
         }
 
         public List<CategoryDto> GetCategories()
@@ -36,12 +39,31 @@
             return _commonRepository.GetItem(commonName)?.Categories?.Select(x => new CategoryDto(x)).ToList();
         }
 
+        public CategoryAllParameterBlocks GetCategoryBlocksInfo(Guid id)
+        {
+            var category = _categoryRepository.GetItem(id);
+            var blocksInfo = new CategoryAllParameterBlocks();
+            var allBlocks = _parameterBlockRepository.GetItems();
+            if (category != null)
+            {
+                var includedIds = category.CategoryParameterBlocks.Select(cp => cp.ParameterBlockIdFk).ToList();
+                blocksInfo.IncludedBlocks = category.CategoryParameterBlocks.Select(cp => new ParameterBlockDto(cp.ParameterBlock)).ToList();
+                blocksInfo.ExcludedBlocks = allBlocks.Where(p => !includedIds.Contains(p.Id)).Select(p => new ParameterBlockDto(p, false)).ToList();
+                return blocksInfo;
+            }
+            else
+            {
+                blocksInfo.ExcludedBlocks = allBlocks.Select(p => new ParameterBlockDto(p, false)).ToList();
+                return blocksInfo;
+            }
+        }
+
         public CategoryDto GetCategory(Guid id)
         {
             var category = _categoryRepository.GetItem(id);
             if (category != null)
             {
-                return new CategoryDto(category);
+                return new CategoryDto(category, true);
             }
             else
             {
@@ -54,7 +76,7 @@
             var category = _categoryRepository.GetItem(name);
             if (category != null)
             {
-                var allProducts = _productRepository.GetItems();
+                var allProducts = _productRepository.GetItems().Where(p => p.CategoryIdFk == category.Id);
                 var filters = _productHelper.Filter.ConvertParameters(queryCollection);
                 allProducts = _productHelper.Filter.FilterByParameters(allProducts, filters.Range, filters.ListValue);
                 var filterResult = _productHelper.Filter.FilterByPrice(allProducts, (decimal)parameters.MinPrice, parameters.MaxPrice);

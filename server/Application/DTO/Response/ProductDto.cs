@@ -30,17 +30,17 @@
         public ProductDto(Product product, int cityId, int regionId)
             : this(product)
         {
-            if (product.OutletProducts != null)
+            if (product.OutletProducts != null && product.OutletsReserved != null)
             {
-                this.OutletProducts = product.OutletProducts
-                    .Where(o => o.Outlet != null && o.Outlet.CityId == cityId && o.Count > 0)
-                    .Select(o => new OutletProductDto(o)).ToList();
+                    this.OutletProducts = product.OutletProducts
+                        .Where(o => o.Outlet != null && o.Outlet.CityId == cityId && o.Count - product.OutletsReserved.Where(r => r.OutletId == o.UnitId).Sum(r => r.Count) > 0)
+                        .Select(o => new OutletProductDto(o)).ToList();
             }
 
-            if (product.WarehouseProducts != null)
+            if (product.WarehouseProducts != null && product.WarehousesReserved != null)
             {
                 this.IsInWarehouse = product.WarehouseProducts
-                    .Any(o => o.Warehouse != null && o.Warehouse.City != null && o.Warehouse.City.RegionId == regionId && o.Count > 0);
+                    .Any(o => o.Warehouse != null && o.Warehouse.City != null && o.Warehouse.City.RegionId == regionId && o.Count - product.WarehousesReserved.Where(r => r.WarehouseId == o.UnitId).Sum(r => r.Count) > 0);
             }
         }
 

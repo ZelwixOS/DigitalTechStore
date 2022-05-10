@@ -39,6 +39,14 @@
                     .ThenInclude(wp => wp.Warehouse)
                     .ThenInclude(w => w.City)
                     .ThenInclude(c => c.Region)
+                .Include(p => p.OutletsReserved)
+                    .ThenInclude(or => or.Outlet)
+                .Include(p => p.WarehousesReserved)
+                    .ThenInclude(wr => wr.Warehouse)
+                    .ThenInclude(wr => wr.City)
+                .Include(p => p.OutletProducts)
+                    .ThenInclude(op => op.Outlet)
+                    .ThenInclude(o => o.ReservedProducts)
                 .AsNoTracking().FirstOrDefault(p => p.Id == id);
         }
 

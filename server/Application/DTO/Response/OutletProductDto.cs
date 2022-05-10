@@ -1,5 +1,6 @@
 ﻿namespace Application.DTO.Response
 {
+    using System.Linq;
     using Application.DTO.Response.Estate;
     using Domain.Models;
 
@@ -8,7 +9,7 @@
         public OutletProductDto(OutletProduct outlet)
         {
             this.Outlet = new OutletDto(outlet.Outlet);
-            this.Count = outlet.Count;
+            this.Count = outlet.Count - outlet.Outlet.ReservedProducts.Where(o => o.OutletId == outlet.UnitId).Sum(r => r.Count);
         }
 
         public OutletProductDto()

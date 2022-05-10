@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import Category from 'src/Types/Category';
+import CategoryAllParameterBlocks from 'src/Types/CategoryAllParameterBlocks';
 import CommonCategory from 'src/Types/CommonCategory';
 import FilterValue from 'src/Types/FilterValue';
 import ParameterBlock from 'src/Types/ParameterBlock';
@@ -45,6 +46,10 @@ async function getCategories(commonCategory: string) {
   return (await getRequest(`/api/Category/${commonCategory}`)) as Category[];
 }
 
+async function getAllCategories() {
+  return (await getRequest(`/api/Category/`)) as Category[];
+}
+
 async function getCommonCategories() {
   return (await getRequest('/api/CommonCategory')) as CommonCategory[];
 }
@@ -64,6 +69,10 @@ async function getParameters(id: string) {
 
 async function getRegions() {
   return (await getRequest('/api/Geography/regions')) as Region[];
+}
+
+async function getCategoryById(id: string) {
+  return (await getRequest(`/api/Category/id/${id}`)) as Category;
 }
 
 async function getProductsOfCategory(
@@ -110,6 +119,18 @@ async function getPurchases() {
   return (await getRequest('/api/Purchase')) as Purchase[];
 }
 
+async function getCommonCategory(id: string) {
+  return (await getRequest(`/api/CommonCategory/${id}`)) as CommonCategory;
+}
+
+async function getCategoryParamBlocks(id: string) {
+  return (await getRequest(`/api/Category/parameterBlocks/${id}`)) as CategoryAllParameterBlocks;
+}
+
+async function getParamBlocks() {
+  return (await getRequest(`/api/ParameterBlock`)) as ParameterBlock[];
+}
+
 export default getRequest;
 
 export {
@@ -126,4 +147,9 @@ export {
   getRegions,
   getCartUnsigned,
   getPurchases,
+  getAllCategories,
+  getCommonCategory,
+  getCategoryById,
+  getCategoryParamBlocks,
+  getParamBlocks,
 };

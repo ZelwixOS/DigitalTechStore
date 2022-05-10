@@ -15,6 +15,8 @@
         [MaxLength(200)]
         public string Description { get; set; }
 
+        public decimal DeliveryPrice { get; set; }
+
         [Required]
         public Guid CommonCategoryId { get; set; }
 

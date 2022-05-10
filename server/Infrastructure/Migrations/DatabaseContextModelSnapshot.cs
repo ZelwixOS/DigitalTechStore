@@ -283,9 +283,6 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
-                    b.Property<decimal?>("DiscountPrice")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<double>("Mark")
                         .HasColumnType("float");
 
@@ -303,6 +300,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("PriceWithoutDiscount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("VendorCode")
@@ -441,6 +441,64 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Regions");
+                });
+
+            modelBuilder.Entity("Domain.Models.ReservedOutlet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OutletId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PurchaseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OutletId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("PurchaseId");
+
+                    b.ToTable("OutletsReserved");
+                });
+
+            modelBuilder.Entity("Domain.Models.ReservedWarehouse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PurchaseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("PurchaseId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("WarehousesReserved");
                 });
 
             modelBuilder.Entity("Domain.Models.Review", b =>
@@ -990,6 +1048,60 @@ namespace Infrastructure.Migrations
                     b.Navigation("Purchase");
                 });
 
+            modelBuilder.Entity("Domain.Models.ReservedOutlet", b =>
+                {
+                    b.HasOne("Domain.Models.Outlet", "Outlet")
+                        .WithMany("ReservedProducts")
+                        .HasForeignKey("OutletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Product", "Product")
+                        .WithMany("OutletsReserved")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Purchase", "Purchase")
+                        .WithMany("OutletsReserved")
+                        .HasForeignKey("PurchaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Outlet");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Purchase");
+                });
+
+            modelBuilder.Entity("Domain.Models.ReservedWarehouse", b =>
+                {
+                    b.HasOne("Domain.Models.Product", "Product")
+                        .WithMany("WarehousesReserved")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Purchase", "Purchase")
+                        .WithMany("WarehousesReserved")
+                        .HasForeignKey("PurchaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Warehouse", "Warehouse")
+                        .WithMany("ReservedProducts")
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Purchase");
+
+                    b.Navigation("Warehouse");
+                });
+
             modelBuilder.Entity("Domain.Models.Review", b =>
                 {
                     b.HasOne("Domain.Models.Product", "Product")
@@ -1119,6 +1231,8 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("Purchases");
 
+                    b.Navigation("ReservedProducts");
+
                     b.Navigation("Workers");
                 });
 
@@ -1140,6 +1254,8 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("OutletProducts");
 
+                    b.Navigation("OutletsReserved");
+
                     b.Navigation("ProductParameters");
 
                     b.Navigation("PurchaseItems");
@@ -1148,6 +1264,8 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("WarehouseProducts");
 
+                    b.Navigation("WarehousesReserved");
+
                     b.Navigation("WishedItems");
                 });
 
@@ -1155,7 +1273,11 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("Delivery");
 
+                    b.Navigation("OutletsReserved");
+
                     b.Navigation("PurchaseItems");
+
+                    b.Navigation("WarehousesReserved");
                 });
 
             modelBuilder.Entity("Domain.Models.Region", b =>
@@ -1189,6 +1311,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Warehouse", b =>
                 {
+                    b.Navigation("ReservedProducts");
+
                     b.Navigation("WarehouseProducts");
                 });
 #pragma warning restore 612, 618

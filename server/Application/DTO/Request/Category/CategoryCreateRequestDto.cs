@@ -9,6 +9,7 @@
             return new Category()
             {
                 Name = this.Name,
+                DeliveryCost = this.DeliveryPrice,
                 Description = this.Description,
                 CommonCategoryIdFk = this.CommonCategoryId,
                 Products = null,

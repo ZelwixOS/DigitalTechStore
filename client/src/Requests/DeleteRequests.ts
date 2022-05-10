@@ -12,4 +12,12 @@ async function deleteFromWishlist(productId: string) {
   return await deleteRequest(`/api/CustomerLists/wishlist/${productId}`, null);
 }
 
-export { deleteFromCart, deleteFromWishlist };
+async function deleteCommonCategory(id: string) {
+  return await deleteRequest(`/api/CommonCategory/${id}`, null);
+}
+
+async function deleteCategory(id: string) {
+  return await deleteRequest(`/api/Category/${id}`, null);
+}
+
+export { deleteFromCart, deleteFromWishlist, deleteCommonCategory, deleteCategory };

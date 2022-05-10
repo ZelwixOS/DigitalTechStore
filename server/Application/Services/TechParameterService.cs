@@ -81,6 +81,14 @@
             return _categoryParameterBlockRepository.CreateItem(categoryParameterBlock) != null ? 1 : 0;
         }
 
+        public int SetCategoryParameterBlocks(List<CategoryParameterBlockRequestDto> blocks, Guid categoryId)
+        {
+            var toDelete = _categoryParameterBlockRepository.GetItems().Where(cb => cb.CategoryIdFk == categoryId);
+            _categoryParameterBlockRepository.DeletItems(toDelete);
+            var items = blocks.Select(b => b.ToModel(categoryId)).ToList();
+            return _categoryParameterBlockRepository.CreateItems(items);
+        }
+
         public int UnlinkCategoryParameterBlock(Guid id, Guid categoryId)
         {
             var categoryParameterBlock = _categoryParameterBlockRepository.GetItem(id);

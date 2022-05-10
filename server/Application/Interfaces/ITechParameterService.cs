@@ -29,5 +29,7 @@
         public int UnlinkCategoryParameterBlock(Guid id, Guid categoryId);
 
         public int SetBlockImportantStatus(Guid id, bool status);
+
+        int SetCategoryParameterBlocks(List<CategoryParameterBlockRequestDto> blocks, Guid categoryId);
     }
 }

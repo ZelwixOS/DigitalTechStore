@@ -40,5 +40,9 @@
         public Outlet DeliveryOutlet { get; set; }
 
         public HashSet<PurchaseItem> PurchaseItems { get; set; }
+
+        public HashSet<ReservedOutlet> OutletsReserved { get; set; }
+
+        public HashSet<ReservedWarehouse> WarehousesReserved { get; set; }
     }
 }

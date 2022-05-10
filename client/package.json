@@ -5,7 +5,8 @@
     "dependencies": {
         "@emotion/react": "^11.7.1",
         "@emotion/styled": "^11.6.0",
-        "@material-ui/core": "^4.11.4",
+        "@material-ui/core": "^4.12.4",
+        "@material-ui/data-grid": "^4.0.0-alpha.37",
         "@material-ui/icons": "^4.11.2",
         "@material-ui/lab": "^4.0.0-alpha.58",
         "@mui/icons-material": "^5.2.5",
@@ -16,6 +17,7 @@
         "mobx": "^6.3.2",
         "mobx-react": "^7.2.0",
         "notistack": "^2.0.3",
+        "ra-data-json-server": "^4.0.3",
         "ra-data-simple-rest": "^4.0.3",
         "react": "^17.0.2",
         "react-admin": "^4.0.3",

@@ -15,7 +15,7 @@
         [Required]
         public decimal Price { get; set; }
 
-        public decimal? DiscountPrice { get; set; }
+        public decimal? PriceWithoutDiscount { get; set; }
 
         [Required]
         [MaxLength(300)]
@@ -53,5 +53,9 @@
         public HashSet<WarehouseProduct> WarehouseProducts { get; set; }
 
         public HashSet<PurchaseItem> PurchaseItems { get; set; }
+
+        public HashSet<ReservedWarehouse> WarehousesReserved { get; set; }
+
+        public HashSet<ReservedOutlet> OutletsReserved { get; set; }
     }
 }

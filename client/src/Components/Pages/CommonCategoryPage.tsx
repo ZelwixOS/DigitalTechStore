@@ -9,10 +9,6 @@ import NavigationBar from 'src/Components/Parts/NavigationBar';
 import { getCategories } from 'src/Requests/GetRequests';
 import Category from 'src/Types/Category';
 
-interface ICommonCategoryPage {
-  commonCategoryName: string;
-}
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     productGrid: {

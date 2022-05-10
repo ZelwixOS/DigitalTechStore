@@ -39,6 +39,11 @@
 
         public int DeleteItem(CommonCategory category)
         {
+            if (this.GetItem(category.Id).Categories.Count > 0)
+            {
+                return 0;
+            }
+
             this.Context.CommonCategories.Remove(category);
             return this.Context.SaveChanges();
         }

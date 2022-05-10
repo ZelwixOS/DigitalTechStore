@@ -14,29 +14,35 @@
     public class PurchaseService : IPurchaseService
     {
         private readonly IPurchaseRepository purchsaseRepository;
-        private readonly IPurchaseItemRepository purchsaseItemRepository;
-        private readonly IDeliveryRepository deliveryRepository;
         private readonly ICartRepository cartRepository;
         private readonly IProductRepository productRepository;
         private readonly ICityRepository cityRepository;
         private readonly IOutletRepository outletRepository;
+        private readonly IWarehouseProductRepository warehouseProductRepository;
+        private readonly IOutletProductRepository outletProductRepository;
+        private readonly IReservedWarehouseRepository reservedWarehouseRepository;
+        private readonly IReservedOutletRepository reservedOutletRepository;
 
         public PurchaseService(
             IPurchaseRepository purchsaseRepository,
-            IPurchaseItemRepository purchsaseItemRepository,
-            IDeliveryRepository deliveryRepository,
             ICartRepository cartRepository,
             IProductRepository productRepository,
             ICityRepository cityRepository,
-            IOutletRepository outletRepository)
+            IOutletRepository outletRepository,
+            IWarehouseProductRepository warehouseProductRepository,
+            IOutletProductRepository outletProductRepository,
+            IReservedWarehouseRepository reservedWarehouseRepository,
+            IReservedOutletRepository reservedOutletRepository)
         {
             this.cartRepository = cartRepository;
             this.productRepository = productRepository;
             this.cityRepository = cityRepository;
             this.purchsaseRepository = purchsaseRepository;
-            this.deliveryRepository = deliveryRepository;
-            this.purchsaseItemRepository = purchsaseItemRepository;
             this.outletRepository = outletRepository;
+            this.warehouseProductRepository = warehouseProductRepository;
+            this.outletProductRepository = outletProductRepository;
+            this.reservedWarehouseRepository = reservedWarehouseRepository;
+            this.reservedOutletRepository = reservedOutletRepository;
         }
 
         public List<PurchaseDto> GetUserPurchases(Guid id)
@@ -69,6 +75,11 @@
 
             var entity = CreatePurchase(purchase, purchaseEntity);
 
+            if (entity == null)
+            {
+                return null;
+            }
+
             if (user.OutletId.HasValue)
             {
                 purchaseEntity.Seller = user;
@@ -100,7 +111,13 @@
         {
             var purchaseEntity = purchase.ToModel();
 
-            return new PurchaseDto(CreatePurchase(purchase, purchaseEntity));
+            var entity = CreatePurchase(purchase, purchaseEntity);
+            if (entity == null)
+            {
+                return null;
+            }
+
+            return new PurchaseDto(entity);
         }
 
         public decimal GetDeliveryCost(List<ItemOfPurchaseCreateRequestDto> products)
@@ -128,6 +145,7 @@
             }
 
             purchase.Status = purchaseStatus;
+
             purchsaseRepository.UpdateItem(purchase);
             return 1;
         }
@@ -195,6 +213,9 @@
             purchaseEntity.TotalCost = deliveryCost + purchaseItems.Sum(i => i.Sum);
 
             var model = purchsaseRepository.CreateItem(purchaseEntity);
+
+            this.ReserveProducts(model.PurchaseItems, model.Id, cityId, model.DeliveryOutletId);
+
             model.PurchaseItems = model.PurchaseItems.Select(i =>
             {
                 i.Product = prodDict[i.ProductId];
@@ -207,6 +228,76 @@
             }
 
             return model;
+        }
+
+        private void ReserveProducts(HashSet<PurchaseItem> purchaseItems, Guid purchaseId, int cityId, int? preferableOutletId)
+        {
+            int leftToBuy = 0;
+            IQueryable<OutletProduct> prefOutletProducts = null;
+            var city = cityRepository.GetItem(cityId);
+            var outletProducts = outletProductRepository.GetItems().Where(i => i.Outlet.CityId == cityId);
+            int unitBalance;
+            if (preferableOutletId.HasValue)
+            {
+                prefOutletProducts = outletProducts.Where(o => o.Outlet.Id == preferableOutletId.Value);
+            }
+
+            var warehousesProducts = warehouseProductRepository.GetItems().Where(i => i.Warehouse.City.RegionId == city.RegionId);
+
+            foreach (var item in purchaseItems)
+            {
+                unitBalance = 0;
+                leftToBuy = item.Count;
+                if (prefOutletProducts != null)
+                {
+                    var prefProd = prefOutletProducts.FirstOrDefault(p => p.ProductId == item.ProductId);
+                    if (prefProd != null)
+                    {
+                        unitBalance = prefProd.Count;
+                        unitBalance -= prefProd.Outlet.ReservedProducts.Where(p => p.ProductId == item.ProductId).Sum(p => p.Count);
+                        if (unitBalance > 0)
+                        {
+                            var add = leftToBuy < unitBalance ? leftToBuy : leftToBuy - unitBalance;
+                            leftToBuy -= add;
+                            reservedOutletRepository.CreateItem(new ReservedOutlet() { OutletId = prefProd.UnitId, ProductId = item.ProductId, Count = add, PurchaseId = purchaseId });
+                        }
+                    }
+
+                    var outletThisProduct = outletProducts.Where(p => p.ProductId == item.ProductId); // Only our product strings
+                    foreach (var outProd in outletProducts)
+                    {
+                        if (leftToBuy < 1)
+                        {
+                            break;
+                        }
+
+                        unitBalance = outProd.Count - outProd.Outlet.ReservedProducts.Where(p => p.ProductId == item.ProductId).Sum(p => p.Count);
+                        if (unitBalance > 0)
+                        {
+                            var add = leftToBuy < unitBalance ? leftToBuy : leftToBuy - unitBalance;
+                            leftToBuy -= add;
+                            reservedOutletRepository.CreateItem(new ReservedOutlet() { OutletId = outProd.UnitId, ProductId = item.ProductId, Count = add, PurchaseId = purchaseId }); // repository add
+                        }
+                    }
+
+                    var warehouseThisProduct = warehousesProducts.Where(p => p.ProductId == item.ProductId); // Only our product strings
+                    foreach (var wareProd in warehouseThisProduct)
+                    {
+                        if (leftToBuy < 1)
+                        {
+                            break;
+                        }
+
+                        unitBalance = wareProd.Count - wareProd.Warehouse.ReservedProducts.Where(p => p.ProductId == item.ProductId).Sum(p => p.Count);
+                        if (unitBalance > 0)
+                        {
+                            var add = leftToBuy < unitBalance ? leftToBuy : leftToBuy - unitBalance;
+                            leftToBuy -= add;
+                            reservedWarehouseRepository.CreateItem(new ReservedWarehouse() { WarehouseId = wareProd.UnitId, ProductId = item.ProductId, Count = add, PurchaseId = purchaseId }); // repository add
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -244,7 +335,13 @@
 
                 if (outletId.HasValue)
                 {
-                    totalCount = product.OutletProducts.Where(o => o.Outlet != null && o.Outlet.Id == outletId).Sum(o => o.Count);
+                    var outletProd = product.OutletProducts.FirstOrDefault(o => o.UnitId == outletId.Value);
+                    var reservedOutletCount = product.OutletsReserved.Where(r => r.OutletId == outletId.Value).Sum(r => r.Count);
+                    if (outletProd != null)
+                    {
+                        totalCount = outletProd.Count - reservedOutletCount;
+                    }
+
                     if (totalCount < item.Count && result > 2)
                     {
                         result = 2;
@@ -252,6 +349,8 @@
                 }
 
                 totalCount = product.OutletProducts.Where(o => o.Outlet != null && o.Outlet.CityId == cityId).Sum(o => o.Count);
+                var cityOutletsReserved = product.OutletsReserved.Where(o => o.Outlet != null && o.Outlet.CityId == cityId).Sum(o => o.Count);
+                totalCount -= cityOutletsReserved;
 
                 if (totalCount < item.Count)
                 {
@@ -261,6 +360,7 @@
                     }
 
                     totalCount += product.WarehouseProducts.Where(o => o.Warehouse != null && o.Warehouse.City != null && o.Warehouse.City.RegionId == regionId).Sum(o => o.Count);
+                    totalCount -= product.WarehousesReserved.Where(o => o.Warehouse != null && o.Warehouse.City != null && o.Warehouse.City.RegionId == regionId).Sum(o => o.Count);
                     if (totalCount < item.Count)
                     {
                         return 0;

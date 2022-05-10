@@ -55,6 +55,10 @@
 
         public DbSet<Delivery> Deliveries { get; set; }
 
+        public DbSet<ReservedWarehouse> WarehousesReserved { get; set; }
+
+        public DbSet<ReservedOutlet> OutletsReserved { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>(entity =>
@@ -182,6 +186,20 @@
             {
                 entity.HasOne(u => u.Outlet).WithMany(o => o.Workers).HasForeignKey(u => u.OutletId);
                 entity.HasKey(u => u.Id);
+            });
+
+            modelBuilder.Entity<ReservedOutlet>(entity =>
+            {
+                entity.HasOne(r => r.Outlet).WithMany(o => o.ReservedProducts).HasForeignKey(r => r.OutletId);
+                entity.HasOne(r => r.Product).WithMany(p => p.OutletsReserved).HasForeignKey(r => r.ProductId);
+                entity.HasOne(r => r.Purchase).WithMany(p => p.OutletsReserved).HasForeignKey(r => r.PurchaseId);
+            });
+
+            modelBuilder.Entity<ReservedWarehouse>(entity =>
+            {
+                entity.HasOne(r => r.Warehouse).WithMany(o => o.ReservedProducts).HasForeignKey(r => r.WarehouseId);
+                entity.HasOne(r => r.Product).WithMany(p => p.WarehousesReserved).HasForeignKey(r => r.ProductId);
+                entity.HasOne(r => r.Purchase).WithMany(p => p.WarehousesReserved).HasForeignKey(r => r.PurchaseId);
             });
 
             modelBuilder.Entity<IdentityUserRole<Guid>>().HasKey(i => new { i.RoleId, i.UserId });

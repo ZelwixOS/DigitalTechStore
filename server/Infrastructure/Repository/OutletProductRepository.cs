@@ -23,7 +23,8 @@
 
         public IQueryable<OutletProduct> GetItems()
         {
-            return this.Context.OutletProducts.AsNoTracking();
+            return this.Context.OutletProducts
+                .Include(op => op.Outlet).ThenInclude(o => o.ReservedProducts).AsNoTracking();
         }
 
         public OutletProduct GetItem(Guid id)

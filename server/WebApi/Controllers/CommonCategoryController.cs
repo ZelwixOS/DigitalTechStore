@@ -23,7 +23,7 @@
         }
 
         [HttpGet]
-        public ActionResult<List<CommonCategoryDto>> Get()
+        public ActionResult<List<CommonCategoryDto>> Get([FromQuery]List<int> range)
         {
             return this.Ok(_commonCommonCategoryService.GetCommonCategories());
         }

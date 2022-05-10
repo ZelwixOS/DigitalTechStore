@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Application.DTO;
     using Application.DTO.Request;
     using Application.DTO.Response;
     using Application.DTO.Response.WithExtraInfo;
@@ -22,5 +23,7 @@
         int DeleteCategory(Guid id);
 
         CategoryDto UpdateCategory(CategoryUpdateRequestDto category);
+
+        CategoryAllParameterBlocks GetCategoryBlocksInfo(Guid id);
     }
 }

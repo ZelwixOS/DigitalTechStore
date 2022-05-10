@@ -16,7 +16,7 @@
                 VendorCode = this.VendorCode,
                 PicURL = this.PicURL,
                 CategoryIdFk = this.CategoryId,
-                DiscountPrice = this.DiscountPrice,
+                PriceWithoutDiscount = this.PriceWithoutDiscount,
                 Category = null,
             };
         }

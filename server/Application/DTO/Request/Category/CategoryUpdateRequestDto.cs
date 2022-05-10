@@ -13,6 +13,7 @@
             {
                 Id = this.Id,
                 Name = this.Name,
+                DeliveryCost = this.DeliveryPrice,
                 Description = this.Description,
                 CommonCategoryIdFk = this.CommonCategoryId,
                 Products = null,

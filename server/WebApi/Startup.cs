@@ -144,6 +144,10 @@ namespace WebApi
                 new PurchaseItemRepository(dbconectionString, provider.GetRequiredService<IDatabaseContextFactory>()));
             services.AddScoped<IDeliveryRepository, DeliveryRepository>(provider =>
                 new DeliveryRepository(dbconectionString, provider.GetRequiredService<IDatabaseContextFactory>()));
+            services.AddScoped<IReservedOutletRepository, ReservedOutletRepository>(provider =>
+                new ReservedOutletRepository(dbconectionString, provider.GetRequiredService<IDatabaseContextFactory>()));
+            services.AddScoped<IReservedWarehouseRepository, ReservedWarehouseRepository>(provider =>
+                new ReservedWarehouseRepository(dbconectionString, provider.GetRequiredService<IDatabaseContextFactory>()));
 
             services.AddSingleton<ProductHelpersContainer>();
 
@@ -157,6 +161,7 @@ namespace WebApi
                     provider.GetService<ICategoryRepository>(),
                     provider.GetService<IProductRepository>(),
                     provider.GetService<ICommonCategoryRepository>(),
+                    provider.GetService<IParameterBlockRepository>(),
                     provider.GetService<ProductHelpersContainer>()));
             services.AddScoped<IProductParameterService, ProductParameterService>(provider =>
                 new ProductParameterService(
@@ -193,12 +198,14 @@ namespace WebApi
             services.AddScoped<IPurchaseService, PurchaseService>(provider =>
                 new PurchaseService(
                     provider.GetService<IPurchaseRepository>(),
-                    provider.GetService<IPurchaseItemRepository>(),
-                    provider.GetService<IDeliveryRepository>(),
                     provider.GetService<ICartRepository>(),
                     provider.GetService<IProductRepository>(),
                     provider.GetService<ICityRepository>(),
-                    provider.GetService<IOutletRepository>()));
+                    provider.GetService<IOutletRepository>(),
+                    provider.GetService<IWarehouseProductRepository>(),
+                    provider.GetService<IOutletProductRepository>(),
+                    provider.GetService<IReservedWarehouseRepository>(),
+                    provider.GetService<IReservedOutletRepository>()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

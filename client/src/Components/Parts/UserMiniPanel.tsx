@@ -130,6 +130,16 @@ const UserMiniPanel: React.FC = () => {
                   >
                     <Typography variant="h5">Мои заказы</Typography>
                   </MenuItem>
+                  {userInfo.role === 'Admin' && (
+                    <MenuItem
+                      className={classes.item}
+                      onClick={() => {
+                        document.location.href = `/admin`;
+                      }}
+                    >
+                      <Typography variant="h5">Администрирование</Typography>
+                    </MenuItem>
+                  )}
                   <MenuItem className={classes.item} onClick={signOut}>
                     <Typography variant="h5">Выйти</Typography>
                   </MenuItem>

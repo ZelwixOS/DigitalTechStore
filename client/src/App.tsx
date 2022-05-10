@@ -1,8 +1,6 @@
 import React from 'react';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Route, Routes } from 'react-router-dom';
-import { Admin, Resource } from 'react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
 
 import './App.css';
 import CategoryPage from './Components/Pages/CategoryPage';
@@ -14,8 +12,11 @@ import WishlistPage from './Components/Pages/WishlistPage';
 import CommonCategoryPage from './Components/Pages/CommonCategoryPage';
 import PurchasingPage from './Components/Pages/PurchasingPage';
 import UserPurchases from './Components/Pages/UserPurchases';
+import { CommonCategoryList } from './Components/Admin/Pages/CommonCategoryList';
+import { CategoryList } from './Components/Admin/Pages/CategoryList';
+import { AdminPage } from './Components/Admin/Pages/AdminPage';
 
-const innerTheme = createMuiTheme({
+const innerTheme = createTheme({
   palette: {
     primary: {
       main: '#ef6c00',
@@ -38,6 +39,9 @@ const App: React.FC = () => (
       <Route path="/registration" element={<RegistrationPage />} />
       <Route path="/purchasing" element={<PurchasingPage />} />
       <Route path="/purchases" element={<UserPurchases />} />
+      <Route path="/admin" element={<AdminPage />} />
+      <Route path="/admin/commonCategories" element={<CommonCategoryList />} />
+      <Route path="/admin/categories" element={<CategoryList />} />
     </Routes>
   </ThemeProvider>
 );

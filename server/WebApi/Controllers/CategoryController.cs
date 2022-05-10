@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Application.DTO;
     using Application.DTO.Request;
     using Application.DTO.Response;
     using Application.DTO.Response.WithExtraInfo;
@@ -32,6 +33,12 @@
         public ActionResult<CategoryDto> Get(Guid id)
         {
             return this.Ok(_categoryService.GetCategory(id));
+        }
+
+        [HttpGet("parameterBlocks/{id}")]
+        public ActionResult<CategoryAllParameterBlocks> GetBlocksInfo(Guid id)
+        {
+            return this.Ok(_categoryService.GetCategoryBlocksInfo(id));
         }
 
         [HttpGet("{commonName}")]

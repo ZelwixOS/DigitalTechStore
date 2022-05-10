@@ -23,7 +23,8 @@
 
         public IQueryable<WarehouseProduct> GetItems()
         {
-            return this.Context.WarehouseProducts.AsNoTracking();
+            return this.Context.WarehouseProducts
+                .Include(wp => wp.Warehouse).ThenInclude(w => w.ReservedProducts).AsNoTracking();
         }
 
         public WarehouseProduct GetItem(Guid id)

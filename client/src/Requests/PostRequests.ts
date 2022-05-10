@@ -1,6 +1,8 @@
 import axios from 'axios';
 
 import ItemOfPurchase from 'src/Types/ItemOfPurchase';
+import ParameterBlock from 'src/Types/ParameterBlock';
+import ParameterBlockCreateRequest from 'src/Types/ParameterBlockCreateRequest';
 import PurchaseRequest from 'src/Types/PurchaseRequest';
 
 async function post<T>(url: string, data: T) {
@@ -35,4 +37,27 @@ async function createPurchase(data: PurchaseRequest) {
   return await post(`/api/Purchase/`, data);
 }
 
-export { addToCart, addToWishlist, createReview, getPrepurchaseInfo, createPurchase };
+async function createCommonCategory(name: string, description: string) {
+  const data = { name: name, description: description };
+  return await post(`/api/CommonCategory`, data);
+}
+
+async function createCategory(name: string, description: string, deliveryPrice: number, commonCategoryId: string) {
+  const data = { name: name, description: description, deliveryPrice, commonCategoryId };
+  return await post(`/api/Category`, data);
+}
+
+async function setCategoryParameterBlocks(categoryId: string, blocks: ParameterBlockCreateRequest[]) {
+  return await post(`/api/ParameterBlock/setMany/${categoryId}`, blocks);
+}
+
+export {
+  addToCart,
+  addToWishlist,
+  createReview,
+  getPrepurchaseInfo,
+  createPurchase,
+  createCommonCategory,
+  createCategory,
+  setCategoryParameterBlocks,
+};
