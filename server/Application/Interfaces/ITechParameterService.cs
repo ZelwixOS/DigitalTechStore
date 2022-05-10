@@ -31,5 +31,9 @@
         public int SetBlockImportantStatus(Guid id, bool status);
 
         int SetCategoryParameterBlocks(List<CategoryParameterBlockRequestDto> blocks, Guid categoryId);
+
+        TechParameterDto GetTechParameter(Guid id);
+
+        ParameterBlockDto GetParameterBlock(Guid id);
     }
 }

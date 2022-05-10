@@ -1,43 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { GridColDef } from '@material-ui/data-grid';
 
 import { TableBasement } from 'src/Components/Admin/Parts/TableBasement';
-import { getAllCategories } from 'src/Requests/GetRequests';
+import { getParamBlocks } from 'src/Requests/GetRequests';
+import { deleteParameterBlock } from 'src/Requests/DeleteRequests';
 import ModalFormDialog from 'src/Components/Admin/Parts/ModalFormDialog';
-import { deleteCategory } from 'src/Requests/DeleteRequests';
-import CreateCategory from 'src/Components/Admin/Parts/CreateCategory';
-import EditCategory from 'src/Components/Admin/Parts/EditCategory';
+import CreateParameterBlock from 'src/Components/Admin/Parts/CreateParameterBlock';
+import EditParameterBlock from 'src/Components/Admin/Parts/EditParameterBlock';
 
-export const CategoryList = () => {
+export const ParameterBlockList = () => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 300 },
     {
       field: 'name',
       headerName: 'Название',
-      width: 350,
-    },
-    {
-      field: 'deliveryPrice',
-      headerName: 'Цена доставки',
-      type: 'number',
-      width: 150,
-    },
-    {
-      field: 'commonCategoryName',
-      headerName: 'Обобщающая категория',
       width: 400,
-    },
-    {
-      field: 'description',
-      headerName: 'Описание',
-      width: 500,
     },
   ];
 
   const onDelete = async (id: string): Promise<boolean> => {
-    const res = await deleteCategory(id);
+    const res = await deleteParameterBlock(id);
     if (res === 0) {
-      setError('Не удалось удалить объект. Возможно, существуют зависимые категории.');
+      setError(
+        'Не удалось удалить объект. Возможно, существуют зависимые характеристики или объект используется в категории.',
+      );
       setOpen(true);
       return false;
     }
@@ -66,27 +52,27 @@ export const CategoryList = () => {
   return (
     <React.Fragment>
       <TableBasement
-        name="Категории"
-        getData={getAllCategories}
+        name="Блоки параметров"
+        getData={getParamBlocks}
         columns={columns}
         pageSize={12}
-        deleteSelected={onDelete}
         createNew={createNew}
         editSelected={editSelected}
+        deleteSelected={onDelete}
         open={open}
         setOpen={setOpen}
         error={error}
       />
       <ModalFormDialog
-        name={'Создание категории'}
+        name={'Создание блока параметров'}
         open={createOpen}
-        form={<CreateCategory setOpen={setCreateOpen} refresher={refreshFunction} />}
+        form={<CreateParameterBlock setOpen={setCreateOpen} refresher={refreshFunction} />}
         setOpen={setCreateOpen}
       />
       <ModalFormDialog
-        name={'Изменение категории'}
+        name={'Изменение блока параметров'}
         open={editOpen}
-        form={<EditCategory id={selected} setOpen={setEditOpen} refresher={refreshFunction} />}
+        form={<EditParameterBlock id={selected} setOpen={setEditOpen} refresher={refreshFunction} />}
         setOpen={setEditOpen}
       />
     </React.Fragment>

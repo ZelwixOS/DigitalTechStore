@@ -27,6 +27,12 @@
             return this.Ok(_techParameterService.GetTechParameters());
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<TechParameterDto> Get(Guid id)
+        {
+            return this.Ok(_techParameterService.GetTechParameter(id));
+        }
+
         [HttpPost]
         public ActionResult<TechParameterDto> Create([FromBody] TechParameterCreateRequestDto techParam)
         {

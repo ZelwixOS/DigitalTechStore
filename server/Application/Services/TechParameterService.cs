@@ -100,6 +100,17 @@
             return _categoryParameterBlockRepository.DeleteItem(categoryParameterBlock);
         }
 
+        public ParameterBlockDto GetParameterBlock(Guid id)
+        {
+            var result = _parameterBlockRepository.GetItem(id);
+            if (result == null)
+            {
+                return null;
+            }
+
+            return new ParameterBlockDto(result);
+        }
+
         public int SetBlockImportantStatus(Guid id, bool status)
         {
             var categoryParameterBlock = _categoryParameterBlockRepository.GetItem(id);
@@ -123,6 +134,17 @@
             {
                 return 0;
             }
+        }
+
+        public TechParameterDto GetTechParameter(Guid id)
+        {
+            var result = _techParameterRepository.GetItem(id);
+            if (result == null)
+            {
+                return null;
+            }
+
+            return new TechParameterDto(result);
         }
     }
 }

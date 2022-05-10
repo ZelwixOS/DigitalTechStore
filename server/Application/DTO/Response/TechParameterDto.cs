@@ -18,6 +18,8 @@
             this.ParameterValues = techParam.ParameterValues != null
                 ? techParam.ParameterValues.Select(p => new ParameterValueDto(p)).ToList()
                 : null;
+            this.ParameterBlockName = techParam.ParameterBlock?.Name;
+            this.ParameterBlockId = techParam.ParameterBlockIdFk;
         }
 
         public TechParameterDto()
@@ -27,6 +29,10 @@
         public Guid Id { get; set; }
 
         public string Name { get; set; }
+
+        public string ParameterBlockName { get; set; }
+
+        public Guid ParameterBlockId { get; set; }
 
         public bool Important { get; set; }
 

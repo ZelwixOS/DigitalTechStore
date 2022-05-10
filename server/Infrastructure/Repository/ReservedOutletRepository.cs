@@ -27,6 +27,12 @@
             return this.Context.SaveChanges();
         }
 
+        public int DeleteItems(IQueryable<ReservedOutlet> items)
+        {
+            this.Context.OutletsReserved.RemoveRange(items);
+            return this.Context.SaveChanges();
+        }
+
         public ReservedOutlet GetItem(Guid id)
         {
             return this.Context.OutletsReserved.AsNoTracking().FirstOrDefault(p => p.Id == id);

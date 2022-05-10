@@ -27,6 +27,12 @@
             return this.Context.SaveChanges();
         }
 
+        public int DeleteItems(IQueryable<ReservedWarehouse> items)
+        {
+            this.Context.WarehousesReserved.RemoveRange(items);
+            return this.Context.SaveChanges();
+        }
+
         public ReservedWarehouse GetItem(Guid id)
         {
             return this.Context.WarehousesReserved.AsNoTracking().FirstOrDefault(p => p.Id == id);

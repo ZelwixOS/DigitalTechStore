@@ -139,9 +139,25 @@
         public int ChangePurchaseStatus(Guid purchaseId, PurchaseStatus purchaseStatus)
         {
             var purchase = purchsaseRepository.GetItem(purchaseId);
-            if (purchase == null)
+            if (purchase == null || (!purchase.DeliveryOutletId.HasValue && purchaseStatus == PurchaseStatus.WaitsInOulet))
             {
                 return 0;
+            }
+
+            switch (purchaseStatus)
+            {
+                case PurchaseStatus.CanceledByClient: // Count = Count + Reserved, Reserved = 0
+                case PurchaseStatus.Refused:
+                    this.ReturnReserveToCount(purchaseId);
+                    break;
+                case PurchaseStatus.WaitsInOulet: // Reserved from all places -> Reserved outlet | Count from all places -> Count outlet
+                    this.PickInOnePlace(purchaseId, purchase.OutletId.Value);
+                    break;
+                case PurchaseStatus.Finished: // Count= Count - Reserved, Reserved = 0
+                    this.MinusItems(purchaseId);
+                    break;
+                default:
+                    break;
             }
 
             purchase.Status = purchaseStatus;
@@ -159,6 +175,159 @@
             result.Outlets = outletRepository.GetItems().Where(o => o.CityId == cityId).Select(o => new OutletDto(o)).ToList();
             result.Sum = purchaseItems.Sum(p => p.Sum);
             return result;
+        }
+
+        private void ReturnReserveToCount(Guid purchaseId)
+        {
+            var reserved = this.reservedOutletRepository.GetItems().Where(r => r.PurchaseId == purchaseId);
+            var allInOutlets = this.outletProductRepository.GetItems().ToList();
+            OutletProduct outletProduct;
+            foreach (var item in reserved)
+            {
+                outletProduct = allInOutlets.FirstOrDefault(i => i.UnitId == item.OutletId && i.ProductId == item.ProductId);
+                if (outletProduct != null)
+                {
+                    outletProduct.Count += item.Count;
+                    this.outletProductRepository.UpdateItem(outletProduct);
+                }
+                else
+                {
+                    this.outletProductRepository.CreateItem(new OutletProduct() { ProductId = item.ProductId, UnitId = item.OutletId, Count = item.Count });
+                }
+            }
+
+            this.reservedOutletRepository.DeleteItems(reserved);
+
+            var reservedW = this.reservedWarehouseRepository.GetItems().Where(r => r.PurchaseId == purchaseId);
+            var allInWarehouses = this.warehouseProductRepository.GetItems().ToList().ToList();
+            WarehouseProduct warehouseProduct;
+            foreach (var item in reservedW)
+            {
+                warehouseProduct = allInWarehouses.FirstOrDefault(i => i.UnitId == item.WarehouseId && i.ProductId == item.ProductId);
+                if (warehouseProduct != null)
+                {
+                    warehouseProduct.Count += item.Count;
+                    this.warehouseProductRepository.UpdateItem(warehouseProduct);
+                }
+                else
+                {
+                    this.warehouseProductRepository.CreateItem(new WarehouseProduct() { ProductId = item.ProductId, UnitId = item.WarehouseId, Count = item.Count });
+                }
+            }
+
+            this.reservedWarehouseRepository.DeleteItems(reservedW);
+        }
+
+        private void PickInOnePlace(Guid purchaseId, int outletId)
+        {
+            var reservedQuery = this.reservedOutletRepository.GetItems().Where(r => r.PurchaseId == purchaseId && r.OutletId != outletId);
+            var reserved = reservedQuery.ToList();
+            this.reservedOutletRepository.DeleteItems(reservedQuery);
+            var pickedReservedItems = this.reservedOutletRepository.GetItems().Where(r => r.PurchaseId == purchaseId && r.OutletId == outletId);
+            var allInOutlets = this.outletProductRepository.GetItems().ToList();
+            var pickedOutletProducts = this.outletProductRepository.GetItems().Where(o => o.UnitId == outletId).ToList();
+            OutletProduct pickedOutletProduct;
+            ReservedOutlet pickedReserved;
+            OutletProduct outletProduct;
+            foreach (var item in reserved)
+            {
+                pickedOutletProduct = pickedOutletProducts.FirstOrDefault(o => o.ProductId == item.ProductId);
+                outletProduct = allInOutlets.FirstOrDefault(i => i.UnitId == item.OutletId && i.ProductId == item.ProductId);
+                if (outletProduct != null)
+                {
+                    outletProduct.Count -= item.Count;
+                    this.outletProductRepository.UpdateItem(outletProduct);
+                }
+
+                if (pickedOutletProduct != null)
+                {
+                    pickedOutletProduct.Count += item.Count;
+                }
+                else
+                {
+                    pickedOutletProducts.Add(
+                        this.outletProductRepository.CreateItem(new OutletProduct() { ProductId = item.ProductId, UnitId = outletId, Count = item.Count }));
+                }
+
+                pickedReserved = pickedReservedItems.FirstOrDefault(o => o.ProductId == item.ProductId);
+                if (pickedReserved != null)
+                {
+                    pickedReserved.Count += item.Count;
+                }
+                else
+                {
+                    this.reservedOutletRepository.CreateItem(new ReservedOutlet() { ProductId = item.ProductId, OutletId = outletId, Count = item.Count });
+                }
+            }
+
+            var reservedWQuery = this.reservedWarehouseRepository.GetItems().Where(r => r.PurchaseId == purchaseId);
+            var reservedW = reservedWQuery.ToList();
+            this.reservedWarehouseRepository.DeleteItems(reservedWQuery);
+            var allInWarehouses = this.warehouseProductRepository.GetItems();
+            WarehouseProduct warehouseProduct;
+            foreach (var item in reservedW)
+            {
+                pickedOutletProduct = pickedOutletProducts.FirstOrDefault(o => o.ProductId == item.ProductId);
+                warehouseProduct = allInWarehouses.FirstOrDefault(i => i.UnitId == item.WarehouseId && i.ProductId == item.ProductId);
+                if (warehouseProduct != null)
+                {
+                    warehouseProduct.Count -= item.Count;
+                    this.warehouseProductRepository.UpdateItem(warehouseProduct);
+                }
+
+                if (pickedOutletProduct != null)
+                {
+                    pickedOutletProduct.Count += item.Count;
+                }
+                else
+                {
+                    pickedOutletProducts.Add(
+                        this.outletProductRepository.CreateItem(new OutletProduct() { ProductId = item.ProductId, UnitId = outletId, Count = item.Count }));
+                }
+
+                pickedReserved = pickedReservedItems.FirstOrDefault(o => o.ProductId == item.ProductId);
+                if (pickedReserved != null)
+                {
+                    pickedReserved.Count += item.Count;
+                }
+                else
+                {
+                    this.reservedOutletRepository.CreateItem(new ReservedOutlet() { ProductId = item.ProductId, OutletId = outletId, Count = item.Count });
+                }
+            }
+        }
+
+        private void MinusItems(Guid purchaseId)
+        {
+            var reserved = this.reservedOutletRepository.GetItems().Where(r => r.PurchaseId == purchaseId);
+            var allInOutlets = this.outletProductRepository.GetItems().ToList();
+            OutletProduct outletProduct;
+            foreach (var item in reserved)
+            {
+                outletProduct = allInOutlets.FirstOrDefault(i => i.UnitId == item.OutletId && i.ProductId == item.ProductId);
+                if (outletProduct != null)
+                {
+                    outletProduct.Count -= item.Count;
+                    this.outletProductRepository.UpdateItem(outletProduct);
+                }
+            }
+
+            this.reservedOutletRepository.DeleteItems(reserved);
+
+            var reservedW = this.reservedWarehouseRepository.GetItems().Where(r => r.PurchaseId == purchaseId);
+            var allInWarehouses = this.warehouseProductRepository.GetItems().ToList();
+            WarehouseProduct warehouseProduct;
+            foreach (var item in reservedW)
+            {
+                warehouseProduct = allInWarehouses.FirstOrDefault(i => i.UnitId == item.WarehouseId && i.ProductId == item.ProductId);
+                if (warehouseProduct != null)
+                {
+                    warehouseProduct.Count -= item.Count;
+                    this.warehouseProductRepository.UpdateItem(warehouseProduct);
+                }
+            }
+
+            this.reservedWarehouseRepository.DeleteItems(reservedW);
         }
 
         private Purchase CreatePurchase(PurchaseCreateRequestDto purchase, Purchase purchaseEntity)

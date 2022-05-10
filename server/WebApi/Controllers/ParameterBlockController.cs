@@ -28,6 +28,12 @@
             return this.Ok(_techParameterService.GetParameterBlocks());
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<List<TechParameterDto>> Get(Guid id)
+        {
+            return this.Ok(_techParameterService.GetParameterBlock(id));
+        }
+
         [HttpPost]
         public ActionResult<ParameterBlockDto> Create([FromBody] ParameterBlockCreateRequestDto block)
         {

@@ -13,6 +13,11 @@ async function updateCommonCategory(id: string, name: string, description: strin
   return await put(`/api/CommonCategory/`, data);
 }
 
+async function updateParameterBlock(id: string, name: string) {
+  const data = { id, name };
+  return await put(`/api/ParameterBlock/`, data);
+}
+
 async function updateCategory(
   id: string,
   name: string,
@@ -24,4 +29,17 @@ async function updateCategory(
   return await put(`/api/Category/`, data);
 }
 
-export { updateCartItem, updateCommonCategory, updateCategory };
+async function updateParameter(
+  id: string,
+  name: string,
+  important: boolean,
+  range: boolean,
+  minValue: number,
+  maxValue: number,
+  parameterBlockId: string,
+) {
+  const data = { id, name, important, range, minValue, maxValue, parameterBlockId };
+  return await put(`/api/TechParameter/`, data);
+}
+
+export { updateCartItem, updateCommonCategory, updateCategory, updateParameterBlock, updateParameter };

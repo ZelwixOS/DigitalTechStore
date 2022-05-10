@@ -1,7 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
@@ -9,17 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuIcon from '@material-ui/icons/Menu';
 import { IconButton, MenuItem, Typography } from '@material-ui/core';
 
-const useStyles = makeStyles({
-  list: {
-    width: 250,
-  },
-  fullList: {
-    width: 'auto',
-  },
-});
-
 const HiddenNavigation = () => {
-  const classes = useStyles();
   const [state, setState] = React.useState(false);
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -39,6 +27,8 @@ const HiddenNavigation = () => {
 
   const categories = onMenuItemClick.bind(this, '/admin/categories');
   const commonCategories = onMenuItemClick.bind(this, '/admin/commonCategories');
+  const parameterBlocks = onMenuItemClick.bind(this, '/admin/parameterBlocks');
+  const parameters = onMenuItemClick.bind(this, '/admin/parameters');
 
   return (
     <div>
@@ -59,6 +49,22 @@ const HiddenNavigation = () => {
             <ListItem>
               <ListItemText>
                 <Typography variant="h6">Категории</Typography>
+              </ListItemText>
+            </ListItem>
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={parameterBlocks}>
+            <ListItem>
+              <ListItemText>
+                <Typography variant="h6">Блоки параметров</Typography>
+              </ListItemText>
+            </ListItem>
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={parameters}>
+            <ListItem>
+              <ListItemText>
+                <Typography variant="h6">Параметры</Typography>
               </ListItemText>
             </ListItem>
           </MenuItem>

@@ -4,6 +4,7 @@ import Category from 'src/Types/Category';
 import CategoryAllParameterBlocks from 'src/Types/CategoryAllParameterBlocks';
 import CommonCategory from 'src/Types/CommonCategory';
 import FilterValue from 'src/Types/FilterValue';
+import Parameter from 'src/Types/Parameter';
 import ParameterBlock from 'src/Types/ParameterBlock';
 import Product from 'src/Types/Product';
 import Purchase from 'src/Types/Purchase';
@@ -131,6 +132,18 @@ async function getParamBlocks() {
   return (await getRequest(`/api/ParameterBlock`)) as ParameterBlock[];
 }
 
+async function getParameterBlock(id: string) {
+  return (await getRequest(`/api/ParameterBlock/${id}`)) as ParameterBlock;
+}
+
+async function getTechParameters() {
+  return (await getRequest(`/api/TechParameter`)) as Parameter[];
+}
+
+async function getParameter(id: string) {
+  return (await getRequest(`/api/TechParameter/${id}`)) as Parameter;
+}
+
 export default getRequest;
 
 export {
@@ -152,4 +165,7 @@ export {
   getCategoryById,
   getCategoryParamBlocks,
   getParamBlocks,
+  getParameterBlock,
+  getTechParameters,
+  getParameter,
 };

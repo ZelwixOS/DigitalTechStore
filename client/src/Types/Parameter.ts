@@ -8,6 +8,7 @@ type Parameter = {
   range: boolean;
   minValue: number;
   maxValue: number;
+  parameterBlockId: string;
   parameterValues: ParameterValue[];
 };
 

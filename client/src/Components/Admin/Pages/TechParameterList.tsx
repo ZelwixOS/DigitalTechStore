@@ -1,43 +1,56 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { GridColDef } from '@material-ui/data-grid';
 
 import { TableBasement } from 'src/Components/Admin/Parts/TableBasement';
-import { getAllCategories } from 'src/Requests/GetRequests';
+import { getTechParameters } from 'src/Requests/GetRequests';
+import { deleteParameter } from 'src/Requests/DeleteRequests';
 import ModalFormDialog from 'src/Components/Admin/Parts/ModalFormDialog';
-import { deleteCategory } from 'src/Requests/DeleteRequests';
-import CreateCategory from 'src/Components/Admin/Parts/CreateCategory';
-import EditCategory from 'src/Components/Admin/Parts/EditCategory';
+import CreateParameter from 'src/Components/Admin/Parts/CreateParameter';
+import EditParameter from 'src/Components/Admin/Parts/EditParameter';
 
-export const CategoryList = () => {
+export const TechParameterList = () => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 300 },
     {
       field: 'name',
       headerName: 'Название',
-      width: 350,
-    },
-    {
-      field: 'deliveryPrice',
-      headerName: 'Цена доставки',
-      type: 'number',
-      width: 150,
-    },
-    {
-      field: 'commonCategoryName',
-      headerName: 'Обобщающая категория',
       width: 400,
     },
     {
-      field: 'description',
-      headerName: 'Описание',
-      width: 500,
+      field: 'important',
+      headerName: 'Важный',
+      width: 130,
+      type: 'boolean',
+    },
+    {
+      field: 'range',
+      headerName: 'Диапазон',
+      width: 140,
+      type: 'boolean',
+    },
+    {
+      field: 'minValue',
+      headerName: 'Мин.знач.',
+      width: 150,
+      type: 'number',
+    },
+    {
+      field: 'maxValue',
+      headerName: 'Макс.знач.',
+      width: 150,
+      type: 'number',
+    },
+    {
+      field: 'parameterBlockName',
+      headerName: 'Блок',
+      width: 400,
     },
   ];
 
   const onDelete = async (id: string): Promise<boolean> => {
-    const res = await deleteCategory(id);
+    const res = await deleteParameter(id);
     if (res === 0) {
-      setError('Не удалось удалить объект. Возможно, существуют зависимые категории.');
+      setError('Не удалось удалить объект. Возможно, существуют зависимые блоки или объект используется в продукте.');
       setOpen(true);
       return false;
     }
@@ -66,27 +79,27 @@ export const CategoryList = () => {
   return (
     <React.Fragment>
       <TableBasement
-        name="Категории"
-        getData={getAllCategories}
+        name="Параметры"
+        getData={getTechParameters}
         columns={columns}
         pageSize={12}
-        deleteSelected={onDelete}
         createNew={createNew}
         editSelected={editSelected}
+        deleteSelected={onDelete}
         open={open}
         setOpen={setOpen}
         error={error}
       />
       <ModalFormDialog
-        name={'Создание категории'}
+        name={'Создание параметра'}
         open={createOpen}
-        form={<CreateCategory setOpen={setCreateOpen} refresher={refreshFunction} />}
+        form={<CreateParameter setOpen={setCreateOpen} refresher={refreshFunction} />}
         setOpen={setCreateOpen}
       />
       <ModalFormDialog
-        name={'Изменение категории'}
+        name={'Изменение параметра'}
         open={editOpen}
-        form={<EditCategory id={selected} setOpen={setEditOpen} refresher={refreshFunction} />}
+        form={<EditParameter id={selected} setOpen={setEditOpen} refresher={refreshFunction} />}
         setOpen={setEditOpen}
       />
     </React.Fragment>

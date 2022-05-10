@@ -15,6 +15,8 @@ import UserPurchases from './Components/Pages/UserPurchases';
 import { CommonCategoryList } from './Components/Admin/Pages/CommonCategoryList';
 import { CategoryList } from './Components/Admin/Pages/CategoryList';
 import { AdminPage } from './Components/Admin/Pages/AdminPage';
+import { ParameterBlockList } from './Components/Admin/Pages/ParameterBlockList';
+import { TechParameterList } from './Components/Admin/Pages/TechParameterList';
 
 const innerTheme = createTheme({
   palette: {
@@ -42,6 +44,8 @@ const App: React.FC = () => (
       <Route path="/admin" element={<AdminPage />} />
       <Route path="/admin/commonCategories" element={<CommonCategoryList />} />
       <Route path="/admin/categories" element={<CategoryList />} />
+      <Route path="/admin/parameterBlocks" element={<ParameterBlockList />} />
+      <Route path="/admin/parameters" element={<TechParameterList />} />
     </Routes>
   </ThemeProvider>
 );

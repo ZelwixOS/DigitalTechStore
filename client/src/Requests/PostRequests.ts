@@ -51,6 +51,23 @@ async function setCategoryParameterBlocks(categoryId: string, blocks: ParameterB
   return await post(`/api/ParameterBlock/setMany/${categoryId}`, blocks);
 }
 
+async function createParameterBlock(name: string) {
+  const data = { name };
+  return await post(`/api/ParameterBlock/`, data);
+}
+
+async function createParameter(
+  name: string,
+  important: boolean,
+  range: boolean,
+  minValue: number,
+  maxValue: number,
+  parameterBlockId: string,
+) {
+  const data = { name, important, range, minValue, maxValue, parameterBlockId };
+  return await post(`/api/TechParameter/`, data);
+}
+
 export {
   addToCart,
   addToWishlist,
@@ -60,4 +77,6 @@ export {
   createCommonCategory,
   createCategory,
   setCategoryParameterBlocks,
+  createParameterBlock,
+  createParameter,
 };

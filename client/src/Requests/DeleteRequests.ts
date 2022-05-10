@@ -20,4 +20,19 @@ async function deleteCategory(id: string) {
   return await deleteRequest(`/api/Category/${id}`, null);
 }
 
-export { deleteFromCart, deleteFromWishlist, deleteCommonCategory, deleteCategory };
+async function deleteParameterBlock(id: string) {
+  return await deleteRequest(`/api/ParameterBlock/${id}`, null);
+}
+
+async function deleteParameter(id: string) {
+  return await deleteRequest(`/api/TechParameter/${id}`, null);
+}
+
+export {
+  deleteFromCart,
+  deleteFromWishlist,
+  deleteCommonCategory,
+  deleteCategory,
+  deleteParameterBlock,
+  deleteParameter,
+};
