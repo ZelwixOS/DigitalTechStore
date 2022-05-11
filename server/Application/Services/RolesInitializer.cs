@@ -31,6 +31,26 @@
                 await roleManager.CreateAsync(new IdentityRole<Guid>(Constants.RoleManager.Customer));
             }
 
+            if (await roleManager.FindByNameAsync(Constants.RoleManager.Manager) == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole<Guid>(Constants.RoleManager.Manager));
+            }
+
+            if (await roleManager.FindByNameAsync(Constants.RoleManager.ShopAssistant) == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole<Guid>(Constants.RoleManager.ShopAssistant));
+            }
+
+            if (await roleManager.FindByNameAsync(Constants.RoleManager.WarehouseWorker) == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole<Guid>(Constants.RoleManager.WarehouseWorker));
+            }
+
+            if (await roleManager.FindByNameAsync(Constants.RoleManager.Courier) == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole<Guid>(Constants.RoleManager.Courier));
+            }
+
             await CreateUserAsync("adminNE@mail.com", "Admin", "Main", "Administrator", "Aa123456!", "89807350000", Constants.RoleManager.Admin);
             await CreateUserAsync("costomerNE@mail.com", "Sergey", "Prohorov", "TestCustomer", "Aa123456!", "89807350000", Constants.RoleManager.Customer);
         }

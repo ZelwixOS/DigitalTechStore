@@ -33,6 +33,25 @@
             public const string WarehouseWorker = "WarehouseWorker";
         }
 
+        public static class AuthManager
+        {
+            public const string AdminManager = "Admin,Manager";
+
+            public const string Customer = "Customer";
+
+            public const string Courier = "Courier";
+
+            public const string Manager = "Manager";
+
+            public const string ShopAssistant = "ShopAssistant";
+
+            public const string WarehouseWorker = "WarehouseWorker";
+
+            public const string Worker = "Admin,Manager,ShopAssistant,Courier,WarehouseWorker";
+
+            public const string WorkerNotCourier = "Admin,Manager,ShopAssistant,WarehouseWorker";
+        }
+
         public static class AnswerMessage
         {
             public const string LoggedAs = "Вы вошли как: ";
@@ -46,6 +65,10 @@
             public const string LogOutSucceed = "Выполнен выход";
 
             public const string RegisteredSuccessfully = "Зарегистрирован новый покупатель: ";
+
+            public const string RegisteredWorkerSuccessfully = "Зарегистрирован новый работник: ";
+
+            public const string RegisteredWorkerUnSuccessfully = "Ошибка. Не удалось зарегистрировать работника";
 
             public const string RegisteredUnsuccessfully = "Ошибка. Не удалось зарегистрировать покупателя";
 

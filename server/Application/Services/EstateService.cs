@@ -34,6 +34,11 @@
             return _outletRepository.GetItems().Where(o => o.CityId == warehouseId).Select(o => new OutletDto(o)).ToList();
         }
 
+        public List<WarehouseDto> GetWarehousesByCity(int cityId)
+        {
+            return _warehouseRepository.GetItems().Where(o => o.CityId == cityId).Select(o => new WarehouseDto(o)).ToList();
+        }
+
         public List<WarehouseDto> GetWarehouses(int regionId)
         {
             return _warehouseRepository.GetItems().Where(o => o.City.RegionId == regionId).Select(o => new WarehouseDto(o)).ToList();

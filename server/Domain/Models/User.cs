@@ -31,6 +31,8 @@
 
         public int? OutletId { get; set; }
 
+        public bool Banned { get; set; }
+
         public int? WarehouseId { get; set; }
 
         public Outlet Outlet { get; set; }

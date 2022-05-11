@@ -5,7 +5,9 @@
     using Application.DTO.Request.Geography.Region;
     using Application.DTO.Response;
     using Application.DTO.Response.Geography;
+    using Application.Helpers;
     using Application.Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
@@ -39,6 +41,7 @@
         }
 
         [HttpPost("region")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<RegionDto> CreateRegion([FromBody] RegionCreateRequestDto region)
         {
             var created = this.geographyService.CreateRegion(region);
@@ -46,6 +49,7 @@
         }
 
         [HttpPost("city")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<RegionDto> CreateCity([FromBody] CityCreateRequestDto city)
         {
             var created = this.geographyService.CreateCity(city);
@@ -53,6 +57,7 @@
         }
 
         [HttpPut("region")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<RegionDto> UpdateRegion([FromBody] RegionUpdateRequestDto region)
         {
             var updated = this.geographyService.UpdateRegion(region);
@@ -60,6 +65,7 @@
         }
 
         [HttpPut("city")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<RegionDto> UpdateCity([FromBody] CityUpdateRequestDto city)
         {
             var updated = this.geographyService.UpdateCity(city);
@@ -67,12 +73,14 @@
         }
 
         [HttpDelete("region/{regionId}")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<int> DeleteRegion(int regionId)
         {
             return this.Ok(this.geographyService.DeleteRegion(regionId));
         }
 
         [HttpDelete("city/{regionId}")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<int> DeleteCity(int cityId)
         {
             return this.Ok(this.geographyService.DeleteCity(cityId));

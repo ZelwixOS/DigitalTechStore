@@ -6,7 +6,9 @@
     using Application.DTO.Request;
     using Application.DTO.Response;
     using Application.DTO.Response.WithExtraInfo;
+    using Application.Helpers;
     using Application.Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
@@ -55,18 +57,21 @@
         }
 
         [HttpPost]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<CategoryDto> Create([FromBody] CategoryCreateRequestDto category)
         {
             return this.Ok(_categoryService.CreateCategory(category));
         }
 
         [HttpPut]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<CategoryDto> Update([FromBody] CategoryUpdateRequestDto product)
         {
             return this.Ok(_categoryService.UpdateCategory(product));
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<int> Delete(Guid id)
         {
             return this.Ok(_categoryService.DeleteCategory(id));

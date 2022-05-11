@@ -28,11 +28,8 @@
             this.accountService = accountService;
         }
 
-        [Authorize(Roles = Constants.RoleManager.Admin)]
-        [Authorize(Roles = Constants.RoleManager.Courier)]
-        [Authorize(Roles = Constants.RoleManager.Manager)]
-        [Authorize(Roles = Constants.RoleManager.ShopAssistant)]
         [HttpGet("{purchaseId}")]
+        [Authorize(Roles = Constants.AuthManager.Worker)]
         public ActionResult<PurchaseDto> Get(Guid purchaseId)
         {
             var result = purchaseService.GetPurchase(purchaseId);
@@ -40,8 +37,8 @@
             return this.Ok(result);
         }
 
-        [Authorize(Roles = Constants.RoleManager.Admin)]
         [HttpGet("userPurchases/{purchaseId}")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<List<PurchaseDto>> GetUserPurchases(Guid userId)
         {
             var result = purchaseService.GetUserPurchases(userId);
@@ -53,6 +50,11 @@
         public async Task<ActionResult<List<PurchaseDto>>> Get()
         {
             var user = await accountService.GetCurrentUserAsync(HttpContext);
+            if (user == null)
+            {
+                return this.Unauthorized();
+            }
+
             var result = purchaseService.GetUserPurchases(user.Id);
 
             return this.Ok(result);
@@ -82,11 +84,8 @@
             return this.Ok(result);
         }
 
-        [Authorize(Roles = Constants.RoleManager.Admin)]
-        [Authorize(Roles = Constants.RoleManager.Courier)]
-        [Authorize(Roles = Constants.RoleManager.Manager)]
-        [Authorize(Roles = Constants.RoleManager.ShopAssistant)]
         [HttpPut]
+        [Authorize(Roles = Constants.AuthManager.Worker)]
         public ActionResult<int> UpdateStatus([FromBody] Guid purchaseId, PurchaseStatus status)
         {
             var result = purchaseService.ChangePurchaseStatus(purchaseId, status);

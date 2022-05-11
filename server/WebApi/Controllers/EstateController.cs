@@ -6,7 +6,9 @@
     using Application.DTO.Request.Estate.Warehouse;
     using Application.DTO.Response;
     using Application.DTO.Response.Estate;
+    using Application.Helpers;
     using Application.Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
@@ -39,7 +41,16 @@
             return this.Ok(result);
         }
 
+        [HttpGet("warehouses/city/{cityId}")]
+        public ActionResult<List<OutletDto>> GetWarehouseByCity(int cityId)
+        {
+            var result = this.estateService.GetWarehousesByCity(cityId);
+
+            return this.Ok(result);
+        }
+
         [HttpPost("outlet")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<OutletDto> CreateOutlet([FromBody] OutletCreateRequestDto outlet)
         {
             var created = this.estateService.CreateOutlet(outlet);
@@ -47,6 +58,7 @@
         }
 
         [HttpPost("warehouse")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<OutletDto> CreateWarehouse([FromBody] WarehouseCreateRequestDto warehouse)
         {
             var created = this.estateService.CreateWarehouse(warehouse);
@@ -54,6 +66,7 @@
         }
 
         [HttpPut("outlet")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<OutletDto> UpdateOutlet([FromBody] OutletUpdateRequestDto outlet)
         {
             var updated = this.estateService.UpdateOutlet(outlet);
@@ -61,6 +74,7 @@
         }
 
         [HttpPut("warehouse")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<OutletDto> UpdateWarehouse([FromBody] WarehouseUpdateRequestDto warehouse)
         {
             var updated = this.estateService.UpdateWarehouse(warehouse);
@@ -68,18 +82,21 @@
         }
 
         [HttpDelete("outlet/{outletId}")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<int> DeleteOutlet(int outletId)
         {
             return this.Ok(this.estateService.DeleteOutlet(outletId));
         }
 
         [HttpDelete("warehouse/{outletId}")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<int> DeleteWarehouse(int warehouseId)
         {
             return this.Ok(this.estateService.DeleteWarehouse(warehouseId));
         }
 
         [HttpPost("setproduct")]
+        [Authorize(Roles = Constants.AuthManager.WorkerNotCourier)]
         public ActionResult<OutletDto> SetWarehouseProduct(Guid productId, int unitId, int count)
         {
             var created = this.estateService.SetProductCount(productId, unitId, count);
@@ -87,6 +104,7 @@
         }
 
         [HttpPost("addproduct")]
+        [Authorize(Roles = Constants.AuthManager.WorkerNotCourier)]
         public ActionResult<OutletDto> AddWarehouseProduct(Guid productId, int unitId, int count)
         {
             var created = this.estateService.AddProductCount(productId, unitId, count);

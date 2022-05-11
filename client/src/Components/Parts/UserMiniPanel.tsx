@@ -117,20 +117,12 @@ const UserMiniPanel: React.FC = () => {
                   <MenuItem
                     className={classes.item}
                     onClick={() => {
-                      document.location.href = `/profile`;
-                    }}
-                  >
-                    <Typography variant="h5">Профиль</Typography>
-                  </MenuItem>
-                  <MenuItem
-                    className={classes.item}
-                    onClick={() => {
                       document.location.href = `/purchases`;
                     }}
                   >
                     <Typography variant="h5">Мои заказы</Typography>
                   </MenuItem>
-                  {userInfo.role === 'Admin' && (
+                  {(userInfo.role === 'Admin' || userInfo.role === 'Manager') && (
                     <MenuItem
                       className={classes.item}
                       onClick={() => {

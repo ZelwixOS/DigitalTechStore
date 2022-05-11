@@ -4,8 +4,9 @@
     using System.Collections.Generic;
     using Application.DTO.Request.CommonCategory;
     using Application.DTO.Response;
-
+    using Application.Helpers;
     using Application.Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
@@ -41,18 +42,21 @@
         }
 
         [HttpPost]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<CommonCategoryDto> Create([FromBody] CommonCategoryCreateRequestDto commonCommonCategory)
         {
             return this.Ok(_commonCommonCategoryService.CreateCommonCategory(commonCommonCategory));
         }
 
         [HttpPut]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<CommonCategoryDto> Update([FromBody] CommonCategoryUpdateRequestDto product)
         {
             return this.Ok(_commonCommonCategoryService.UpdateCommonCategory(product));
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<int> Delete(Guid id)
         {
             return this.Ok(_commonCommonCategoryService.DeleteCommonCategory(id));

@@ -1,8 +1,10 @@
 ﻿namespace Application.Interfaces
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Application.DTO.Request.Account;
+    using Application.DTO.Response;
     using Application.DTO.Response.Account;
     using Domain.Models;
     using Microsoft.AspNetCore.Http;
@@ -26,5 +28,19 @@
         public Task<UserInfo> GetCurrentUserInfo(HttpContext httpCont);
 
         public Task<MessageResultDto> GoogleAuth(string token);
+
+        public Task<MessageResultDto> Register(WorkerRegistrationDto model);
+
+        public Task<List<WorkerInfo>> GetWorkersAsync(HttpContext httpContext);
+
+        public int BanUser(Guid id);
+
+        public int UnBanUser(Guid id);
+
+        public Task<WorkerInfo> GetWorker(Guid id);
+
+        WorkerInfo UpdateWorker(WorkerUpdateDto model);
+
+        Task<int> UpdateWorkerRoleAsync(Guid id, string role);
     }
 }

@@ -1,9 +1,14 @@
 ﻿namespace WebApi.Controllers
 {
+    using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Application.DTO.Request.Account;
+    using Application.DTO.Response;
     using Application.DTO.Response.Account;
+    using Application.Helpers;
     using Application.Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
@@ -23,6 +28,14 @@
         [HttpPost]
         [Route("Register")]
         public async Task<ActionResult<MessageResultDto>> Register([FromBody] CustomerRegistrationDto model)
+        {
+            return this.Ok(await accountService.Register(model));
+        }
+
+        [HttpPost]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
+        [Route("RegisterWorker")]
+        public async Task<ActionResult<MessageResultDto>> RegisterWorker([FromBody] WorkerRegistrationDto model)
         {
             return this.Ok(await accountService.Register(model));
         }
@@ -68,6 +81,55 @@
         {
             var roles = await accountService.GetRole(HttpContext);
             return Ok(roles[0]);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
+        public async Task<ActionResult<WorkerInfo>> Get(Guid id)
+        {
+            var user = await accountService.GetWorker(id);
+            return Ok(user);
+        }
+
+        [HttpPost]
+        [Route("Ban/{id}")]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
+        public ActionResult<int> Ban(Guid id)
+        {
+            var res = accountService.BanUser(id);
+            return Ok(res);
+        }
+
+        [HttpPost]
+        [Route("Unban/{id}")]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
+        public ActionResult<int> Unban(Guid id)
+        {
+            var res = accountService.UnBanUser(id);
+            return Ok(res);
+        }
+
+        [HttpGet]
+        [Route("GetWorkers")]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
+        public async Task<ActionResult<List<WorkerInfo>>> GetWorkers()
+        {
+            return Ok(await accountService.GetWorkersAsync(HttpContext));
+        }
+
+        [HttpPut]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
+        public ActionResult<WorkerInfo> UpdateWorker(WorkerUpdateDto worker)
+        {
+            return Ok(accountService.UpdateWorker(worker));
+        }
+
+        [HttpPut("role/{id}")]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
+        public async Task<ActionResult<WorkerInfo>> UpdateWorker(Guid id, string role)
+        {
+            return Ok(await accountService.UpdateWorkerRoleAsync(id, role));
         }
     }
 }

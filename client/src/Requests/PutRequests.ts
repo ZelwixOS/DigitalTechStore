@@ -42,4 +42,28 @@ async function updateParameter(
   return await put(`/api/TechParameter/`, data);
 }
 
-export { updateCartItem, updateCommonCategory, updateCategory, updateParameterBlock, updateParameter };
+async function updateWorker(
+  id: string,
+  email: string,
+  phoneNumber: string,
+  firstName: string,
+  secondName: string,
+  roleName: string,
+  outletId: number,
+  warehouseId: number,
+  outletWorker: boolean,
+) {
+  const data = {
+    id,
+    email,
+    phoneNumber,
+    firstName,
+    secondName,
+    roleName,
+    outletId: outletWorker ? outletId : null,
+    warehouseId: outletWorker ? null : warehouseId,
+  };
+  return await put(`/api/Account/`, data);
+}
+
+export { updateCartItem, updateCommonCategory, updateCategory, updateParameterBlock, updateParameter, updateWorker };

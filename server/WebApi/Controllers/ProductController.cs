@@ -7,7 +7,9 @@
     using Application.DTO.Request;
     using Application.DTO.Response;
     using Application.DTO.Response.WithExtraInfo;
+    using Application.Helpers;
     using Application.Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
@@ -80,18 +82,21 @@
         }
 
         [HttpPost]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
         public ActionResult<ProductDto> Create([FromBody] ProductCreateRequestDto product)
         {
             return this.Ok(productService.CreateProduct(product));
         }
 
         [HttpPut]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
         public ActionResult<ProductDto> Update([FromBody] ProductUpdateRequestDto product)
         {
             return this.Ok(productService.UpdateProduct(product));
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
         public ActionResult<int> Delete(Guid id)
         {
             return this.Ok(productService.DeleteProduct(id));

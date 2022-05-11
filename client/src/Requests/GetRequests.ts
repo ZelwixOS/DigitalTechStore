@@ -4,12 +4,14 @@ import Category from 'src/Types/Category';
 import CategoryAllParameterBlocks from 'src/Types/CategoryAllParameterBlocks';
 import CommonCategory from 'src/Types/CommonCategory';
 import FilterValue from 'src/Types/FilterValue';
+import Outlet from 'src/Types/Outlet';
 import Parameter from 'src/Types/Parameter';
 import ParameterBlock from 'src/Types/ParameterBlock';
 import Product from 'src/Types/Product';
 import Purchase from 'src/Types/Purchase';
 import Region from 'src/Types/Region';
 import Sorting from 'src/Types/Sorting';
+import Warehouse from 'src/Types/Warehouse';
 
 async function getRequest(url: string) {
   return (await axios.get(url)).data;
@@ -70,6 +72,10 @@ async function getParameters(id: string) {
 
 async function getRegions() {
   return (await getRequest('/api/Geography/regions')) as Region[];
+}
+
+async function getAllRegions() {
+  return (await getRequest('/api/Geography/allRegions')) as Region[];
 }
 
 async function getCategoryById(id: string) {
@@ -144,6 +150,22 @@ async function getParameter(id: string) {
   return (await getRequest(`/api/TechParameter/${id}`)) as Parameter;
 }
 
+async function getOutlets(id: number) {
+  return (await getRequest(`/api/Estate/outlets/${id}`)) as Outlet[];
+}
+
+async function getWarehouses(id: number) {
+  return (await getRequest(`/api/Estate/warehouses/city/${id}`)) as Warehouse[];
+}
+
+async function getWorkers() {
+  return await getRequest(`/api/Account/GetWorkers`);
+}
+
+async function getWorker(id: string) {
+  return await getRequest(`/api/Account/${id}`);
+}
+
 export default getRequest;
 
 export {
@@ -158,6 +180,7 @@ export {
   getReviews,
   getParameters,
   getRegions,
+  getAllRegions,
   getCartUnsigned,
   getPurchases,
   getAllCategories,
@@ -168,4 +191,8 @@ export {
   getParameterBlock,
   getTechParameters,
   getParameter,
+  getWorkers,
+  getOutlets,
+  getWarehouses,
+  getWorker,
 };

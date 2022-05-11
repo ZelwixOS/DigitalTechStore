@@ -56,6 +56,40 @@ async function createParameterBlock(name: string) {
   return await post(`/api/ParameterBlock/`, data);
 }
 
+async function banUser(id: string) {
+  return await post(`/api/Account/Ban/${id}`, null);
+}
+
+async function unbanUser(id: string) {
+  return await post(`/api/Account/Unban/${id}`, null);
+}
+
+async function registerWorker(
+  login: string,
+  password: string,
+  email: string,
+  phoneNumber: string,
+  firstName: string,
+  secondName: string,
+  roleName: string,
+  outletId: number,
+  warehouseId: number,
+  outletWorker: boolean,
+) {
+  const data = {
+    login,
+    password,
+    email,
+    phoneNumber,
+    firstName,
+    secondName,
+    roleName,
+    outletId: outletWorker ? outletId : null,
+    warehouseId: outletWorker ? null : warehouseId,
+  };
+  return await post(`/api/Account/RegisterWorker/`, data);
+}
+
 async function createParameter(
   name: string,
   important: boolean,
@@ -79,4 +113,7 @@ export {
   setCategoryParameterBlocks,
   createParameterBlock,
   createParameter,
+  banUser,
+  unbanUser,
+  registerWorker,
 };

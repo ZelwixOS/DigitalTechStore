@@ -210,7 +210,7 @@ const EditParameter: React.FC<IEditParameter> = props => {
             control={
               <Checkbox checked={parameterData.range} onChange={handleRangeChange} name="range" color="primary" />
             }
-            label="Диапозон"
+            label="Диапазон"
             className={classes.spaces}
           />
           {parameterData.range && (
