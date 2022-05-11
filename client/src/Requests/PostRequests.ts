@@ -102,6 +102,11 @@ async function createParameter(
   return await post(`/api/TechParameter/`, data);
 }
 
+async function createParameterValue(techParameterIdFk: string, value: string) {
+  const data = { value, techParameterIdFk };
+  return await post(`/api/ParameterValue`, data);
+}
+
 export {
   addToCart,
   addToWishlist,
@@ -116,4 +121,5 @@ export {
   banUser,
   unbanUser,
   registerWorker,
+  createParameterValue,
 };

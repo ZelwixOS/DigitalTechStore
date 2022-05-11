@@ -39,6 +39,7 @@
         public IQueryable<ParameterValue> GetItems()
         {
             return this.Context.ParameterValues
+                .Include(p => p.TechParameter)
                 .AsNoTracking();
         }
 

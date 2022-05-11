@@ -66,4 +66,17 @@ async function updateWorker(
   return await put(`/api/Account/`, data);
 }
 
-export { updateCartItem, updateCommonCategory, updateCategory, updateParameterBlock, updateParameter, updateWorker };
+async function updateParameterValue(id: string, techParameterIdFk: string, value: string) {
+  const data = { id, value, techParameterIdFk };
+  return await put(`/api/ParameterValue`, data);
+}
+
+export {
+  updateCartItem,
+  updateCommonCategory,
+  updateCategory,
+  updateParameterBlock,
+  updateParameter,
+  updateWorker,
+  updateParameterValue,
+};

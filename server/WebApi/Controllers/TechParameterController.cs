@@ -30,6 +30,13 @@
             return this.Ok(_techParameterService.GetTechParameters());
         }
 
+        [HttpGet("lists")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
+        public ActionResult<List<TechParameterDto>> GetLists()
+        {
+            return this.Ok(_techParameterService.GetTechListParameters());
+        }
+
         [HttpGet("{id}")]
         public ActionResult<TechParameterDto> Get(Guid id)
         {

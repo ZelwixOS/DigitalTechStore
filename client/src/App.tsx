@@ -18,6 +18,7 @@ import { AdminPage } from './Components/Admin/Pages/AdminPage';
 import { ParameterBlockList } from './Components/Admin/Pages/ParameterBlockList';
 import { TechParameterList } from './Components/Admin/Pages/TechParameterList';
 import { WorkersPage } from './Components/Admin/Pages/WorkersPage';
+import { ParameterValueList } from './Components/Admin/Pages/ParameterValueList';
 
 const innerTheme = createTheme({
   palette: {
@@ -48,6 +49,7 @@ const App: React.FC = () => (
       <Route path="/admin/parameterBlocks" element={<ParameterBlockList />} />
       <Route path="/admin/parameters" element={<TechParameterList />} />
       <Route path="/admin/workers" element={<WorkersPage />} />
+      <Route path="/admin/parameterValues" element={<ParameterValueList />} />
     </Routes>
   </ThemeProvider>
 );

@@ -34,6 +34,7 @@ const HiddenNavigation = () => {
   const parameterBlocks = onMenuItemClick.bind(this, '/admin/parameterBlocks');
   const parameters = onMenuItemClick.bind(this, '/admin/parameters');
   const workers = onMenuItemClick.bind(this, '/admin/workers');
+  const parameterValues = onMenuItemClick.bind(this, '/admin/parameterValues');
 
   const menuItem = (name: string, click: () => void) => (
     <MenuItem onClick={click}>
@@ -78,6 +79,8 @@ const HiddenNavigation = () => {
             {menuItem('Блоки параметров', parameterBlocks)}
             <Divider />
             {menuItem('Параметры', parameters)}
+            <Divider />
+            {menuItem('Значения параметров', parameterValues)}
             <Divider />
             {menuItem('Работники', workers)}
           </List>

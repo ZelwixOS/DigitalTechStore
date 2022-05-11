@@ -35,5 +35,7 @@
         TechParameterDto GetTechParameter(Guid id);
 
         ParameterBlockDto GetParameterBlock(Guid id);
+
+        List<TechParameterDto> GetTechListParameters();
     }
 }

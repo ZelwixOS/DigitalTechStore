@@ -31,6 +31,11 @@
             return _techParameterRepository.GetItems().Select(x => new TechParameterDto(x)).ToList();
         }
 
+        public List<TechParameterDto> GetTechListParameters()
+        {
+            return _techParameterRepository.GetItems().Where(p => !p.Range).Select(x => new TechParameterDto(x)).ToList();
+        }
+
         public TechParameterDto CreateTechParameter(TechParameterCreateRequestDto techParam)
         {
             return new TechParameterDto(_techParameterRepository.CreateItem(techParam.ToModel()));

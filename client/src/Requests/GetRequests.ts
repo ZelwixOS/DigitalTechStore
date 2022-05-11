@@ -146,6 +146,10 @@ async function getTechParameters() {
   return (await getRequest(`/api/TechParameter`)) as Parameter[];
 }
 
+async function getTechListParameters() {
+  return (await getRequest(`/api/TechParameter/lists`)) as Parameter[];
+}
+
 async function getParameter(id: string) {
   return (await getRequest(`/api/TechParameter/${id}`)) as Parameter;
 }
@@ -164,6 +168,14 @@ async function getWorkers() {
 
 async function getWorker(id: string) {
   return await getRequest(`/api/Account/${id}`);
+}
+
+async function getParameterValues() {
+  return await getRequest(`/api/ParameterValue`);
+}
+
+async function getParameterValue(id: string) {
+  return await getRequest(`/api/ParameterValue/${id}`);
 }
 
 export default getRequest;
@@ -188,8 +200,11 @@ export {
   getCategoryById,
   getCategoryParamBlocks,
   getParamBlocks,
+  getParameterValue,
+  getParameterValues,
   getParameterBlock,
   getTechParameters,
+  getTechListParameters,
   getParameter,
   getWorkers,
   getOutlets,
