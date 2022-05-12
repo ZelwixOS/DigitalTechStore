@@ -102,9 +102,19 @@ async function createParameter(
   return await post(`/api/TechParameter/`, data);
 }
 
-async function createParameterValue(techParameterIdFk: string, value: string) {
-  const data = { value, techParameterIdFk };
+async function createParameterValue(techParameterId: string, value: string) {
+  const data = { value, techParameterId };
   return await post(`/api/ParameterValue`, data);
+}
+
+async function createProductParameter(
+  productId: string,
+  value: number | null,
+  parameterId: string,
+  parameterValueId: string | null,
+) {
+  const data = { productId, value, parameterId, parameterValueId };
+  return await post(`/api/ProductParameter`, data);
 }
 
 export {
@@ -122,4 +132,5 @@ export {
   unbanUser,
   registerWorker,
   createParameterValue,
+  createProductParameter,
 };

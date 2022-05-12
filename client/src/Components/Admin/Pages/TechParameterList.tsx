@@ -82,7 +82,7 @@ export const TechParameterList = () => {
         name="Параметры"
         getData={getTechParameters}
         columns={columns}
-        pageSize={12}
+        pageSize={10}
         createNew={createNew}
         editSelected={editSelected}
         deleteSelected={onDelete}

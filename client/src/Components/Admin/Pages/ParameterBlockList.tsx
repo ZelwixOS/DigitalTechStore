@@ -55,7 +55,7 @@ export const ParameterBlockList = () => {
         name="Блоки параметров"
         getData={getParamBlocks}
         columns={columns}
-        pageSize={12}
+        pageSize={10}
         createNew={createNew}
         editSelected={editSelected}
         deleteSelected={onDelete}

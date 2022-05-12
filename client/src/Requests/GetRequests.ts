@@ -178,6 +178,10 @@ async function getParameterValue(id: string) {
   return await getRequest(`/api/ParameterValue/${id}`);
 }
 
+async function getProductParameter() {
+  return await getRequest(`/api/ProductParameter`);
+}
+
 export default getRequest;
 
 export {
@@ -210,4 +214,5 @@ export {
   getOutlets,
   getWarehouses,
   getWorker,
+  getProductParameter,
 };

@@ -155,7 +155,7 @@ const LoginForm: React.FC = () => {
       <Grid container justify="center">
         <GoogleLogin
           clientId={'1036988036938-9u2bo3aiqo038ehm8tlb3vl9lq6bm27f.apps.googleusercontent.com'}
-          buttonText="Log in with Google"
+          buttonText="Войти через Google"
           onSuccess={handleGoogleLoginSuccess}
           cookiePolicy={'single_host_origin'}
         />

@@ -58,7 +58,7 @@ export const CommonCategoryList = () => {
         name="Обобщающие категории"
         getData={getCommonCategories}
         columns={columns}
-        pageSize={12}
+        pageSize={10}
         createNew={createNew}
         editSelected={editSelected}
         deleteSelected={onDelete}

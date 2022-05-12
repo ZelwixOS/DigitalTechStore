@@ -313,10 +313,10 @@ const PurchasingPage: React.FC = () => {
                             <React.Fragment key={o.id}>
                               <ListItem>
                                 <Grid alignItems="center" direction="row" container>
-                                  <Grid item xs={12} sm={3}>
+                                  <Grid item container justifyContent="center" xs={12} sm={2}>
                                     <Radio value={o.id.toString()} color="primary" />
                                   </Grid>
-                                  <Grid item xs={12} sm={9}>
+                                  <Grid item xs={12} sm={10}>
                                     <OutletInfo outlet={o} />
                                   </Grid>
                                 </Grid>

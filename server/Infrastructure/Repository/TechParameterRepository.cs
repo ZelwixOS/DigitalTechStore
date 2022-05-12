@@ -20,6 +20,7 @@
         {
             return this.Context.TechParameters
                 .Include(t => t.ParameterBlock)
+                .Include(t => t.ParameterValues)
                 .AsNoTracking();
         }
 

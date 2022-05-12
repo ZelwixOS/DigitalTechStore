@@ -96,6 +96,7 @@ const PriceLikeBuyCard: React.FC<IPriceLikeBuyCard> = props => {
       } else {
         localStorage.setItem('cartItems', props.id as string);
       }
+      setInCart(true);
     }
   };
 

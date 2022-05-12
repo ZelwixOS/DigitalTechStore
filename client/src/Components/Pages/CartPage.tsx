@@ -34,7 +34,7 @@ const CartPage: React.FC = () => {
   const getProd = async (isMounted: boolean) => {
     let res: Cart;
     const role = sessionStorage.getItem('signed');
-    if (role) {
+    if (role || role === 'Guest') {
       res = (await getCart()) as Cart;
     } else {
       res = await getCartUnsigned();
@@ -71,8 +71,22 @@ const CartPage: React.FC = () => {
   };
 
   const deleteItem = async (productId: string) => {
-    const result = await deleteFromCart(productId);
-    if (result === 1) {
+    const role = sessionStorage.getItem('signed');
+    console.log(role);
+    let result;
+    if (role && role !== 'Guest') {
+      result = await deleteFromCart(productId);
+    } else {
+      const cart = localStorage.getItem('cartItems');
+      if (cart) {
+        const arr = cart.split(',');
+        const index = arr.findIndex(a => a === productId);
+        arr.splice(index, 1);
+        localStorage.setItem('cartItems', arr.join(','));
+      }
+    }
+
+    if (!role || result === 1) {
       const deleted = cartItems.findIndex(item => item.product.id === productId);
       const newCartItems = [...cartItems];
       newCartItems.splice(deleted, 1);

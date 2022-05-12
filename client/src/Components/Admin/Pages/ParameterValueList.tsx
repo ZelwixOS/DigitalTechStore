@@ -63,7 +63,7 @@ export const ParameterValueList = () => {
         name="Значения параметров"
         getData={getParameterValues}
         columns={columns}
-        pageSize={12}
+        pageSize={10}
         createNew={createNew}
         editSelected={editSelected}
         deleteSelected={onDelete}

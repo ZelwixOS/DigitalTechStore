@@ -85,7 +85,7 @@ const ProductCard: React.FC<IProductCard> = props => {
     const img = new Image();
     img.src = `${picUrl}${props.product.picURL}`;
 
-    if (!role) {
+    if (!role || role === 'Guest') {
       const cart = localStorage.getItem('cartItems');
       if (cart) {
         props.product.inCart = cart.includes(props.product.id);
@@ -106,7 +106,7 @@ const ProductCard: React.FC<IProductCard> = props => {
   const [inWishlist, setInWishlist] = useState(props.product.inWishlist);
 
   const addProductToCart = async () => {
-    if (role) {
+    if (role && role !== 'Guest') {
       const response = await addToCart(props.product.id, 0);
       if (response !== null) {
         setInCart(true);

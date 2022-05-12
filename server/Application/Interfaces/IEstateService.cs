@@ -24,9 +24,9 @@
 
         WarehouseDto UpdateWarehouse(WarehouseUpdateRequestDto warehouse);
 
-        int SetProductCount(Guid productId, int unitId, int count);
+        int SetProductCount(Guid productId, int unitId, bool outlet, int count);
 
-        int AddProductCount(Guid productId, int unitId, int count);
+        int AddProductCount(Guid productId, int unitId, bool outlet, int count);
 
         List<WarehouseDto> GetWarehousesByCity(int cityId);
     }

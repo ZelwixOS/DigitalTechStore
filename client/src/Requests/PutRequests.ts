@@ -66,8 +66,8 @@ async function updateWorker(
   return await put(`/api/Account/`, data);
 }
 
-async function updateParameterValue(id: string, techParameterIdFk: string, value: string) {
-  const data = { id, value, techParameterIdFk };
+async function updateParameterValue(id: string, techParameterId: string, value: string) {
+  const data = { id, value, techParameterId };
   return await put(`/api/ParameterValue`, data);
 }
 

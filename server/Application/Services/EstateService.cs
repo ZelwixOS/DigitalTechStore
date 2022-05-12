@@ -90,20 +90,20 @@
             return warehouseModel != null ? _warehouseRepository.DeleteItem(warehouseModel) : 0;
         }
 
-        public int SetProductCount(Guid productId, int unitId, int count)
+        public int SetProductCount(Guid productId, int unitId, bool outlet, int count)
         {
-            return SetOrAdd(productId, unitId, count, false);
+            return SetOrAdd(productId, unitId, count, outlet, false);
         }
 
-        public int AddProductCount(Guid productId, int unitId, int count)
+        public int AddProductCount(Guid productId, int unitId, bool outlet, int count)
         {
-            return SetOrAdd(productId, unitId, count, true);
+            return SetOrAdd(productId, unitId, count, outlet, true);
         }
 
-        private int SetOrAdd(Guid productId, int unitId, int count, bool add)
+        private int SetOrAdd(Guid productId, int unitId, int count, bool outlet, bool add)
         {
-            EstateUnit item = _outletRepository.GetItem(unitId);
-            if (item != null)
+            EstateUnit item = outlet ? _outletRepository.GetItem(unitId) : _warehouseRepository.GetItem(unitId);
+            if (item != null && outlet)
             {
                 var outletProduct = _outletProductRepository.GetItem(productId, unitId);
                 if (outletProduct != null)
@@ -120,7 +120,6 @@
             }
             else
             {
-                item = _warehouseRepository.GetItem(unitId);
                 if (item == null)
                 {
                     return 0;

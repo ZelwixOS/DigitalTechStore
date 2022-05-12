@@ -69,7 +69,7 @@ export const CategoryList = () => {
         name="Категории"
         getData={getAllCategories}
         columns={columns}
-        pageSize={12}
+        pageSize={10}
         deleteSelected={onDelete}
         createNew={createNew}
         editSelected={editSelected}

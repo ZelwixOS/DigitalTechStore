@@ -97,17 +97,17 @@
 
         [HttpPost("setproduct")]
         [Authorize(Roles = Constants.AuthManager.WorkerNotCourier)]
-        public ActionResult<OutletDto> SetWarehouseProduct(Guid productId, int unitId, int count)
+        public ActionResult<OutletDto> SetWarehouseProduct(Guid productId, int unitId, bool outlet, int count)
         {
-            var created = this.estateService.SetProductCount(productId, unitId, count);
+            var created = this.estateService.SetProductCount(productId, unitId, outlet, count);
             return this.Ok(created);
         }
 
         [HttpPost("addproduct")]
         [Authorize(Roles = Constants.AuthManager.WorkerNotCourier)]
-        public ActionResult<OutletDto> AddWarehouseProduct(Guid productId, int unitId, int count)
+        public ActionResult<OutletDto> AddWarehouseProduct(Guid productId, int unitId, bool outlet, int count)
         {
-            var created = this.estateService.AddProductCount(productId, unitId, count);
+            var created = this.estateService.AddProductCount(productId, unitId, outlet, count);
             return this.Ok(created);
         }
     }

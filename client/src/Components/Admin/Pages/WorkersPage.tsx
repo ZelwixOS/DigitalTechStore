@@ -110,7 +110,7 @@ export const WorkersPage = () => {
         name="Работники"
         getData={getWorkers}
         columns={columns}
-        pageSize={12}
+        pageSize={10}
         createNew={createNew}
         editSelected={editSelected}
         banSelected={onBan}

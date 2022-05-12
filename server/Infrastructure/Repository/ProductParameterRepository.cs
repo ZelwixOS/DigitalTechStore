@@ -17,7 +17,11 @@
 
         public IQueryable<ProductParameter> GetItems()
         {
-            return this.Context.ProductParameters.AsNoTracking();
+            return this.Context.ProductParameters
+                .Include(pp => pp.ParameterValue)
+                .Include(pp => pp.Product)
+                .Include(pp => pp.TechParameter)
+                .AsNoTracking();
         }
 
         public IQueryable<ProductParameter> GetItems(Guid id)

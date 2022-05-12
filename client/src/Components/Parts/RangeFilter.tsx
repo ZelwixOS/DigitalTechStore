@@ -61,9 +61,7 @@ const RangeFilter: React.FC<IRangeFilter> = props => {
 
   return (
     <Grid item container justify="space-evenly" alignItems="flex-start" direction="column" xs={12}>
-      <Typography variant="h6" className={classes.heading}>
-        {props.parameter.name}:
-      </Typography>
+      <Typography className={classes.heading}>{props.parameter.name}:</Typography>
       <Grid item container justify="flex-start" alignItems="center" direction="row" xs={12}>
         <Typography className={classes.beforeText} variant="body1">
           От:

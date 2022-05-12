@@ -33,12 +33,12 @@ const DetailedProductCard: React.FC<IDetailedProductCard> = props => {
     let string = '';
     props.paramBlocks?.map(block =>
       block.parameters.map(param => {
-        if (param.important) {
+        if (param.important && string.length < 110) {
           string += `${param.name}:${param.value}, `;
         }
       }),
     );
-    return string.substring(0, string.length - 2);
+    return `${string.substring(0, string.length - 2)}...`;
   };
 
   const strinTechParams = paramString();

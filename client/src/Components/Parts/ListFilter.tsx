@@ -78,9 +78,7 @@ const ListFilter: React.FC<IListFilter> = props => {
 
   return (
     <Grid item xs={12}>
-      <Typography variant="h6" className={classes.heading}>
-        {props.parameter.name}:
-      </Typography>
+      <Typography className={classes.heading}>{props.parameter.name}:</Typography>
       <Grid item xs={12} className={classes.checkboxField}>
         {props.parameter.parameterValues.map(
           (val, index) =>
