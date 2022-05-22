@@ -53,5 +53,17 @@
             this.Context.ProductParameters.Remove(productParameter);
             return this.Context.SaveChanges();
         }
+
+        public int DeleteItems(IQueryable<ProductParameter> parameters)
+        {
+            this.Context.ProductParameters.RemoveRange(parameters);
+            return this.Context.SaveChanges();
+        }
+
+        public int CreateItems(IQueryable<ProductParameter> parameters)
+        {
+            this.Context.AddRange(parameters);
+            return this.Context.SaveChanges();
+        }
     }
 }

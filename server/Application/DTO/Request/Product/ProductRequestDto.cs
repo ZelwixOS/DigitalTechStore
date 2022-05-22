@@ -4,6 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using Application.Interfaces;
     using Domain.Models;
+    using Microsoft.AspNetCore.Http;
 
     public abstract class ProductRequestDto : IDtoMapper<Product>
     {
@@ -21,18 +22,12 @@
         public string Description { get; set; }
 
         [Required]
-        public double Mark { get; set; }
-
-        [Required]
-        public int Popularity { get; set; }
-
-        [Required]
         [MaxLength(10)]
         public string VendorCode { get; set; }
 
-        [Required]
-        [MaxLength(40)]
-        public string PicURL { get; set; }
+        public IFormFile PicFile { get; set; }
+
+        public string ParameterString { get; set; }
 
         public Guid CategoryId { get; set; }
 

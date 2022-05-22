@@ -46,7 +46,10 @@
         [HttpGet]
         public async Task<ActionResult<WrapperExtraInfo<List<ProductDto>>>> Get([FromQuery] GetProductsRequest parameters, string search)
         {
-            var result = productService.GetProducts(parameters, search);
+            var role = await this.accountService.GetRole(HttpContext);
+            WrapperExtraInfo<List<ProductDto>> result;
+
+            result = productService.GetProducts(parameters, search, role.Contains(Constants.RoleManager.Admin) || role.Contains(Constants.RoleManager.Manager));
 
             var user = await this.accountService.GetCurrentUserAsync(HttpContext);
 
@@ -83,16 +86,44 @@
 
         [HttpPost]
         [Authorize(Roles = Constants.AuthManager.AdminManager)]
-        public ActionResult<ProductDto> Create([FromBody] ProductCreateRequestDto product)
+        public async Task<ActionResult<ProductDto>> CreateAsync([FromForm] ProductCreateRequestDto product)
         {
-            return this.Ok(productService.CreateProduct(product));
+            return this.Ok(await productService.CreateProductAsync(product));
+        }
+
+        [HttpPost("createpublish")]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
+        public async Task<ActionResult<ProductDto>> CreateAndPublishAsync([FromForm] ProductCreateRequestDto product)
+        {
+            return this.Ok(await productService.CreateProductAsync(product, true));
+        }
+
+        [HttpPost("publish/{productId}")]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
+        public ActionResult<ProductDto> Publish(Guid productId)
+        {
+            return this.Ok(productService.SetPublishProductStatus(productId, true));
+        }
+
+        [HttpPost("unpublish/{productId}")]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
+        public ActionResult<ProductDto> Unpublish(Guid productId)
+        {
+            return this.Ok(productService.SetPublishProductStatus(productId, false));
+        }
+
+        [HttpPost("clone/{productId}")]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
+        public ActionResult<ProductDto> Clone(Guid productId)
+        {
+            return this.Ok(productService.Clone(productId));
         }
 
         [HttpPut]
         [Authorize(Roles = Constants.AuthManager.AdminManager)]
-        public ActionResult<ProductDto> Update([FromBody] ProductUpdateRequestDto product)
+        public async Task<ActionResult<ProductDto>> UpdateAsync([FromForm] ProductUpdateRequestDto product)
         {
-            return this.Ok(productService.UpdateProduct(product));
+            return this.Ok(await productService.UpdateProductAsync(product));
         }
 
         [HttpDelete("{id}")]

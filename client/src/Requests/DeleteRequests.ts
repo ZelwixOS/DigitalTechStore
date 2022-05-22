@@ -36,6 +36,10 @@ async function deleteProductParameter(id: string) {
   return await deleteRequest(`/api/ProductParameter/${id}`, null);
 }
 
+async function deleteProduct(id: string) {
+  return await deleteRequest(`/api/Product/${id}`, null);
+}
+
 export {
   deleteFromCart,
   deleteFromWishlist,
@@ -45,4 +49,5 @@ export {
   deleteParameter,
   deleteParameterValue,
   deleteProductParameter,
+  deleteProduct,
 };

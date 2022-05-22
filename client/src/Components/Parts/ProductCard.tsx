@@ -63,6 +63,12 @@ const useStyles = makeStyles((theme: Theme) =>
     bold: {
       fontWeight: 600,
     },
+    thinbold: {
+      fontWeight: 550,
+    },
+    crossed: {
+      textDecoration: 'line-through',
+    },
     rating: {
       margin: theme.spacing(1),
     },
@@ -207,9 +213,25 @@ const ProductCard: React.FC<IProductCard> = props => {
                   {props.product.name}
                 </Link>
               </Typography>
-              <Typography align="center" component="h5" variant="h5" className={classes.bold}>
-                {props.product.price}₽
-              </Typography>
+              {props.product.priceWithoutDiscount && props.product.priceWithoutDiscount > props.product.price ? (
+                <React.Fragment>
+                  <Typography
+                    align="center"
+                    variant="h6"
+                    color="textSecondary"
+                    className={`${classes.crossed} ${classes.thinbold}`}
+                  >
+                    {props.product.priceWithoutDiscount}₽
+                  </Typography>
+                  <Typography align="center" color="primary" component="h5" variant="h5" className={classes.bold}>
+                    {props.product.price}₽
+                  </Typography>
+                </React.Fragment>
+              ) : (
+                <Typography align="center" component="h5" variant="h5" className={classes.bold}>
+                  {props.product.price}₽
+                </Typography>
+              )}
             </Grid>
           </CardContent>
           <Grid
@@ -227,7 +249,7 @@ const ProductCard: React.FC<IProductCard> = props => {
         </Grid>
         <Grid container direction="row" justify="center" alignItems="center" item xs={12} sm={2}>
           {!props.hideLike && (
-            <Grid item xs={12} sm={4}>
+            <Grid container justify="center" item xs={12} sm={4}>
               {inWishlist ? (
                 <IconButton
                   aria-label="favourite"
@@ -244,20 +266,19 @@ const ProductCard: React.FC<IProductCard> = props => {
               )}
             </Grid>
           )}
-          {!props.hideBuy &&
-            (inCart ? (
-              <Grid item xs={12} sm={8}>
+          {!props.hideBuy && (
+            <Grid container justify="center" item xs={12} sm={8}>
+              {inCart ? (
                 <Button className={classes.button} variant="contained" color="primary" href="/cart">
                   В Корзине
                 </Button>
-              </Grid>
-            ) : (
-              <Grid item xs={12} sm={8}>
+              ) : (
                 <Button className={classes.button} variant="outlined" onClick={addProductToCart}>
                   Купить
                 </Button>
-              </Grid>
-            ))}
+              )}
+            </Grid>
+          )}
           {props.showCounter && (
             <Grid item xs={12} sm={6}>
               <PoductCounter id={props.product.id} count={props.count as number} onCount={props.onCount} />

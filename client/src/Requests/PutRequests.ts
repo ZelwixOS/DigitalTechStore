@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import ParameterCreateRequest from 'src/Types/ParameterCreateRequest';
+
 async function put<T>(url: string, data: T) {
   return (await axios.put(url, data)).data;
 }
@@ -71,6 +73,35 @@ async function updateParameterValue(id: string, techParameterId: string, value: 
   return await put(`/api/ParameterValue`, data);
 }
 
+async function updateProduct(
+  id: string,
+  name: string,
+  description: string,
+  price: number,
+  priceWithoutDiscount: number,
+  categoryId: string,
+  vendorCode: string,
+  picFile: File | null,
+  parameters?: ParameterCreateRequest[],
+) {
+  const formData = new FormData();
+  formData.append('id', id);
+  formData.append('name', name);
+  formData.append('description', description);
+  formData.append('price', `${price}`);
+  formData.append('priceWithoutDiscount', `${priceWithoutDiscount}`);
+  formData.append('categoryId', categoryId);
+  formData.append('vendorCode', vendorCode);
+  if (picFile) {
+    formData.append('picFile', picFile);
+  }
+
+  const parameterString = JSON.stringify(parameters);
+  formData.append(`parameterString`, parameterString);
+
+  return await put(`/api/Product`, formData);
+}
+
 export {
   updateCartItem,
   updateCommonCategory,
@@ -79,4 +110,5 @@ export {
   updateParameter,
   updateWorker,
   updateParameterValue,
+  updateProduct,
 };

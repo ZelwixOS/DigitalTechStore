@@ -76,7 +76,7 @@
             var category = _categoryRepository.GetItem(name);
             if (category != null)
             {
-                var allProducts = _productRepository.GetItems().Where(p => p.CategoryIdFk == category.Id);
+                var allProducts = _productRepository.GetItems().Where(p => p.CategoryIdFk == category.Id && p.Published);
                 var filters = _productHelper.Filter.ConvertParameters(queryCollection);
                 allProducts = _productHelper.Filter.FilterByParameters(allProducts, filters.Range, filters.ListValue);
                 var filterResult = _productHelper.Filter.FilterByPrice(allProducts, (decimal)parameters.MinPrice, parameters.MaxPrice);

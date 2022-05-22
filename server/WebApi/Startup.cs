@@ -155,6 +155,7 @@ namespace WebApi
                 new ProductService(
                     provider.GetService<IProductRepository>(),
                     provider.GetService<ICategoryRepository>(),
+                    provider.GetService<IProductParameterRepository>(),
                     provider.GetService<ProductHelpersContainer>()));
             services.AddScoped<ICategoryService, CategoryService>(provider =>
                 new CategoryService(

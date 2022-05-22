@@ -7,6 +7,7 @@
     {
         public CategoryOfProductDto(Category category)
         {
+            this.Id = category.Id;
             this.Name = category.Name;
             this.Description = category.Description;
         }
@@ -14,6 +15,8 @@
         public CategoryOfProductDto()
         {
         }
+
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

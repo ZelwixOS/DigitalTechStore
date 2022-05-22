@@ -24,7 +24,7 @@
 
         public IQueryable<Product> GetItems()
         {
-            return this.Context.Products.Include(p => p.ProductParameters).AsNoTracking();
+            return this.Context.Products.Include(p => p.ProductParameters).Include(p => p.Category).AsNoTracking();
         }
 
         public Product GetItem(Guid id)

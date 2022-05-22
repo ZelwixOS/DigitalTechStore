@@ -3,6 +3,7 @@ import axios from 'axios';
 import ItemOfPurchase from 'src/Types/ItemOfPurchase';
 import ParameterBlock from 'src/Types/ParameterBlock';
 import ParameterBlockCreateRequest from 'src/Types/ParameterBlockCreateRequest';
+import ParameterCreateRequest from 'src/Types/ParameterCreateRequest';
 import PurchaseRequest from 'src/Types/PurchaseRequest';
 
 async function post<T>(url: string, data: T) {
@@ -117,6 +118,45 @@ async function createProductParameter(
   return await post(`/api/ProductParameter`, data);
 }
 
+async function cloneProduct(productId: string) {
+  return await post(`/api/Product/clone/${productId}`, null);
+}
+
+async function publishProduct(productId: string) {
+  return await post(`/api/Product/publish/${productId}`, null);
+}
+
+async function unpublishProduct(productId: string) {
+  return await post(`/api/Product/unpublish/${productId}`, null);
+}
+
+async function createProduct(
+  name: string,
+  description: string,
+  price: number,
+  priceWithoutDiscount: number,
+  categoryId: string,
+  vendorCode: string,
+  picFile: File | null,
+  parameters?: ParameterCreateRequest[],
+) {
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('description', description);
+  formData.append('price', `${price}`);
+  formData.append('priceWithoutDiscount', `${priceWithoutDiscount}`);
+  formData.append('categoryId', categoryId);
+  formData.append('vendorCode', vendorCode);
+  if (picFile) {
+    formData.append('picFile', picFile);
+  }
+
+  const parameterString = JSON.stringify(parameters);
+  formData.append(`parameterString`, parameterString);
+
+  return await post(`/api/Product`, formData);
+}
+
 export {
   addToCart,
   addToWishlist,
@@ -133,4 +173,8 @@ export {
   registerWorker,
   createParameterValue,
   createProductParameter,
+  cloneProduct,
+  publishProduct,
+  unpublishProduct,
+  createProduct,
 };

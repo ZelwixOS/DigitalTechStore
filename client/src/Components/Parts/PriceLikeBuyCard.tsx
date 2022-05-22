@@ -18,6 +18,7 @@ interface IPriceLikeBuyCard {
   price?: number;
   id?: string;
   rating?: number;
+  priceWithoutDiscount?: number;
   onBuy?: () => void;
   onWished?: () => void;
   inCart?: boolean;
@@ -50,6 +51,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     bold: {
       fontWeight: 600,
+    },
+    thinbold: {
+      fontWeight: 500,
+    },
+    crossed: {
+      textDecoration: 'line-through',
+    },
+    toLeft: {
+      paddingLeft: theme.spacing(1),
     },
     rating: {
       margin: theme.spacing(2),
@@ -129,9 +139,25 @@ const PriceLikeBuyCard: React.FC<IPriceLikeBuyCard> = props => {
             <Typography component="h5" variant="h5" className={classes.bold}>
               Цена:
             </Typography>
-            <Typography color="primary" component="h5" variant="h5" className={classes.bold}>
-              {props.price}₽
-            </Typography>
+            {props.priceWithoutDiscount && props.price && props.priceWithoutDiscount > props.price ? (
+              <Grid container justifyContent="center" direction="row">
+                <Typography align="center" color="primary" component="h5" variant="h5" className={classes.bold}>
+                  {props.price}₽
+                </Typography>
+                <Typography
+                  align="center"
+                  variant="h6"
+                  color="textSecondary"
+                  className={`${classes.crossed} ${classes.thinbold} ${classes.toLeft}`}
+                >
+                  {props.priceWithoutDiscount}
+                </Typography>
+              </Grid>
+            ) : (
+              <Typography align="center" component="h5" variant="h5" className={classes.bold}>
+                {props.price}₽
+              </Typography>
+            )}
           </Grid>
           <Grid item xs={12} sm={6} container direction="row" justify="center" alignItems="center">
             <Grid item xs={12} sm={3} container justify="flex-start">

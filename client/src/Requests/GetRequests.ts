@@ -29,6 +29,12 @@ async function getProducts(currentPage: number, itemsOnPage: number, sortType: s
   return await getRequest(url);
 }
 
+async function getSearchedProducts(currentPage: number, itemsOnPage: number, sortType: string, search: string) {
+  const sortparams: Sorting = sortTypeParsing(sortType);
+  const url = `/api/Product?PageNumber=${currentPage}&ItemsOnPage=${itemsOnPage}&SortingType=${sortparams.type}&ReverseSorting=${sortparams.reverse}&search=${search}`;
+  return await getRequest(url);
+}
+
 async function getCart() {
   const url = `/api/CustomerLists/cart`;
   return await getRequest(url);
@@ -215,4 +221,5 @@ export {
   getWarehouses,
   getWorker,
   getProductParameter,
+  getSearchedProducts,
 };

@@ -16,6 +16,8 @@
             this.Mark = product.Mark;
             this.VendorCode = product.VendorCode;
             this.PicURL = product.PicURL;
+            this.PriceWithoutDiscount = product.PriceWithoutDiscount;
+            this.Published = product.Published;
 
             if (product.Category == null)
             {
@@ -54,6 +56,8 @@
 
         public decimal Price { get; set; }
 
+        public decimal? PriceWithoutDiscount { get; set; }
+
         public string Description { get; set; }
 
         public double Mark { get; set; }
@@ -75,6 +79,8 @@
         public List<OutletProductDto> OutletProducts { get; set; }
 
         public bool IsInWarehouse { get; set; }
+
+        public bool Published { get; set; }
 
         public int CompareTo(object obj)
         {

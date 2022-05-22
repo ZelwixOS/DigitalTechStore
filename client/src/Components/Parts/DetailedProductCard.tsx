@@ -55,6 +55,7 @@ const DetailedProductCard: React.FC<IDetailedProductCard> = props => {
           </Typography>
           <PriceLikeBuyCard
             price={props.product?.price}
+            priceWithoutDiscount={props.product?.priceWithoutDiscount}
             rating={props.product?.mark}
             id={props.product?.id}
             inCart={props.product?.inCart}
