@@ -35,6 +35,12 @@
             return this.Ok(_parameterValueService.GetParameterValue(id));
         }
 
+        [HttpGet("parameter/{id}")]
+        public ActionResult<ParameterValueDto> GetByParameter(Guid id)
+        {
+            return this.Ok(_parameterValueService.GetValuesByParameter(id));
+        }
+
         [HttpPost]
         [Authorize(Roles = Constants.RoleManager.Admin)]
         public ActionResult<ParameterValueDto> Create([FromBody] ParameterValueCreateRequestDto parameterValue)

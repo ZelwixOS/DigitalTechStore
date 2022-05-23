@@ -40,6 +40,22 @@ async function deleteProduct(id: string) {
   return await deleteRequest(`/api/Product/${id}`, null);
 }
 
+async function deleteRegion(id: number) {
+  return await deleteRequest(`/api/Geography/region/${id}`, null);
+}
+
+async function deleteCity(id: number) {
+  return await deleteRequest(`/api/Geography/city/${id}`, null);
+}
+
+async function deleteOutlet(id: number) {
+  return await deleteRequest(`/api/Estate/outlet/${id}`, null);
+}
+
+async function deleteWarehouse(id: number) {
+  return await deleteRequest(`/api/Estate/warehouse/${id}`, null);
+}
+
 export {
   deleteFromCart,
   deleteFromWishlist,
@@ -50,4 +66,8 @@ export {
   deleteParameterValue,
   deleteProductParameter,
   deleteProduct,
+  deleteRegion,
+  deleteCity,
+  deleteOutlet,
+  deleteWarehouse,
 };

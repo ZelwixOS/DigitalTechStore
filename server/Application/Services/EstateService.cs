@@ -29,6 +29,28 @@
             _warehouseProductRepository = warehouseProductRepository;
         }
 
+        public List<OutletDto> GetOutlets()
+        {
+            return _outletRepository.GetItems().Select(o => new OutletDto(o)).ToList();
+        }
+
+        public OutletDto GetOutlet(int id)
+        {
+            var outlet = _outletRepository.GetItem(id);
+            return outlet == null ? null : new OutletDto(outlet);
+        }
+
+        public WarehouseDto GetWarehouse(int id)
+        {
+            var warehouse = _warehouseRepository.GetItem(id);
+            return warehouse == null ? null : new WarehouseDto(warehouse);
+        }
+
+        public List<WarehouseDto> GetWarehouses()
+        {
+            return _warehouseRepository.GetItems().Select(o => new WarehouseDto(o)).ToList();
+        }
+
         public List<OutletDto> GetOutlets(int warehouseId)
         {
             return _outletRepository.GetItems().Where(o => o.CityId == warehouseId).Select(o => new OutletDto(o)).ToList();
@@ -59,7 +81,7 @@
         public OutletDto UpdateOutlet(OutletUpdateRequestDto outlet)
         {
             var outletModel = _outletRepository.GetItem(outlet.Id);
-            if (outletModel == null)
+            if (outletModel != null)
             {
                 outletModel = _outletRepository.UpdateItem(outlet.ToModel());
             }
@@ -70,7 +92,7 @@
         public WarehouseDto UpdateWarehouse(WarehouseUpdateRequestDto warehouse)
         {
             var warehouseModel = _warehouseRepository.GetItem(warehouse.Id);
-            if (warehouseModel == null)
+            if (warehouseModel != null)
             {
                 warehouseModel = _warehouseRepository.UpdateItem(warehouse.ToModel());
             }

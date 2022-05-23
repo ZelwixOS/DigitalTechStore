@@ -8,6 +8,8 @@ import { updateParameter } from 'src/Requests/PutRequests';
 import ParameterBlock from 'src/Types/ParameterBlock';
 import { getParamBlocks, getParameter } from 'src/Requests/GetRequests';
 
+import { ParameterValueList } from './ParameterValueList';
+
 interface IRefresher {
   refresh: () => void;
 }
@@ -213,7 +215,7 @@ const EditParameter: React.FC<IEditParameter> = props => {
             label="Диапазон"
             className={classes.spaces}
           />
-          {parameterData.range && (
+          {parameterData.range ? (
             <Grid container direction="row">
               <TextField
                 id="parameterMin"
@@ -234,6 +236,8 @@ const EditParameter: React.FC<IEditParameter> = props => {
                 type="number"
               />
             </Grid>
+          ) : (
+            <ParameterValueList id={props.id} />
           )}
           <Grid container justifyContent="flex-end">
             <Button type="submit" className={classes.spaces} color="primary" variant="contained" onClick={onClick}>

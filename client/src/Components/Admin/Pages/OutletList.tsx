@@ -1,37 +1,39 @@
 import React from 'react';
-import { GridColDef } from '@material-ui/data-grid';
+import { GridColDef, GridValueGetterParams } from '@material-ui/data-grid';
 
 import { TableBasement } from 'src/Components/Admin/Parts/TableBasement';
-import { getParameterValues } from 'src/Requests/GetRequests';
-import { deleteParameterValue } from 'src/Requests/DeleteRequests';
+import { getAllOutlets } from 'src/Requests/GetRequests';
 import ModalFormDialog from 'src/Components/Admin/Parts/ModalFormDialog';
-import CreateParameterValue from 'src/Components/Admin/Parts/CreateParameterValue';
-import EditParameterValue from 'src/Components/Admin/Parts/EditParameterValue';
+import { deleteOutlet } from 'src/Requests/DeleteRequests';
+import CreateOutlet from 'src/Components/Admin/Parts/CreateOutlet';
+import EditOutlet from 'src/Components/Admin/Parts/EditOutlet';
 
-export const ParameterValueList = () => {
+export const OutletList = () => {
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 300 },
+    { field: 'id', headerName: 'ID', width: 100 },
     {
-      field: 'value',
-      headerName: 'Значение',
-      width: 500,
+      field: 'name',
+      headerName: 'Название',
+      width: 350,
     },
     {
-      field: 'parameterName',
-      headerName: 'Параметр',
+      field: 'adress',
+      headerName: 'Адрес',
       width: 500,
+      valueGetter: (params: GridValueGetterParams) =>
+        `${params.row.postalCode}, ${params.row.region.name}, ${params.row.city.name}, ${params.row.streetName}, ${params.row.building}`,
     },
     {
-      field: 'parameterId',
-      headerName: 'Код',
-      width: 300,
+      field: 'userNote',
+      headerName: 'Заметка',
+      width: 350,
     },
   ];
 
   const onDelete = async (id: string): Promise<boolean> => {
-    const res = await deleteParameterValue(id);
+    const res = await deleteOutlet(parseInt(id));
     if (res === 0) {
-      setError('Не удалось удалить объект. Возможно, существуют зависимые блоки или объект используется в продукте.');
+      setError('Не удалось удалить объект. Возможно, существуют зависимости.');
       setOpen(true);
       return false;
     }
@@ -60,27 +62,27 @@ export const ParameterValueList = () => {
   return (
     <React.Fragment>
       <TableBasement
-        name="Значения параметров"
-        getData={getParameterValues}
+        name="Магазины"
+        getData={getAllOutlets}
         columns={columns}
         pageSize={10}
+        deleteSelected={onDelete}
         createNew={createNew}
         editSelected={editSelected}
-        deleteSelected={onDelete}
         open={open}
         setOpen={setOpen}
         error={error}
       />
       <ModalFormDialog
-        name={'Создание значения параметра'}
+        name={'Создание точки распространения'}
         open={createOpen}
-        form={<CreateParameterValue setOpen={setCreateOpen} refresher={refreshFunction} />}
+        form={<CreateOutlet setOpen={setCreateOpen} refresher={refreshFunction} />}
         setOpen={setCreateOpen}
       />
       <ModalFormDialog
-        name={'Изменение значения параметра'}
+        name={'Изменение точки распространения'}
         open={editOpen}
-        form={<EditParameterValue id={selected} setOpen={setEditOpen} refresher={refreshFunction} />}
+        form={<EditOutlet id={parseInt(selected)} setOpen={setEditOpen} refresher={refreshFunction} />}
         setOpen={setEditOpen}
       />
     </React.Fragment>

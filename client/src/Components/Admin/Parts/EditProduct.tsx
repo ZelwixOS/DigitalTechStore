@@ -398,7 +398,9 @@ const EditProduct: React.FC<IEditProduct> = props => {
                 onChange={handlePicChange}
               />
               <Card className={classes.spaces} variant="outlined">
-                <CardMedia className={classes.pic} image={picUrl} title="Выбранное изображение" />
+                <Grid container justifyContent="center">
+                  <CardMedia className={classes.pic} image={picUrl} title="Выбранное изображение" />
+                </Grid>
                 <CardContent>
                   <Grid container justifyContent="center">
                     <label htmlFor="contained-button-file" className={classes.spaces}>

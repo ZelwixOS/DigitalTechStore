@@ -4,10 +4,10 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Grid, Snackbar, TextField } from '@material-ui/core';
 import { Alert } from '@mui/material';
 
-import { getCommonCategory } from 'src/Requests/GetRequests';
-import { updateCommonCategory } from 'src/Requests/PutRequests';
+import { getRegion } from 'src/Requests/GetRequests';
+import { updateRegion } from 'src/Requests/PutRequests';
 
-import { CompactCategoryList } from './CompactCategoryList';
+import { CityList } from './CityList';
 
 interface IRefresher {
   refresh: () => void;
@@ -21,19 +21,19 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-interface IEditCommonCategory {
+interface IEditRegion {
   id: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   refresher?: IRefresher;
 }
 
-const EditCommonCategory: React.FC<IEditCommonCategory> = props => {
+const EditRegion: React.FC<IEditRegion> = props => {
   const classes = useStyles();
 
   const getData = async (isMounted: boolean) => {
-    const res = await getCommonCategory(props.id);
+    const res = await getRegion(parseInt(props.id));
     if (isMounted) {
-      setCommonCategoryData({ name: res.name, description: res.description });
+      setName(res.name);
     }
   };
 
@@ -50,22 +50,12 @@ const EditCommonCategory: React.FC<IEditCommonCategory> = props => {
     refreshData();
   }, []);
 
-  const [commonCategoryData, setCommonCategoryData] = React.useState({ name: '', description: '' });
+  const [name, setName] = React.useState('');
   const [open, setOpen] = React.useState<boolean>(false);
   const [message, setMessage] = React.useState<string>('');
 
   const handleNameChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setCommonCategoryData({
-      name: event.target.value as string,
-      description: commonCategoryData.description,
-    });
-  };
-
-  const handleDescriptionChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setCommonCategoryData({
-      name: commonCategoryData.name,
-      description: event.target.value as string,
-    });
+    setName(event.target.value as string);
   };
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
@@ -77,14 +67,11 @@ const EditCommonCategory: React.FC<IEditCommonCategory> = props => {
   };
 
   const onClick = async () => {
-    if (commonCategoryData.name.length < 2) {
+    if (name.length < 2) {
       setMessage('Введите корректное название');
       setOpen(true);
-    } else if (commonCategoryData.description.length < 5) {
-      setMessage('Введите корректное описание');
-      setOpen(true);
     } else {
-      const res = await updateCommonCategory(props.id, commonCategoryData.name, commonCategoryData.description);
+      const res = await updateRegion(props.id, name);
       if (res && props.refresher) {
         props.refresher.refresh();
         props.setOpen(false);
@@ -108,24 +95,14 @@ const EditCommonCategory: React.FC<IEditCommonCategory> = props => {
         </Alert>
       </Snackbar>
       <TextField
-        id="commonCategoryName"
+        id="regionName"
         className={classes.spaces}
-        value={commonCategoryData.name}
+        value={name}
         onChange={handleNameChange}
         label="Название"
         variant="outlined"
       />
-      <TextField
-        id="commonCategoryDescription"
-        className={classes.spaces}
-        value={commonCategoryData.description}
-        onChange={handleDescriptionChange}
-        label="Описание"
-        variant="outlined"
-      />
-      <Grid xs={12} sm={12} item>
-        <CompactCategoryList name={commonCategoryData.name} id={props.id} />
-      </Grid>
+      <CityList id={parseInt(props.id)} />
       <Grid container justifyContent="flex-end">
         <Button type="submit" className={classes.spaces} color="primary" variant="contained" onClick={onClick}>
           Обновить
@@ -135,4 +112,4 @@ const EditCommonCategory: React.FC<IEditCommonCategory> = props => {
   );
 };
 
-export default EditCommonCategory;
+export default EditRegion;

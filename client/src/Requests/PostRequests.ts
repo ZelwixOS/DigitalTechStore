@@ -157,6 +157,33 @@ async function createProduct(
   return await post(`/api/Product`, formData);
 }
 
+async function createRegion(name: string) {
+  const data = { name };
+  return await post(`/api/Geography/region`, data);
+}
+
+async function createCity(name: string, regionId: number) {
+  const data = { name, regionId };
+  return await post(`/api/Geography/city`, data);
+}
+
+async function createOutlet(
+  name: string,
+  cityId: number,
+  streetName: string,
+  building: string,
+  postalCode: string,
+  noteForUser: string,
+) {
+  const data = { name, cityId, streetName, building, postalCode, noteForUser };
+  return await post(`/api/Estate/outlet`, data);
+}
+
+async function createWarehouse(name: string, cityId: number, streetName: string, building: string, postalCode: string) {
+  const data = { name, cityId, streetName, building, postalCode };
+  return await post(`/api/Estate/warehouse`, data);
+}
+
 export {
   addToCart,
   addToWishlist,
@@ -177,4 +204,8 @@ export {
   publishProduct,
   unpublishProduct,
   createProduct,
+  createRegion,
+  createCity,
+  createOutlet,
+  createWarehouse,
 };

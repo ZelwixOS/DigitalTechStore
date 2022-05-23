@@ -102,6 +102,41 @@ async function updateProduct(
   return await put(`/api/Product`, formData);
 }
 
+async function updateRegion(id: string, name: string) {
+  const data = { id, name };
+  return await put(`/api/Geography/region`, data);
+}
+
+async function updateCity(id: number, name: string, regionId: number) {
+  const data = { id, name, regionId };
+  return await put(`/api/Geography/city`, data);
+}
+
+async function updateOutlet(
+  id: number,
+  name: string,
+  cityId: number,
+  streetName: string,
+  building: string,
+  postalCode: string,
+  noteForUser: string,
+) {
+  const data = { id, name, cityId, streetName, building, postalCode, noteForUser };
+  return await put(`/api/Estate/outlet`, data);
+}
+
+async function updateWarehouse(
+  id: number,
+  name: string,
+  cityId: number,
+  streetName: string,
+  building: string,
+  postalCode: string,
+) {
+  const data = { id, name, cityId, streetName, building, postalCode };
+  return await put(`/api/Estate/warehouse`, data);
+}
+
 export {
   updateCartItem,
   updateCommonCategory,
@@ -111,4 +146,8 @@ export {
   updateWorker,
   updateParameterValue,
   updateProduct,
+  updateRegion,
+  updateCity,
+  updateOutlet,
+  updateWarehouse,
 };

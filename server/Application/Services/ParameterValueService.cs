@@ -47,6 +47,12 @@
             return parameterValue != null ? new ParameterValueDto(parameterValue) : null;
         }
 
+        public List<ParameterValueDto> GetValuesByParameter(Guid id)
+        {
+            var parameterValues = _parameterValueRepository.GetItems().Where(p => p.TechParameterIdFk == id).Select(p => new ParameterValueDto(p)).ToList();
+            return parameterValues;
+        }
+
         public List<ParameterValueDto> GetParameterValues()
         {
             var parameterValues = _parameterValueRepository.GetItems();

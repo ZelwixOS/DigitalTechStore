@@ -24,5 +24,11 @@
         CityDto UpdateCity(CityUpdateRequestDto city);
 
         RegionDto UpdateRegion(RegionUpdateRequestDto region);
+
+        List<CityDto> GetRegionCities(int regionId);
+
+        RegionDto GetRegion(int id);
+
+        CityDto GetCity(int id);
     }
 }

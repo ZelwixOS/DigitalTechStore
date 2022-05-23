@@ -16,5 +16,7 @@
         public ParameterValueDto UpdateParameterValue(ParameterValueUpdateRequestDto parameterValue);
 
         public int DeleteParameterValue(Guid id);
+
+        public List<ParameterValueDto> GetValuesByParameter(Guid id);
     }
 }

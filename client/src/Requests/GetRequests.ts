@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import Category from 'src/Types/Category';
 import CategoryAllParameterBlocks from 'src/Types/CategoryAllParameterBlocks';
+import City from 'src/Types/City';
 import CommonCategory from 'src/Types/CommonCategory';
 import FilterValue from 'src/Types/FilterValue';
 import Outlet from 'src/Types/Outlet';
@@ -86,6 +87,10 @@ async function getAllRegions() {
 
 async function getCategoryById(id: string) {
   return (await getRequest(`/api/Category/id/${id}`)) as Category;
+}
+
+async function getRegionCities(id: number) {
+  return (await getRequest(`/api/Geography/cities/${id}`)) as City[];
 }
 
 async function getProductsOfCategory(
@@ -188,6 +193,34 @@ async function getProductParameter() {
   return await getRequest(`/api/ProductParameter`);
 }
 
+async function getRegion(id: number) {
+  return await getRequest(`/api/Geography/region/${id}`);
+}
+
+async function getValuesOfParameter(id: string) {
+  return await getRequest(`/api/ParameterValue/parameter/${id}`);
+}
+
+async function getCity(id: number) {
+  return await getRequest(`/api/Geography/city/${id}`);
+}
+
+async function getAllOutlets() {
+  return await getRequest(`/api/Estate/outlets/`);
+}
+
+async function getAllWarehouses() {
+  return await getRequest(`/api/Estate/warehouses/`);
+}
+
+async function getOutlet(id: number) {
+  return await getRequest(`/api/Estate/outlet/${id}`);
+}
+
+async function getWarehouse(id: number) {
+  return await getRequest(`/api/Estate/warehouse/${id}`);
+}
+
 export default getRequest;
 
 export {
@@ -202,6 +235,7 @@ export {
   getReviews,
   getParameters,
   getRegions,
+  getRegion,
   getAllRegions,
   getCartUnsigned,
   getPurchases,
@@ -222,4 +256,11 @@ export {
   getWorker,
   getProductParameter,
   getSearchedProducts,
+  getRegionCities,
+  getValuesOfParameter,
+  getCity,
+  getAllOutlets,
+  getAllWarehouses,
+  getOutlet,
+  getWarehouse,
 };

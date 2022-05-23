@@ -4,9 +4,9 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { CircularProgress, Grid, MenuItem, Snackbar, TextField } from '@material-ui/core';
 import { Alert } from '@mui/material';
 
-import { createParameterValue } from 'src/Requests/PostRequests';
-import { getTechListParameters } from 'src/Requests/GetRequests';
-import Parameter from 'src/Types/Parameter';
+import { getAllRegions, getCity } from 'src/Requests/GetRequests';
+import { updateCity } from 'src/Requests/PutRequests';
+import Region from 'src/Types/Region';
 
 interface IRefresher {
   refresh: () => void;
@@ -20,20 +20,25 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-interface ICreateParameterValue {
-  parameterId?: string;
+interface IEditCity {
+  id: number;
   refresher?: IRefresher;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreateParameterValue: React.FC<ICreateParameterValue> = props => {
+const EditCity: React.FC<IEditCity> = props => {
   const classes = useStyles();
 
   const getData = async (isMounted: boolean) => {
     setLoading(true);
-    const res = await getTechListParameters();
+    const res = await getAllRegions();
+    const data = await getCity(props.id);
     if (isMounted) {
-      setParameters(res);
+      setRegions(res);
+      setCity({
+        name: data.name,
+        regionId: data.regionId,
+      });
       setLoading(false);
     }
   };
@@ -52,30 +57,29 @@ const CreateParameterValue: React.FC<ICreateParameterValue> = props => {
   }, []);
 
   const cloneData = () => ({
-    value: parameterData.value,
-    parameterId: props.parameterId ?? parameterData.parameterId,
+    name: city.name,
+    regionId: city.regionId,
   });
 
   const [loading, setLoading] = React.useState(true);
-  const [parameterData, setParameterData] = React.useState({
-    value: '',
-    parameterId: props.parameterId ?? '',
+  const [city, setCity] = React.useState({
+    name: '',
+    regionId: 0,
   });
-
-  const [parameters, setParameters] = React.useState<Parameter[]>([]);
+  const [regions, setRegions] = React.useState<Region[]>([]);
   const [open, setOpen] = React.useState<boolean>(false);
   const [message, setMessage] = React.useState<string>('');
 
   const handleValueChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const data = cloneData();
-    data.value = event.target.value as string;
-    setParameterData(data);
+    data.name = event.target.value as string;
+    setCity(data);
   };
 
   const handleParameterChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const data = cloneData();
-    data.parameterId = event.target.value as string;
-    setParameterData(data);
+    data.regionId = parseInt(event.target.value as string);
+    setCity(data);
   };
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
@@ -87,14 +91,14 @@ const CreateParameterValue: React.FC<ICreateParameterValue> = props => {
   };
 
   const onClick = async () => {
-    if (parameterData.value.length < 2) {
+    if (city.name.length < 2) {
       setMessage('Введите корректное название');
       setOpen(true);
-    } else if (parameterData.parameterId && parameterData.parameterId.length < 1) {
+    } else if (city.regionId < 1) {
       setMessage('Укажите параметр');
       setOpen(true);
     } else {
-      const res = await createParameterValue(parameterData.parameterId, parameterData.value);
+      const res = await updateCity(props.id, city.name, city.regionId);
       if (res && props.refresher) {
         props.refresher.refresh();
         props.setOpen(false);
@@ -126,22 +130,21 @@ const CreateParameterValue: React.FC<ICreateParameterValue> = props => {
           <TextField
             id="parameterName"
             className={classes.spaces}
-            value={parameterData.value}
+            value={city.name}
             onChange={handleValueChange}
-            label="Значение"
+            label="Название"
             variant="outlined"
           />
           <TextField
             id="parameter"
             select
-            label="Параметр"
+            label="Регион"
             className={classes.spaces}
-            value={parameterData.parameterId}
+            value={city.regionId}
             onChange={handleParameterChange}
             variant="outlined"
-            disabled={props.parameterId !== undefined}
           >
-            {parameters.map(p => (
+            {regions.map(p => (
               <MenuItem key={p.id} value={p.id}>
                 {p.name}
               </MenuItem>
@@ -149,7 +152,7 @@ const CreateParameterValue: React.FC<ICreateParameterValue> = props => {
           </TextField>
           <Grid container justifyContent="flex-end">
             <Button type="submit" className={classes.spaces} color="primary" variant="contained" onClick={onClick}>
-              Создать
+              Обновить
             </Button>
           </Grid>
         </React.Fragment>
@@ -158,4 +161,4 @@ const CreateParameterValue: React.FC<ICreateParameterValue> = props => {
   );
 };
 
-export default CreateParameterValue;
+export default EditCity;

@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using Application.DTO.Request.Estate.Outlet;
     using Application.DTO.Request.Estate.Warehouse;
-    using Application.DTO.Response;
     using Application.DTO.Response.Estate;
     using Application.Helpers;
     using Application.Interfaces;
@@ -25,8 +24,24 @@
             this.estateService = estateService;
         }
 
+        [HttpGet("outlets")]
+        public ActionResult<List<OutletDto>> GetOutlets()
+        {
+            var result = this.estateService.GetOutlets();
+
+            return this.Ok(result);
+        }
+
+        [HttpGet("warehouses")]
+        public ActionResult<List<WarehouseDto>> GetWarehouses()
+        {
+            var result = this.estateService.GetWarehouses();
+
+            return this.Ok(result);
+        }
+
         [HttpGet("outlets/{cityId}")]
-        public ActionResult<List<ReviewDto>> GetOutlet(int cityId)
+        public ActionResult<List<OutletDto>> GetOutletByCity(int cityId)
         {
             var result = this.estateService.GetOutlets(cityId);
 
@@ -34,7 +49,7 @@
         }
 
         [HttpGet("warehouses/{regionId}")]
-        public ActionResult<List<OutletDto>> GetWarehouse(int regionId)
+        public ActionResult<List<WarehouseDto>> GetWarehouseByRegion(int regionId)
         {
             var result = this.estateService.GetWarehouses(regionId);
 
@@ -42,7 +57,7 @@
         }
 
         [HttpGet("warehouses/city/{cityId}")]
-        public ActionResult<List<OutletDto>> GetWarehouseByCity(int cityId)
+        public ActionResult<List<WarehouseDto>> GetWarehouseByCity(int cityId)
         {
             var result = this.estateService.GetWarehousesByCity(cityId);
 
@@ -59,7 +74,7 @@
 
         [HttpPost("warehouse")]
         [Authorize(Roles = Constants.RoleManager.Admin)]
-        public ActionResult<OutletDto> CreateWarehouse([FromBody] WarehouseCreateRequestDto warehouse)
+        public ActionResult<WarehouseDto> CreateWarehouse([FromBody] WarehouseCreateRequestDto warehouse)
         {
             var created = this.estateService.CreateWarehouse(warehouse);
             return this.Ok(created);
@@ -75,10 +90,24 @@
 
         [HttpPut("warehouse")]
         [Authorize(Roles = Constants.RoleManager.Admin)]
-        public ActionResult<OutletDto> UpdateWarehouse([FromBody] WarehouseUpdateRequestDto warehouse)
+        public ActionResult<WarehouseDto> UpdateWarehouse([FromBody] WarehouseUpdateRequestDto warehouse)
         {
             var updated = this.estateService.UpdateWarehouse(warehouse);
             return this.Ok(updated);
+        }
+
+        [HttpGet("outlet/{outletId}")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
+        public ActionResult<OutletDto> GetOutlet(int outletId)
+        {
+            return this.Ok(this.estateService.GetOutlet(outletId));
+        }
+
+        [HttpGet("warehouse/{warehouseId}")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
+        public ActionResult<WarehouseDto> GetWarehouse(int warehouseId)
+        {
+            return this.Ok(this.estateService.GetWarehouse(warehouseId));
         }
 
         [HttpDelete("outlet/{outletId}")]
@@ -97,7 +126,7 @@
 
         [HttpPost("setproduct")]
         [Authorize(Roles = Constants.AuthManager.WorkerNotCourier)]
-        public ActionResult<OutletDto> SetWarehouseProduct(Guid productId, int unitId, bool outlet, int count)
+        public ActionResult<WarehouseDto> SetWarehouseProduct(Guid productId, int unitId, bool outlet, int count)
         {
             var created = this.estateService.SetProductCount(productId, unitId, outlet, count);
             return this.Ok(created);
@@ -105,7 +134,7 @@
 
         [HttpPost("addproduct")]
         [Authorize(Roles = Constants.AuthManager.WorkerNotCourier)]
-        public ActionResult<OutletDto> AddWarehouseProduct(Guid productId, int unitId, bool outlet, int count)
+        public ActionResult<WarehouseDto> AddWarehouseProduct(Guid productId, int unitId, bool outlet, int count)
         {
             var created = this.estateService.AddProductCount(productId, unitId, outlet, count);
             return this.Ok(created);

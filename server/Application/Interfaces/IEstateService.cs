@@ -29,5 +29,13 @@
         int AddProductCount(Guid productId, int unitId, bool outlet, int count);
 
         List<WarehouseDto> GetWarehousesByCity(int cityId);
+
+        List<OutletDto> GetOutlets();
+
+        List<WarehouseDto> GetWarehouses();
+
+        WarehouseDto GetWarehouse(int id);
+
+        OutletDto GetOutlet(int id);
     }
 }

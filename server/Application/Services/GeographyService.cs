@@ -24,6 +24,17 @@
             return _regionRepository.GetItems().Select(o => new RegionDto(o, false)).ToList();
         }
 
+        public RegionDto GetRegion(int id)
+        {
+            var region = _regionRepository.GetItem(id);
+            if (region == null)
+            {
+                return null;
+            }
+
+            return new RegionDto(region);
+        }
+
         public List<RegionDto> GetRegionsWithOutlets()
         {
             return _regionRepository.GetItems().Where(r => r.Cities.Any(c => c.Outlets.Any())).Select(o => new RegionDto(o, true)).ToList();
@@ -38,6 +49,19 @@
             }
 
             return new RegionDto(city.Region);
+        }
+
+        public List<CityDto> GetRegionCities(int regionId)
+        {
+            var cities = _cityRepository.GetItems().Where(c => c.RegionId == regionId).Select(c => new CityDto(c)).ToList();
+
+            return cities;
+        }
+
+        public CityDto GetCity(int id)
+        {
+            var city = _cityRepository.GetItem(id);
+            return city == null ? null : new CityDto(city);
         }
 
         public RegionDto CreateRegion(RegionCreateRequestDto region)

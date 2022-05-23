@@ -1,5 +1,6 @@
 import React, { JSXElementConstructor, ReactElement } from 'react';
-import { Dialog, DialogContent, DialogTitle } from '@material-ui/core';
+import { Dialog, DialogContent, DialogTitle, Grid, IconButton } from '@material-ui/core';
+import { ArrowBack } from '@material-ui/icons';
 
 interface IModalFormDialog {
   name: string;
@@ -20,8 +21,17 @@ const ModalFormDialog: React.FC<IModalFormDialog> = props => {
       aria-labelledby="create-dialog-title"
       aria-describedby="create-dialog-description"
     >
-      <DialogTitle id="create-dialog-title">{props.name}</DialogTitle>
-      <DialogContent>{props.form}</DialogContent>
+      <Grid container>
+        <DialogTitle id="create-dialog-title">
+          <Grid item xs={12} sm={12} container direction="row" justifyContent="flex-start">
+            <IconButton onClick={handleClose}>
+              <ArrowBack />
+            </IconButton>
+            {props.name}
+          </Grid>
+        </DialogTitle>
+        <DialogContent>{props.form}</DialogContent>
+      </Grid>
     </Dialog>
   );
 };

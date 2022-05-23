@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using Application.DTO.Request.Geography.City;
     using Application.DTO.Request.Geography.Region;
-    using Application.DTO.Response;
     using Application.DTO.Response.Geography;
     using Application.Helpers;
     using Application.Interfaces;
@@ -25,15 +24,22 @@
         }
 
         [HttpGet("regions")]
-        public ActionResult<List<ReviewDto>> GetRegion()
+        public ActionResult<List<RegionDto>> GetRegion()
         {
             var result = this.geographyService.GetRegionsWithOutlets();
 
             return this.Ok(result);
         }
 
+        [HttpGet("region/{id}")]
+        public ActionResult<List<RegionDto>> GetRegion(int id)
+        {
+            var result = this.geographyService.GetRegion(id);
+            return this.Ok(result);
+        }
+
         [HttpGet("allregions")]
-        public ActionResult<List<ReviewDto>> GetAllRegion()
+        public ActionResult<List<RegionDto>> GetAllRegion()
         {
             var result = this.geographyService.GetRegionsAll();
 
@@ -48,9 +54,17 @@
             return this.Ok(created);
         }
 
+        [HttpGet("cities/{id}")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
+        public ActionResult<CityDto> GetRegionCities(int id)
+        {
+            var created = this.geographyService.GetRegionCities(id);
+            return this.Ok(created);
+        }
+
         [HttpPost("city")]
         [Authorize(Roles = Constants.RoleManager.Admin)]
-        public ActionResult<RegionDto> CreateCity([FromBody] CityCreateRequestDto city)
+        public ActionResult<CityDto> CreateCity([FromBody] CityCreateRequestDto city)
         {
             var created = this.geographyService.CreateCity(city);
             return this.Ok(created);
@@ -64,9 +78,17 @@
             return this.Ok(updated);
         }
 
+        [HttpGet("city/{id}")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
+        public ActionResult<CityDto> GetCity(int id)
+        {
+            var created = this.geographyService.GetCity(id);
+            return this.Ok(created);
+        }
+
         [HttpPut("city")]
         [Authorize(Roles = Constants.RoleManager.Admin)]
-        public ActionResult<RegionDto> UpdateCity([FromBody] CityUpdateRequestDto city)
+        public ActionResult<CityDto> UpdateCity([FromBody] CityUpdateRequestDto city)
         {
             var updated = this.geographyService.UpdateCity(city);
             return this.Ok(updated);

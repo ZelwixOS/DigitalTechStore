@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface ICreateCategory {
+  commonCategoryId?: string;
   refresher?: IRefresher;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -59,7 +60,7 @@ const CreateCategory: React.FC<ICreateCategory> = props => {
     name: categoryData.name,
     description: categoryData.description,
     deliveryPrice: categoryData.deliveryPrice,
-    commonCategoryId: categoryData.commonCategoryId,
+    commonCategoryId: props.commonCategoryId ?? categoryData.commonCategoryId,
   });
 
   const getFinalData = (): ParameterBlockCreateRequest[] => {
@@ -79,7 +80,7 @@ const CreateCategory: React.FC<ICreateCategory> = props => {
     name: '',
     description: '',
     deliveryPrice: 0,
-    commonCategoryId: '',
+    commonCategoryId: props.commonCategoryId ?? '',
   });
   const [commonCategories, setCommonCategories] = React.useState<CommonCategory[]>([]);
   const [open, setOpen] = React.useState<boolean>(false);
@@ -215,6 +216,7 @@ const CreateCategory: React.FC<ICreateCategory> = props => {
             value={categoryData.commonCategoryId}
             onChange={handleComCatChange}
             variant="outlined"
+            disabled={props.commonCategoryId !== undefined}
           >
             {commonCategories.map(comCat => (
               <MenuItem key={comCat.id} value={comCat.id}>
