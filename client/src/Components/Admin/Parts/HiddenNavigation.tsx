@@ -34,6 +34,7 @@ const HiddenNavigation = () => {
   const parameterBlocks = onMenuItemClick.bind(this, '/admin/parameterBlocks');
   const parameters = onMenuItemClick.bind(this, '/admin/parameters');
   const workers = onMenuItemClick.bind(this, '/admin/workers');
+  const clients = onMenuItemClick.bind(this, '/admin/clients');
   const products = onMenuItemClick.bind(this, '/admin/product');
   const regions = onMenuItemClick.bind(this, '/admin/regions');
   const outlets = onMenuItemClick.bind(this, '/admin/outlets');
@@ -87,6 +88,8 @@ const HiddenNavigation = () => {
             <Divider />
             {menuItem('Работники', workers)}
             <Divider />
+            {menuItem('Клиенты', clients)}
+            <Divider />
             {menuItem('Регионы', regions)}
             <Divider />
             {menuItem('Магазины', outlets)}
@@ -97,6 +100,8 @@ const HiddenNavigation = () => {
         {role === 'Manager' && (
           <List>
             {menuItem('Работники', workers)}
+            <Divider />
+            {menuItem('Клиенты', clients)}
             <Divider />
             {menuItem('Продукты', products)}
           </List>

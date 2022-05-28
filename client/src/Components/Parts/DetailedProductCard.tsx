@@ -44,8 +44,8 @@ const DetailedProductCard: React.FC<IDetailedProductCard> = props => {
   const strinTechParams = paramString();
   return (
     <Card variant="outlined" className={classes.card}>
-      <Grid direction="row" justify="center" container>
-        <Grid item xs={12} sm={6} direction="column" justify="center" alignItems="center" container>
+      <Grid direction="row" justifyContent="center" container>
+        <Grid item xs={12} sm={6} direction="column" justifyContent="center" alignItems="center" container>
           <img className={classes.image} src={props.image} />
           Артикул: {props.product?.vendorCode}
         </Grid>
@@ -65,7 +65,7 @@ const DetailedProductCard: React.FC<IDetailedProductCard> = props => {
           />
         </Grid>
       </Grid>
-      <Grid direction="row" justify="center" alignItems="center" container />
+      <Grid direction="row" justifyContent="center" alignItems="center" container />
     </Card>
   );
 };

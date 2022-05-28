@@ -23,7 +23,7 @@
 
         public List<ReviewDto> GetProductReviews(Guid productId)
         {
-            var reviews = _reviewRepository.GetItems().Where(r => r.ProductId == productId && r.Description != null && r.Description.Length > 0);
+            var reviews = _reviewRepository.GetItems().Where(r => r.ProductId == productId && r.Description != null && r.Description.Length > 0 && !r.Banned);
             var users = _userRepository.GetItems();
 
             return reviews.Select(r => new ReviewDto(r, r.User)).ToList();
@@ -89,6 +89,20 @@
             }
 
             return 0;
+        }
+
+        public int BanReview(Guid id)
+        {
+            var review = _reviewRepository.GetItem(id);
+            if (review == null)
+            {
+                return 0;
+            }
+
+            review.Banned = true;
+            review = _reviewRepository.UpdateItem(review);
+
+            return review == null ? 0 : 1;
         }
     }
 }

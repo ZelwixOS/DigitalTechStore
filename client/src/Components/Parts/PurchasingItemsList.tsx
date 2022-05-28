@@ -27,7 +27,7 @@ const PurchasingItemsList: React.FC<IPurchasingItemsList> = props => {
       {props.purchaseItems.map(item => (
         <React.Fragment key={item.productId}>
           <ListItem>
-            <Grid container direction="row" justify="space-around">
+            <Grid container direction="row" justifyContent="space-around">
               <Button className={classes.text} href={`product/${item.productId}`}>{`${item.productName}`}</Button>
               <Typography className={classes.text}>{`${item.price}₽ x${item.count}`}</Typography>
             </Grid>

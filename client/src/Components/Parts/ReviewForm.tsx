@@ -45,14 +45,14 @@ const ReviewForm: React.FC<IReviewForm> = props => {
   const submit = async () => {
     const result = await createReview(props.productId, review.mark, review.description);
     if (result !== null) {
-      props.addReview({ description: review.description, mark: review.mark, userName: 'Я' });
+      props.addReview({ id: '', description: review.description, mark: review.mark, userName: 'Я' });
     }
   };
 
   return (
     <Card variant="outlined" className={classes.root}>
-      <Grid item xs={12} container direction="column" alignItems="center" justify="center">
-        <Grid className={classes.cardPart} container direction="row" alignItems="center" justify="flex-end">
+      <Grid item xs={12} container direction="column" alignItems="center" justifyContent="center">
+        <Grid className={classes.cardPart} container direction="row" alignItems="center" justifyContent="flex-end">
           <Rating value={review.mark} onChange={handleMark} />
         </Grid>
         <TextField
@@ -66,7 +66,7 @@ const ReviewForm: React.FC<IReviewForm> = props => {
           onChange={handleMessage}
           fullWidth
         />
-        <Grid className={classes.cardPart} container alignItems="center" justify="flex-end">
+        <Grid className={classes.cardPart} container alignItems="center" justifyContent="flex-end">
           <Button color="primary" variant="contained" onClick={submit}>
             Отправить
           </Button>

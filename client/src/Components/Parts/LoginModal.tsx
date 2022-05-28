@@ -52,7 +52,7 @@ const LoginModal: React.FC = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Grid container justify="center">
+          <Grid container justifyContent="center">
             <Typography>Вы здесь впервые?</Typography>
             <Link href="/Registration"> Зарегистрироваться </Link>
           </Grid>

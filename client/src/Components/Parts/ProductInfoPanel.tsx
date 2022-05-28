@@ -67,7 +67,7 @@ const ProductInfoPanel = (props: IVerticalTabs) => {
 
   return (
     <div className={classes.root}>
-      <Grid container direction="row" justify="space-evenly">
+      <Grid container direction="row" justifyContent="space-evenly">
         <Grid className={classes.tabs} item xs={12} sm={3}>
           <Tabs
             orientation="vertical"

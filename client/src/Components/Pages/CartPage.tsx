@@ -27,6 +27,10 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingTop: theme.spacing(2),
       fontWeight: theme.typography.fontWeightBold,
     },
+    empty: {
+      color: '#777',
+      fontWeight: 550,
+    },
   }),
 );
 
@@ -146,16 +150,23 @@ const CartPage: React.FC = () => {
   return (
     <React.Fragment>
       <NavigationBar />
-      <Grid container direction="row" justify="center" alignItems="center">
-        <Grid xs={12} sm={9} item direction="row" justify="center" alignItems="center" container>
-          <Grid item direction="column" justify="center" container>
+      <Grid container direction="row" justifyContent="center" alignItems="center">
+        <Grid xs={12} sm={9} item direction="row" justifyContent="center" alignItems="center" container>
+          <Grid item direction="column" justifyContent="center" container>
             <Grid>
               <Typography align="center" className={classes.pageName} variant="h5" component="h5">
                 Корзина
               </Typography>
             </Grid>
-            <Grid item direction="row" justify="center" container>
+            <Grid item direction="row" justifyContent="center" container>
               <Grid className={classes.productGrid} xs={12} sm={10} item container direction="column">
+                {(!cartItems || cartItems.length < 1) && (
+                  <Grid alignContent="stretch" container justifyContent="center">
+                    <Typography align="center" variant="h4" className={classes.empty}>
+                      Кажется, тут пусто... Выберите товары и купите их!
+                    </Typography>
+                  </Grid>
+                )}
                 <Grid>
                   {cartItems &&
                     cartItems.map(cartItem => (
@@ -174,7 +185,7 @@ const CartPage: React.FC = () => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container direction="row" justify="space-evenly" alignItems="center">
+            <Grid container direction="row" justifyContent="space-evenly" alignItems="center">
               <Typography className={classes.pageName} variant="h6" component="h6">
                 Сумма: {currentSumm} ₽
               </Typography>

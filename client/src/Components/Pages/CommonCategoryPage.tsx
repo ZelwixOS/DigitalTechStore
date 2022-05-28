@@ -32,7 +32,7 @@ const CommonCategoryPage: React.FC = () => {
   const [categories, setCategories] = React.useState<Category[]>([]);
 
   const createRow = (index: number, array: Category[]) => (
-    <Grid container item xs={12} key={index} alignItems="stretch" justify="space-evenly" spacing={2}>
+    <Grid container item xs={12} key={index} alignItems="stretch" justifyContent="space-evenly" spacing={2}>
       <Grid item xs={12} sm={4}>
         {array[index] && <CategoryCard category={array[index]} />}
       </Grid>
@@ -64,13 +64,13 @@ const CommonCategoryPage: React.FC = () => {
   return (
     <React.Fragment>
       <NavigationBar />
-      <Grid xs={12} item container direction="row" justify="center">
-        <Grid container justify="center" sm={9}>
-          <Grid item direction="column" justify="center" container>
+      <Grid xs={12} item container direction="row" justifyContent="center">
+        <Grid container justifyContent="center" sm={9}>
+          <Grid item direction="column" justifyContent="center" container>
             <Typography align="center" className={classes.categoryWord} variant="h5" component="h5">
               {params.commonCategoryName}
             </Typography>
-            <Grid container justify="space-evenly" alignItems="stretch" spacing={1}>
+            <Grid container justifyContent="space-evenly" alignItems="stretch" spacing={1}>
               {categories.map((item, index, arr) => index % 3 === 0 && createRow(index, arr))}
             </Grid>
           </Grid>

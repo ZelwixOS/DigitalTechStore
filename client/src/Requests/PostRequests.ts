@@ -184,6 +184,10 @@ async function createWarehouse(name: string, cityId: number, streetName: string,
   return await post(`/api/Estate/warehouse`, data);
 }
 
+async function banReview(id: string) {
+  return await post(`/api/Review/Ban/${id}`, null);
+}
+
 export {
   addToCart,
   addToWishlist,
@@ -208,4 +212,5 @@ export {
   createCity,
   createOutlet,
   createWarehouse,
+  banReview,
 };

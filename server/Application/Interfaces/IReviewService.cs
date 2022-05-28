@@ -13,6 +13,8 @@
 
         public ReviewDto UpdateReview(ReviewUpdateRequestDto review, Guid userId);
 
+        public int BanReview(Guid id);
+
         public int DeleteReview(Guid productId, Guid userId);
     }
 }

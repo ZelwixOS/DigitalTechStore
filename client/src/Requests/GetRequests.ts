@@ -137,6 +137,14 @@ async function getPurchases() {
   return (await getRequest('/api/Purchase')) as Purchase[];
 }
 
+async function getOutletPurchases(search: string) {
+  return (await getRequest(`/api/Purchase/outlet?search=${search}`)) as Purchase[];
+}
+
+async function getOutletHistoricalPurchases(search: string) {
+  return (await getRequest(`/api/Purchase/outletHistory?search=${search}`)) as Purchase[];
+}
+
 async function getCommonCategory(id: string) {
   return (await getRequest(`/api/CommonCategory/${id}`)) as CommonCategory;
 }
@@ -221,6 +229,14 @@ async function getWarehouse(id: number) {
   return await getRequest(`/api/Estate/warehouse/${id}`);
 }
 
+async function getOrdersForMonth(type: number, finished: boolean) {
+  return await getRequest(`/api/Statistics/monthOrders/${type}?finished=${finished}`);
+}
+
+async function getClients() {
+  return await getRequest(`/api/Account/GetClients`);
+}
+
 export default getRequest;
 
 export {
@@ -263,4 +279,8 @@ export {
   getAllWarehouses,
   getOutlet,
   getWarehouse,
+  getOrdersForMonth,
+  getClients,
+  getOutletPurchases,
+  getOutletHistoricalPurchases,
 };

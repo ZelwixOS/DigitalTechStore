@@ -53,22 +53,23 @@ const UserPurchases: React.FC = () => {
   return (
     <React.Fragment>
       <NavigationBar />
-      <Grid container direction="row" justify="center" alignItems="center">
-        <Grid xs={12} sm={9} item direction="row" justify="center" alignItems="center" container>
-          <Grid item direction="column" justify="center" container>
+      <Grid container direction="row" justifyContent="center" alignItems="center">
+        <Grid xs={12} sm={9} item direction="row" justifyContent="center" alignItems="center" container>
+          <Grid item direction="column" justifyContent="center" container>
             <Grid>
               <Typography align="center" className={classes.pageName} variant="h5" component="h5">
                 История заказов
               </Typography>
             </Grid>
-            <Grid item direction="row" justify="center" container>
+            <Grid item direction="row" justifyContent="center" container>
               <Grid className={classes.productGrid} xs={12} sm={9} item container direction="column">
                 <Grid>
                   {purchases.map(purchase => (
                     <PurchaseDetailedInfo
                       key={purchase.id}
                       purchase={purchase}
-                      cardName={`Заказ от ${dateParse(purchase.createdDate)}`}
+                      cardName={`Заказ ${purchase.code} от ${dateParse(purchase.createdDate)}`}
+                      showCancel
                     />
                   ))}
                 </Grid>

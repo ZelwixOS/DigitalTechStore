@@ -139,7 +139,14 @@
         public int ChangePurchaseStatus(Guid purchaseId, PurchaseStatus purchaseStatus)
         {
             var purchase = purchsaseRepository.GetItem(purchaseId);
-            if (purchase == null || (!purchase.DeliveryOutletId.HasValue && purchaseStatus == PurchaseStatus.WaitsInOulet))
+
+            purchase.PurchaseItems = null;
+
+            var forbiddenStautsList = new List<PurchaseStatus>() { PurchaseStatus.Finished, PurchaseStatus.Refused, PurchaseStatus.CanceledByClient };
+
+            if (purchase == null ||
+                (!purchase.DeliveryOutletId.HasValue && purchaseStatus == PurchaseStatus.WaitsInOulet) ||
+                forbiddenStautsList.Contains(purchase.Status))
             {
                 return 0;
             }
@@ -177,9 +184,30 @@
             return result;
         }
 
+        public List<PurchaseDto> GetOutletPurchases(int? outletId, bool active, string search)
+        {
+            var activeStatuses = new List<PurchaseStatus>()
+            {
+                PurchaseStatus.WaitsForPaymentAprroval,
+                PurchaseStatus.WaitsInOulet,
+                PurchaseStatus.TransportingToOutlet,
+                PurchaseStatus.WaitsForDelivery,
+                PurchaseStatus.InDelivering,
+            };
+
+            var sr = search == null ? null : search.ToUpper();
+            var purchases = this.purchsaseRepository.GetItems().Where(
+                p =>
+                (p.OutletId == outletId || p.DeliveryOutletId == outletId) &&
+                (sr == null || sr == string.Empty || p.Id.ToString().ToUpper().Contains(sr)) &&
+                ((active && activeStatuses.Contains(p.Status)) || (!active && !activeStatuses.Contains(p.Status))));
+
+            return purchases.Select(p => new PurchaseDto(p)).ToList();
+        }
+
         private void ReturnReserveToCount(Guid purchaseId)
         {
-            var reserved = this.reservedOutletRepository.GetItems().Where(r => r.PurchaseId == purchaseId);
+            var reserved = this.reservedOutletRepository.GetItems().Where(r => r.PurchaseId == purchaseId).ToList();
             var allInOutlets = this.outletProductRepository.GetItems().ToList();
             OutletProduct outletProduct;
             foreach (var item in reserved)
@@ -188,6 +216,7 @@
                 if (outletProduct != null)
                 {
                     outletProduct.Count += item.Count;
+                    outletProduct.Outlet = null;
                     this.outletProductRepository.UpdateItem(outletProduct);
                 }
                 else
@@ -196,10 +225,10 @@
                 }
             }
 
-            this.reservedOutletRepository.DeleteItems(reserved);
+            this.reservedOutletRepository.DeleteItems(reserved.AsQueryable());
 
-            var reservedW = this.reservedWarehouseRepository.GetItems().Where(r => r.PurchaseId == purchaseId);
-            var allInWarehouses = this.warehouseProductRepository.GetItems().ToList().ToList();
+            var reservedW = this.reservedWarehouseRepository.GetItems().Where(r => r.PurchaseId == purchaseId).ToList();
+            var allInWarehouses = this.warehouseProductRepository.GetItems().ToList();
             WarehouseProduct warehouseProduct;
             foreach (var item in reservedW)
             {
@@ -207,6 +236,7 @@
                 if (warehouseProduct != null)
                 {
                     warehouseProduct.Count += item.Count;
+                    warehouseProduct.Warehouse = null;
                     this.warehouseProductRepository.UpdateItem(warehouseProduct);
                 }
                 else
@@ -215,7 +245,7 @@
                 }
             }
 
-            this.reservedWarehouseRepository.DeleteItems(reservedW);
+            this.reservedWarehouseRepository.DeleteItems(reservedW.AsQueryable());
         }
 
         private void PickInOnePlace(Guid purchaseId, int outletId)

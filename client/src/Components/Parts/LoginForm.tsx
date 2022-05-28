@@ -108,7 +108,7 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <Grid container direction="column" justify="center">
+    <Grid container direction="column" justifyContent="center">
       <TextField
         id="login-tf"
         className={classes.spaces}
@@ -138,7 +138,7 @@ const LoginForm: React.FC = () => {
         label="Запомнить меня"
         className={classes.spaces}
       />
-      <Grid container justify="flex-end">
+      <Grid container justifyContent="flex-end">
         <Button
           type="submit"
           className={classes.spaces}
@@ -149,10 +149,10 @@ const LoginForm: React.FC = () => {
           Войти
         </Button>
       </Grid>
-      <Grid className={classes.spaces} container justify="center">
+      <Grid className={classes.spaces} container justifyContent="center">
         <Typography component="div">Войти с помощью</Typography>
       </Grid>
-      <Grid container justify="center">
+      <Grid container justifyContent="center">
         <GoogleLogin
           clientId={'1036988036938-9u2bo3aiqo038ehm8tlb3vl9lq6bm27f.apps.googleusercontent.com'}
           buttonText="Войти через Google"

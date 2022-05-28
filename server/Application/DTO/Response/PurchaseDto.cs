@@ -15,6 +15,8 @@
         public PurchaseDto(Purchase purchase)
         {
             this.Id = purchase.Id;
+            var code = this.Id.ToString();
+            this.Code = code.Substring(30).ToUpper();
             this.CustomerId = purchase.CustomerId;
             this.CreatedDate = purchase.CreatedDate;
             this.CustomerName = purchase.CustomerFullName ??
@@ -31,6 +33,8 @@
         }
 
         public Guid Id { get; set; }
+
+        public string Code { get; set; }
 
         public Guid? CustomerId { get; set; }
 

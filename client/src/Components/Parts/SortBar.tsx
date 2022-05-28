@@ -42,7 +42,7 @@ const SortBar: React.FC<ISortBar> = props => {
   return (
     <Grid item xs={12}>
       <Card variant="outlined">
-        <Grid className={classes.selector} container alignItems="center" justify="flex-start">
+        <Grid className={classes.selector} container alignItems="center" justifyContent="flex-start">
           <FormControl className={classes.formControl}>
             <InputLabel id="sorting-controlled-open-select-label">Сортировка</InputLabel>
             <Observer>

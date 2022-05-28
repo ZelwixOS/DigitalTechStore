@@ -12,7 +12,7 @@ interface IOutletCount {
 
 const OutletCount: React.FC<IOutletCount> = props => (
   <Grid item xs={12}>
-    <Grid direction="row" justify="space-evenly" alignItems="center" item xs={12} container>
+    <Grid direction="row" justifyContent="space-evenly" alignItems="center" item xs={12} container>
       <Grid item xs={12} sm={10}>
         <OutletInfo outlet={props.outlet.outlet} />
       </Grid>

@@ -52,13 +52,13 @@ const ProductsPage: React.FC = () => {
   return (
     <React.Fragment>
       <NavigationBar />
-      <Grid container direction="row" justify="center" alignItems="center">
-        <Grid xs={12} sm={9} item direction="row" justify="center" alignItems="center" container>
-          <Grid item direction="column" justify="center" container>
-            <Grid container justify="center" alignItems="center">
+      <Grid container direction="row" justifyContent="center" alignItems="center">
+        <Grid xs={12} sm={9} item direction="row" justifyContent="center" alignItems="center" container>
+          <Grid item direction="column" justifyContent="center" container>
+            <Grid container justifyContent="center" alignItems="center">
               <Observer>{() => <SortBar type={data.sortType} onChange={data.setSortType} />}</Observer>
             </Grid>
-            <Grid item direction="row" justify="center" container>
+            <Grid item direction="row" justifyContent="center" container>
               <Grid className={classes.productGrid} xs={12} sm={12} item container direction="column">
                 <Observer>
                   {() => (
@@ -69,7 +69,7 @@ const ProductsPage: React.FC = () => {
                     </Grid>
                   )}
                 </Observer>
-                <Grid justify="center" alignItems="center" container>
+                <Grid justifyContent="center" alignItems="center" container>
                   <Observer>
                     {() => (
                       <React.Fragment>

@@ -24,7 +24,7 @@ const getStatusString = (id: number) => {
     case PurchaseStatus.refused:
       return 'Отказ';
     case PurchaseStatus.canceledByClient:
-      return 'Закрыт';
+      return 'Отменён';
     case PurchaseStatus.finished:
       return 'Завершён';
     default:

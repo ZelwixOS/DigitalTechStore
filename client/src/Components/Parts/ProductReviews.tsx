@@ -59,11 +59,11 @@ const ProductReviews: React.FC<IProductReviews> = props => {
   };
 
   return (
-    <Grid container direction="column" alignItems="center" justify="space-around" item xs={12}>
+    <Grid container direction="column" alignItems="center" justifyContent="space-around" item xs={12}>
       <Typography className={classes.prodName} variant="overline">
         {`Отзывы на ${props.productName}`}
       </Typography>
-      <Grid item xs={12} direction="column" container justify="center">
+      <Grid item xs={12} direction="column" container justifyContent="center">
         {role && !reviewed && <ReviewForm addReview={addReview} productId={props.productId} />}
         {reviews?.map((review, index) => (
           <ReviewBlock review={review} key={index} />

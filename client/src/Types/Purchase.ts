@@ -4,6 +4,7 @@ import PurchaseItem from './PurchaseItem';
 
 type Purchase = {
   id: string;
+  code: string;
   customerId?: string;
   sellerId?: string;
   sellerName?: string;

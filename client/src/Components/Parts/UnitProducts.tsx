@@ -42,7 +42,7 @@ const CityNavigation: React.FC<ICityNavigation> = props => {
 
   return (
     <Grid item xs={12}>
-      <Grid direction="row" justify="space-evenly" alignItems="stretch" item xs={12} container>
+      <Grid direction="row" justifyContent="space-evenly" alignItems="stretch" item xs={12} container>
         <Button variant="text" size="small" color="primary" onClick={handleClickOpen}>
           В наличии в магазинах: {props.outlets?.length}
         </Button>

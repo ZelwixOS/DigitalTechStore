@@ -1,5 +1,6 @@
 ﻿namespace Application.DTO.Response
 {
+    using System;
     using Domain.Models;
 
     public class ReviewDto
@@ -11,6 +12,7 @@
 
         public ReviewDto(Review review, string userName, string avatar)
         {
+            this.Id = review.Id;
             this.UserName = userName;
             this.Avatar = avatar;
             this.Mark = review.Mark;
@@ -20,6 +22,8 @@
         public ReviewDto()
         {
         }
+
+        public Guid Id { get; set; }
 
         public string UserName { get; set; }
 

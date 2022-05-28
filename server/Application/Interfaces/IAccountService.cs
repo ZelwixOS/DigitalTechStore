@@ -42,5 +42,7 @@
         WorkerInfo UpdateWorker(WorkerUpdateDto model);
 
         Task<int> UpdateWorkerRoleAsync(Guid id, string role);
+
+        Task<List<UserInfo>> GetClientsAsync();
     }
 }

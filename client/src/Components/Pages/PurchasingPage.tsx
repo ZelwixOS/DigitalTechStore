@@ -239,7 +239,7 @@ const PurchasingPage: React.FC = () => {
           </ul>
         </Alert>
       </Snackbar>
-      <Grid container justify="center" alignItems="center">
+      <Grid container justifyContent="center" alignItems="center">
         <Grid xs={12} sm={9} item direction="column" container>
           {!operationResult && (
             <React.Fragment>
@@ -249,7 +249,7 @@ const PurchasingPage: React.FC = () => {
                 </Typography>
               </Card>
               <Card className={classes.card} variant="outlined">
-                <Grid xs={12} item justify="center" alignContent="flex-start" container>
+                <Grid xs={12} item justifyContent="center" alignContent="flex-start" container>
                   <Grid xs={12} sm={9} item direction="column" container>
                     <Typography align="center" variant="h5" className={classes.text}>
                       Состав заказа:
@@ -271,7 +271,7 @@ const PurchasingPage: React.FC = () => {
                   <Typography align="center" variant="h5" className={classes.text}>
                     Данные покупателя:
                   </Typography>
-                  <Grid xs={12} item justify="center" container>
+                  <Grid xs={12} item justifyContent="center" container>
                     <Grid xs={12} sm={6} item direction="column" container>
                       <TextField
                         className={classes.field}
@@ -295,7 +295,7 @@ const PurchasingPage: React.FC = () => {
                 <Typography align="center" variant="h5" className={classes.text}>
                   Выбор доставки:
                 </Typography>
-                <Grid xs={12} item justify="space-evenly" direction="column" alignItems="center" container>
+                <Grid xs={12} item justifyContent="space-evenly" direction="column" alignItems="center" container>
                   <RadioGroup className={classes.field} row value={deliveryType} onChange={deliveryTypeChange}>
                     <FormControlLabel
                       value="outlet"
@@ -328,7 +328,7 @@ const PurchasingPage: React.FC = () => {
                       </List>
                     </Card>
                   ) : (
-                    <Grid xs={12} item justify="center" container>
+                    <Grid xs={12} item justifyContent="center" container>
                       <Grid xs={12} sm={6} item direction="column" container>
                         <Typography align="center" variant="h5" className={classes.text}>
                           Стоимость доставки: {prepurchaseInfo?.deliveryPrice}₽
@@ -358,7 +358,7 @@ const PurchasingPage: React.FC = () => {
                 </Typography>
               </Card>
               <Card className={classes.card} variant="outlined">
-                <Grid container justify="center">
+                <Grid container justifyContent="center">
                   <Button color="primary" variant="contained" onClick={submit}>
                     Купить
                   </Button>
@@ -368,7 +368,7 @@ const PurchasingPage: React.FC = () => {
           )}
           {operationResult && (
             <React.Fragment>
-              <PurchaseDetailedInfo purchase={operationResult} cardName={'Заказ оформлен:'} />
+              <PurchaseDetailedInfo purchase={operationResult} cardName={`Заказ ${operationResult.code} оформлен:`} />
               <Button variant="contained" color="primary" href="/">
                 К покупкам
               </Button>

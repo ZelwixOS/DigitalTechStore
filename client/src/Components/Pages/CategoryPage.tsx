@@ -81,18 +81,18 @@ const CategoryPage: React.FC = () => {
   return (
     <React.Fragment>
       <NavigationBar />
-      <Grid container direction="row" justify="center" alignItems="center">
-        <Grid xs={12} sm={9} item direction="row" justify="center" alignItems="center" container>
-          <Grid item direction="column" justify="center" alignItems="center" container>
+      <Grid container direction="row" justifyContent="center" alignItems="center">
+        <Grid xs={12} sm={9} item direction="row" justifyContent="center" alignItems="center" container>
+          <Grid item direction="column" justifyContent="center" alignItems="center" container>
             <Grid>
               <Typography className={classes.categoryWord} variant="h5" component="h5">
                 {params.categoryName}
               </Typography>
             </Grid>
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
               <Observer>{() => <SortBar type={data.sortType} onChange={data.setSortType} />}</Observer>
             </Grid>
-            <Grid item direction="row" justify="center" container>
+            <Grid item direction="row" justifyContent="center" container>
               <Observer>
                 {() => (
                   <Grid xs={12} sm={3} item className={classes.filterPanel}>
@@ -118,7 +118,7 @@ const CategoryPage: React.FC = () => {
                     </Grid>
                   )}
                 </Observer>
-                <Grid justify="center" alignItems="center" container>
+                <Grid justifyContent="center" alignItems="center" container>
                   <Observer>
                     {() => (
                       <React.Fragment>

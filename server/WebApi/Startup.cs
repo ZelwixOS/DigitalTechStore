@@ -207,6 +207,8 @@ namespace WebApi
                     provider.GetService<IOutletProductRepository>(),
                     provider.GetService<IReservedWarehouseRepository>(),
                     provider.GetService<IReservedOutletRepository>()));
+            services.AddScoped<IStatisticsService, StatisticsService>(provider =>
+                new StatisticsService(provider.GetService<IPurchaseRepository>()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

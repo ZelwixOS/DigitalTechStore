@@ -132,6 +132,26 @@ const UserMiniPanel: React.FC = () => {
                       <Typography variant="h5">Администрирование</Typography>
                     </MenuItem>
                   )}
+                  {(userInfo.role === 'ShopAssistant' || userInfo.role === 'Manager') && (
+                    <React.Fragment>
+                      <MenuItem
+                        className={classes.item}
+                        onClick={() => {
+                          document.location.href = `/OutletOrders`;
+                        }}
+                      >
+                        <Typography variant="h5">Заказы</Typography>
+                      </MenuItem>
+                      <MenuItem
+                        className={classes.item}
+                        onClick={() => {
+                          document.location.href = `/OrdersHistory`;
+                        }}
+                      >
+                        <Typography variant="h5">История</Typography>
+                      </MenuItem>
+                    </React.Fragment>
+                  )}
                   <MenuItem className={classes.item} onClick={signOut}>
                     <Typography variant="h5">Выйти</Typography>
                   </MenuItem>

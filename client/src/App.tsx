@@ -23,6 +23,9 @@ import { ProductValueList } from './Components/Admin/Parts/ProductValueList';
 import { RegionList } from './Components/Admin/Pages/RegionList';
 import { OutletList } from './Components/Admin/Pages/OutletList';
 import { WarehouseList } from './Components/Admin/Pages/WarehouseList';
+import { ClientsList } from './Components/Admin/Pages/ClientsList';
+import OutletOrdersPage from './Components/Pages/OutletOrdersPage';
+import HistoricalOrdersPage from './Components/Pages/HistoricalOrdersPage';
 
 const innerTheme = createTheme({
   palette: {
@@ -58,6 +61,9 @@ const App: React.FC = () => (
       <Route path="/admin/regions" element={<RegionList />} />
       <Route path="/admin/outlets" element={<OutletList />} />
       <Route path="/admin/warehouses" element={<WarehouseList />} />
+      <Route path="/admin/Clients" element={<ClientsList />} />
+      <Route path="/OutletOrders" element={<OutletOrdersPage />} />
+      <Route path="/OrdersHistory" element={<HistoricalOrdersPage />} />
     </Routes>
   </ThemeProvider>
 );

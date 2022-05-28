@@ -27,13 +27,21 @@ const useStyles = makeStyles((theme: Theme) =>
 const ProductParams: React.FC<IProductParams> = props => {
   const classes = useStyles();
   return (
-    <Grid container direction="column" alignItems="center" justify="space-around" item xs={12}>
+    <Grid container direction="column" alignItems="center" justifyContent="space-around" item xs={12}>
       <Typography className={classes.prodName} variant="overline">
         {`Характеристики ${props.productName}`}
       </Typography>
       {props.params?.map((block, index) => (
         <Grid direction="column" alignItems="center" container key={index}>
-          <Grid item xs={12} sm={6} container alignItems="center" justify="space-evenly" className={classes.line}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            container
+            alignItems="center"
+            justifyContent="space-evenly"
+            className={classes.line}
+          >
             {block.name}
           </Grid>
           {block.parameters.map((param, key) => (

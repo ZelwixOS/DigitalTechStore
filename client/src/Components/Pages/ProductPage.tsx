@@ -57,10 +57,10 @@ const ProductPage: React.FC = () => {
   return (
     <React.Fragment>
       <NavigationBar />
-      <Grid container direction="row" justify="center" alignItems="center">
-        <Grid xs={12} sm={9} item direction="column" justify="center" alignItems="center" container>
+      <Grid container direction="row" justifyContent="center" alignItems="center">
+        <Grid xs={12} sm={9} item direction="column" justifyContent="center" alignItems="center" container>
           <Card>
-            <Grid justify="space-evenly" container>
+            <Grid justifyContent="space-evenly" container>
               <Typography className={classes.prodName} variant="overline" component="h4">
                 {product?.name}
               </Typography>

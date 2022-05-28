@@ -60,6 +60,36 @@
             return this.Ok(result);
         }
 
+        [HttpGet("outlet")]
+        [Authorize(Roles = Constants.AuthManager.AdminOutlet)]
+        public async Task<ActionResult<List<PurchaseDto>>> GetOutletActive([FromQuery] string search)
+        {
+            var user = await accountService.GetCurrentUserAsync(HttpContext);
+            if (user == null)
+            {
+                return this.Unauthorized();
+            }
+
+            var result = purchaseService.GetOutletPurchases(user.OutletId, true, search);
+
+            return this.Ok(result);
+        }
+
+        [HttpGet("outletHistory")]
+        [Authorize(Roles = Constants.AuthManager.AdminOutlet)]
+        public async Task<ActionResult<List<PurchaseDto>>> GetOutletHistory([FromQuery] string search)
+        {
+            var user = await accountService.GetCurrentUserAsync(HttpContext);
+            if (user == null)
+            {
+                return this.Unauthorized();
+            }
+
+            var result = purchaseService.GetOutletPurchases(user.OutletId, false, search);
+
+            return this.Ok(result);
+        }
+
         [HttpPost("preinfo")]
         public ActionResult<PrepurchaseInfoDto> GetPreInfo([FromBody] PrepurchaseRequestDto prepurchaseData)
         {
@@ -86,9 +116,17 @@
 
         [HttpPut]
         [Authorize(Roles = Constants.AuthManager.Worker)]
-        public ActionResult<int> UpdateStatus([FromBody] Guid purchaseId, PurchaseStatus status)
+        public ActionResult<int> UpdateStatus([FromBody] UpdatePurchaseStatusRequest data)
         {
-            var result = purchaseService.ChangePurchaseStatus(purchaseId, status);
+            var result = purchaseService.ChangePurchaseStatus(data.Id, data.Status);
+            return this.Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = Constants.AuthManager.Customer)]
+        public ActionResult<int> CancelStatus(Guid id)
+        {
+            var result = purchaseService.ChangePurchaseStatus(id, PurchaseStatus.CanceledByClient);
             return this.Ok(result);
         }
     }

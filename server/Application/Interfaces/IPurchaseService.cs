@@ -22,5 +22,7 @@
         PurchaseDto GetPurchase(Guid id);
 
         List<PurchaseDto> GetUserPurchases(Guid id);
+
+        List<PurchaseDto> GetOutletPurchases(int? outletId, bool active, string search);
     }
 }

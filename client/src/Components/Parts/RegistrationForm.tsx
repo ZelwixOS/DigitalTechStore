@@ -115,7 +115,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = props => {
   };
 
   return (
-    <Grid container direction="column" justify="center">
+    <Grid container direction="column" justifyContent="center">
       <TextField
         id="login-tf"
         className={classes.spaces}

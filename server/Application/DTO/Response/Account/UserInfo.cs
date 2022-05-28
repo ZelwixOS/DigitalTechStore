@@ -1,5 +1,6 @@
 ﻿namespace Application.DTO.Response.Account
 {
+    using System;
     using Domain.Models;
 
     public class UserInfo
@@ -17,6 +18,23 @@
             this.CartCount = user.CartItems?.Count;
             this.WishListCount = user.WishedItems?.Count;
         }
+
+        public UserInfo(User user)
+        {
+            this.Id = user.Id;
+            this.UserName = user.UserName;
+            this.FirstName = user.FirstName;
+            this.SecondName = user.SecondName;
+            this.PhoneNumber = user.PhoneNumber;
+            this.Email = user.Email;
+            this.GoogleMail = user.GoogleMail;
+            this.Avatar = user.Avatar;
+            this.CartCount = user.CartItems?.Count;
+            this.WishListCount = user.WishedItems?.Count;
+            this.Banned = user.Banned;
+        }
+
+        public Guid Id { get; set; }
 
         public string UserName { get; set; }
 
@@ -37,5 +55,7 @@
         public int? CartCount { get; set; }
 
         public int? WishListCount { get; set; }
+
+        public bool Banned { get; set; }
     }
 }

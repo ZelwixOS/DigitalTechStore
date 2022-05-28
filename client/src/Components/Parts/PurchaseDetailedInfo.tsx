@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Accordion, AccordionDetails, AccordionSummary, Card, Divider, List, ListItem } from '@material-ui/core';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Button,
+  Card,
+  Divider,
+  List,
+  ListItem,
+} from '@material-ui/core';
 
 import Purchase from 'src/Types/Purchase';
-import { getStatusString } from 'src/Types/PurchaseStatus';
+import { getStatusString, PurchaseStatus } from 'src/Types/PurchaseStatus';
+import { updatePurchaseStatus, cancelPurchaseStatus } from 'src/Requests/PutRequests';
 
 import OutletInfo from './OutletInfo';
 import PurchasingItemsList from './PurchasingItemsList';
@@ -14,6 +24,10 @@ import PurchasingItemsList from './PurchasingItemsList';
 interface IPurchaseDetailedInfo {
   purchase: Purchase;
   cardName: string;
+  hideDelivery?: boolean;
+  showRefuse?: boolean;
+  showCancel?: boolean;
+  showFinish?: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -31,9 +45,33 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const PurchaseDetailedInfo: React.FC<IPurchaseDetailedInfo> = props => {
   const classes = useStyles();
+
+  const [status, setStatus] = useState(props.purchase.status);
+
+  const completed = async () => {
+    const res = await updatePurchaseStatus(props.purchase.id, PurchaseStatus.finished);
+    if (res > 0) {
+      setStatus(PurchaseStatus.finished);
+    }
+  };
+
+  const cancel = async () => {
+    const res = await cancelPurchaseStatus(props.purchase.id);
+    if (res > 0) {
+      setStatus(PurchaseStatus.canceledByClient);
+    }
+  };
+
+  const refuse = async () => {
+    const res = await updatePurchaseStatus(props.purchase.id, PurchaseStatus.refused);
+    if (res > 0) {
+      setStatus(PurchaseStatus.refused);
+    }
+  };
+
   return (
     <Card className={classes.card} variant="outlined">
-      <Grid xs={12} item justify="center" alignContent="flex-start" container>
+      <Grid xs={12} item justifyContent="center" alignContent="flex-start" container>
         <Grid xs={12} sm={9} item direction="column" container>
           <Typography align="center" variant="h5" className={classes.text}>
             {props.cardName}
@@ -53,45 +91,47 @@ const PurchaseDetailedInfo: React.FC<IPurchaseDetailedInfo> = props => {
               </React.Fragment>
             )}
             <ListItem>
-              <Typography>Статус: {getStatusString(props.purchase.status)}</Typography>
+              <Typography>Статус: {getStatusString(status)}</Typography>
             </ListItem>
             <Divider />
             <ListItem>
-              <Typography>Общая стоимость: {props.purchase.totalCost}</Typography>
+              <Typography>Общая стоимость: {props.purchase.totalCost}₽</Typography>
             </ListItem>
             <Divider />
-            <Accordion variant="outlined">
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>Доставка</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {props.purchase.delivery ? (
-                  <Grid xs={12} item>
-                    <List>
-                      <ListItem>
-                        <Typography>Получатель: {props.purchase.delivery.recieverName}</Typography>
-                      </ListItem>
-                      <Divider />
-                      <ListItem>
-                        <Typography>Адрес доставки: {props.purchase.delivery.deliveryAdress}</Typography>
-                      </ListItem>
-                      <Divider />
-                      <ListItem>
-                        <Typography>Стоимость доставки: {props.purchase.delivery.deliveryCost}</Typography>
-                      </ListItem>
-                      <Divider />
-                    </List>
-                  </Grid>
-                ) : (
-                  <React.Fragment>
-                    <Typography>Магазин получения:</Typography>
-                    <Grid container justify="center">
-                      <OutletInfo outlet={props.purchase.deliveryOutlet} />
+            {!props.hideDelivery && (
+              <Accordion variant="outlined">
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>Доставка</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {props.purchase.delivery ? (
+                    <Grid xs={12} item>
+                      <List>
+                        <ListItem>
+                          <Typography>Получатель: {props.purchase.delivery.recieverName}</Typography>
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
+                          <Typography>Адрес доставки: {props.purchase.delivery.deliveryAdress}</Typography>
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
+                          <Typography>Стоимость доставки: {props.purchase.delivery.deliveryCost}₽</Typography>
+                        </ListItem>
+                        <Divider />
+                      </List>
                     </Grid>
-                  </React.Fragment>
-                )}
-              </AccordionDetails>
-            </Accordion>
+                  ) : (
+                    <React.Fragment>
+                      <Typography>Магазин получения:</Typography>
+                      <Grid container justifyContent="center">
+                        <OutletInfo outlet={props.purchase.deliveryOutlet} />
+                      </Grid>
+                    </React.Fragment>
+                  )}
+                </AccordionDetails>
+              </Accordion>
+            )}
             <Accordion variant="outlined">
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography>Список покупок</Typography>
@@ -102,6 +142,34 @@ const PurchaseDetailedInfo: React.FC<IPurchaseDetailedInfo> = props => {
                 </Grid>
               </AccordionDetails>
             </Accordion>
+            <ListItem>
+              <Grid container direction="row" justifyContent="space-evenly">
+                {props.showCancel &&
+                  status !== PurchaseStatus.refused &&
+                  status !== PurchaseStatus.canceledByClient &&
+                  status !== PurchaseStatus.finished && (
+                    <Button variant="contained" onClick={cancel}>
+                      Отменить
+                    </Button>
+                  )}
+                {props.showFinish &&
+                  status !== PurchaseStatus.refused &&
+                  status !== PurchaseStatus.canceledByClient &&
+                  status !== PurchaseStatus.finished && (
+                    <Button variant="contained" onClick={refuse}>
+                      Отказ
+                    </Button>
+                  )}
+                {props.showRefuse &&
+                  status !== PurchaseStatus.refused &&
+                  status !== PurchaseStatus.canceledByClient &&
+                  status !== PurchaseStatus.finished && (
+                    <Button variant="contained" color="primary" onClick={completed}>
+                      Выполнено
+                    </Button>
+                  )}
+              </Grid>
+            </ListItem>
           </List>
         </Grid>
       </Grid>

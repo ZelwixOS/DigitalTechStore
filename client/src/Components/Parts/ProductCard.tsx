@@ -195,13 +195,13 @@ const ProductCard: React.FC<IProductCard> = props => {
           Зарегистрируйтесь для использования всех возможностей магазина!
         </Alert>
       </Snackbar>
-      <Grid container direction="row" alignItems="center" justify="center">
+      <Grid container direction="row" alignItems="center" justifyContent="center">
         {props.onChecked && (
-          <Grid container direction="column" item alignItems="center" justify="center" xs={12} sm={1}>
+          <Grid container direction="column" item alignItems="center" justifyContent="center" xs={12} sm={1}>
             <Checkbox color="primary" onChange={onChange} checked={isChecked} />
           </Grid>
         )}
-        <Grid container direction="column" alignItems="center" justify="center" item xs={12} sm={3}>
+        <Grid container direction="column" alignItems="center" justifyContent="center" item xs={12} sm={3}>
           <img className={classes.cover} src={picture} alt={props.product.name} />
           <Typography variant="body1">{isShown && props.product.vendorCode}</Typography>
         </Grid>
@@ -238,7 +238,7 @@ const ProductCard: React.FC<IProductCard> = props => {
             container
             item
             xs={12}
-            justify="center"
+            justifyContent="center"
             alignContent="center"
             direction="row"
             className={classes.rating}
@@ -247,9 +247,9 @@ const ProductCard: React.FC<IProductCard> = props => {
             <Typography className={`${classes.bold} ${classes.ratingNum}`}>{props.product.mark}</Typography>
           </Grid>
         </Grid>
-        <Grid container direction="row" justify="center" alignItems="center" item xs={12} sm={2}>
+        <Grid container direction="row" justifyContent="center" alignItems="center" item xs={12} sm={2}>
           {!props.hideLike && (
-            <Grid container justify="center" item xs={12} sm={4}>
+            <Grid container justifyContent="center" item xs={12} sm={4}>
               {inWishlist ? (
                 <IconButton
                   aria-label="favourite"
@@ -267,7 +267,7 @@ const ProductCard: React.FC<IProductCard> = props => {
             </Grid>
           )}
           {!props.hideBuy && (
-            <Grid container justify="center" item xs={12} sm={8}>
+            <Grid container justifyContent="center" item xs={12} sm={8}>
               {inCart ? (
                 <Button className={classes.button} variant="contained" color="primary" href="/cart">
                   В Корзине

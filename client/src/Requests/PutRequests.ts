@@ -137,6 +137,15 @@ async function updateWarehouse(
   return await put(`/api/Estate/warehouse`, data);
 }
 
+async function updatePurchaseStatus(id: string, status: number) {
+  const data = { id, status };
+  return await put(`/api/Purchase`, data);
+}
+
+async function cancelPurchaseStatus(id: string) {
+  return await put(`/api/Purchase/${id}`, null);
+}
+
 export {
   updateCartItem,
   updateCommonCategory,
@@ -150,4 +159,6 @@ export {
   updateCity,
   updateOutlet,
   updateWarehouse,
+  updatePurchaseStatus,
+  cancelPurchaseStatus,
 };

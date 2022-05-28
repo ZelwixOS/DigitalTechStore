@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const ProductParameter: React.FC<IProductParameter> = props => {
   const classes = useStyles();
   return (
-    <Grid direction="row" container alignItems="center" justify="center" className={classes.line}>
+    <Grid direction="row" container alignItems="center" justifyContent="center" className={classes.line}>
       <Grid item xs={12} sm={6}>
         <Typography align="center" variant="body2">
           {props.param.name}

@@ -60,7 +60,7 @@ const PoductCounter: React.FC<IPoductCounter> = props => {
   };
 
   return (
-    <Grid className={classes.root} container direction="column" justify="center" alignItems="center">
+    <Grid className={classes.root} container direction="column" justifyContent="center" alignItems="center">
       <Button variant="outlined" onClick={addCount}>
         +
       </Button>

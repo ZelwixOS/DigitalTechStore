@@ -37,6 +37,8 @@
         {
             public const string AdminManager = "Admin,Manager";
 
+            public const string AdminOutlet = "Admin,Manager,ShopAssistant";
+
             public const string Customer = "Customer";
 
             public const string Courier = "Courier";

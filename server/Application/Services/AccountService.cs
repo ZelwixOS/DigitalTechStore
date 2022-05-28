@@ -144,6 +144,16 @@
             return workers;
         }
 
+        public async Task<List<UserInfo>> GetClientsAsync()
+        {
+            var clients = new List<UserInfo>();
+
+            IList<User> users = await this.userManager.GetUsersInRoleAsync(Role.Customer);
+            clients = users.Select(u => new UserInfo(u)).ToList();
+
+            return clients;
+        }
+
         public async Task<WorkerInfo> GetWorker(Guid id)
         {
             var user = this.userRepository.GetItem(id);

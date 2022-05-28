@@ -5,7 +5,9 @@
     using System.Threading.Tasks;
     using Application.DTO.Request.Review;
     using Application.DTO.Response;
+    using Application.Helpers;
     using Application.Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
@@ -33,7 +35,7 @@
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDto>> CreateAsync([FromBody] ReviewCreateRequestDto review)
+        public async Task<ActionResult<ReviewDto>> CreateAsync([FromBody] ReviewCreateRequestDto review)
         {
             var user = await this.accountService.GetCurrentUserAsync(HttpContext);
 
@@ -46,7 +48,7 @@
         }
 
         [HttpPut]
-        public async Task<ActionResult<ProductDto>> UpdateAsync([FromBody] ReviewUpdateRequestDto review)
+        public async Task<ActionResult<ReviewDto>> UpdateAsync([FromBody] ReviewUpdateRequestDto review)
         {
             var user = await this.accountService.GetCurrentUserAsync(HttpContext);
 
@@ -69,6 +71,13 @@
             }
 
             return this.Ok(reviewService.DeleteReview(productId, user.Id));
+        }
+
+        [HttpPost("ban/{id}")]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
+        public ActionResult<int> BanComment(Guid id)
+        {
+            return this.Ok(reviewService.BanReview(id));
         }
     }
 }

@@ -25,9 +25,9 @@ const CategoryCard: React.FC<ICategoryCard> = props => {
   const redirectionURL = `/category/${props.category.name}`;
   return (
     <Card variant="outlined">
-      <Grid justify="center" item xs={12} container>
+      <Grid justifyContent="center" item xs={12} container>
         <CardActionArea href={redirectionURL}>
-          <Grid justify="center" item xs={12} container>
+          <Grid justifyContent="center" item xs={12} container>
             <Typography align="center" className={classes.name} variant="overline">
               {props.category.name}
             </Typography>

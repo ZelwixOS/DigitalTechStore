@@ -119,7 +119,7 @@ const FilterBar: React.FC<IFilterBar> = props => {
           </Observer>
           <Divider variant="middle" />
           <ListItem>
-            <Grid container justify="center">
+            <Grid container justifyContent="center">
               <Button variant="contained" color="primary" onClick={props.applyChanges}>
                 Применить
               </Button>

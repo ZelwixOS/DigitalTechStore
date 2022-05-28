@@ -133,9 +133,9 @@ const PriceLikeBuyCard: React.FC<IPriceLikeBuyCard> = props => {
   const classes = useStyles();
   return (
     <Card variant="outlined" className={classes.root}>
-      <Grid justify="center" alignItems="center" container>
-        <Grid className={classes.grid} container direction="row" justify="center" alignItems="center">
-          <Grid item container direction="column" justify="center" alignItems="center" xs={12} sm={6}>
+      <Grid justifyContent="center" alignItems="center" container>
+        <Grid className={classes.grid} container direction="row" justifyContent="center" alignItems="center">
+          <Grid item container direction="column" justifyContent="center" alignItems="center" xs={12} sm={6}>
             <Typography component="h5" variant="h5" className={classes.bold}>
               Цена:
             </Typography>
@@ -159,8 +159,8 @@ const PriceLikeBuyCard: React.FC<IPriceLikeBuyCard> = props => {
               </Typography>
             )}
           </Grid>
-          <Grid item xs={12} sm={6} container direction="row" justify="center" alignItems="center">
-            <Grid item xs={12} sm={3} container justify="flex-start">
+          <Grid item xs={12} sm={6} container direction="row" justifyContent="center" alignItems="center">
+            <Grid item xs={12} sm={3} container justifyContent="flex-start">
               {inWishlist ? (
                 <IconButton aria-label="favourite" color="primary" onClick={deleteProductFromWishlist}>
                   <FavoriteIcon />
@@ -184,7 +184,15 @@ const PriceLikeBuyCard: React.FC<IPriceLikeBuyCard> = props => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid container item xs={12} justify="center" alignContent="center" direction="row" className={classes.rating}>
+        <Grid
+          container
+          item
+          xs={12}
+          justifyContent="center"
+          alignContent="center"
+          direction="row"
+          className={classes.rating}
+        >
           <Rating className={classes.rating} name="read-only" value={props.rating} readOnly />
           <Typography className={`${classes.bold} ${classes.rating}`}>{props.rating}</Typography>
         </Grid>

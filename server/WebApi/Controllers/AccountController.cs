@@ -76,6 +76,14 @@
         }
 
         [HttpGet]
+        [Route("GetClients")]
+        [Authorize(Roles = Constants.RoleManager.Admin)]
+        public async Task<ActionResult<List<UserInfo>>> GetClients()
+        {
+            return Ok(await accountService.GetClientsAsync());
+        }
+
+        [HttpGet]
         [Route("Role")]
         public async Task<ActionResult<string>> Role()
         {

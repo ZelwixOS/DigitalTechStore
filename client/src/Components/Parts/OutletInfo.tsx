@@ -9,7 +9,7 @@ interface IOutletInfo {
 }
 
 const OutletInfo: React.FC<IOutletInfo> = props => (
-  <Grid item xs={12} direction="column" justify="space-evenly" alignItems="stretch" container>
+  <Grid item xs={12} direction="column" justifyContent="space-evenly" alignItems="stretch" container>
     <Typography variant="h6" color="primary">
       {props.outlet.name}
     </Typography>
