@@ -14,6 +14,7 @@
                 Building = this.Building,
                 PostalCode = this.PostalCode,
                 Name = this.Name,
+                PhoneNumber = this.PhoneNumber,
             };
         }
     }

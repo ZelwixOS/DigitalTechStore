@@ -120,8 +120,9 @@ async function updateOutlet(
   building: string,
   postalCode: string,
   noteForUser: string,
+  phoneNumber: string,
 ) {
-  const data = { id, name, cityId, streetName, building, postalCode, noteForUser };
+  const data = { id, name, cityId, streetName, building, postalCode, noteForUser, phoneNumber };
   return await put(`/api/Estate/outlet`, data);
 }
 
@@ -132,8 +133,9 @@ async function updateWarehouse(
   streetName: string,
   building: string,
   postalCode: string,
+  phoneNumber: string,
 ) {
-  const data = { id, name, cityId, streetName, building, postalCode };
+  const data = { id, name, cityId, streetName, building, postalCode, phoneNumber };
   return await put(`/api/Estate/warehouse`, data);
 }
 

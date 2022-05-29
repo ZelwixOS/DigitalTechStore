@@ -20,6 +20,7 @@
                 PostalCode = this.PostalCode,
                 Name = this.Name,
                 NoteForUser = this.NoteForUser,
+                PhoneNumber = this.PhoneNumber,
             };
         }
     }

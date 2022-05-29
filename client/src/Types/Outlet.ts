@@ -9,6 +9,7 @@ type Outlet = {
   streetName: string;
   building: string;
   postalCode: string;
+  phoneNumber: string;
   userNote: string;
 };
 

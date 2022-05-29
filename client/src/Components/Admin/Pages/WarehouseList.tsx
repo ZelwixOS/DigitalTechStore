@@ -23,6 +23,11 @@ export const WarehouseList = () => {
       valueGetter: (params: GridValueGetterParams) =>
         `${params.row.postalCode}, ${params.row.region.name}, ${params.row.city.name}, ${params.row.streetName}, ${params.row.building}`,
     },
+    {
+      field: 'phoneNumber',
+      headerName: 'Телефон',
+      width: 350,
+    },
   ];
 
   const onDelete = async (id: string): Promise<boolean> => {

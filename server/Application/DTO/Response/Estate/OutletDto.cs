@@ -15,6 +15,7 @@
             this.Building = outlet.Building;
             this.StreetName = outlet.StreetName;
             this.UserNote = outlet.NoteForUser;
+            this.PhoneNumber = outlet.PhoneNumber;
         }
 
         public OutletDto()

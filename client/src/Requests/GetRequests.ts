@@ -11,6 +11,8 @@ import ParameterBlock from 'src/Types/ParameterBlock';
 import Product from 'src/Types/Product';
 import Purchase from 'src/Types/Purchase';
 import Region from 'src/Types/Region';
+import SalesStatistics from 'src/Types/SalesStatistics';
+import SalesTimeStatistics from 'src/Types/SalesTimeStatistics';
 import Sorting from 'src/Types/Sorting';
 import Warehouse from 'src/Types/Warehouse';
 
@@ -230,11 +232,24 @@ async function getWarehouse(id: number) {
 }
 
 async function getOrdersForMonth(type: number, finished: boolean) {
-  return await getRequest(`/api/Statistics/monthOrders/${type}?finished=${finished}`);
+  return (await getRequest(`/api/Statistics/monthOrders/${type}?finished=${finished}`)) as SalesTimeStatistics[];
+}
+
+async function getMonthSales(type: number) {
+  return (await getRequest(`/api/Statistics/monthSales/${type}`)) as SalesStatistics;
+}
+
+async function getTotalSales(type: number) {
+  return (await getRequest(`/api/Statistics/totalSales/${type}`)) as SalesStatistics;
 }
 
 async function getClients() {
   return await getRequest(`/api/Account/GetClients`);
+}
+
+async function getCityOulets() {
+  const cityId = localStorage.getItem('cityId');
+  return await getRequest(`/api/Estate/outlets/${cityId}`);
 }
 
 export default getRequest;
@@ -283,4 +298,7 @@ export {
   getClients,
   getOutletPurchases,
   getOutletHistoricalPurchases,
+  getMonthSales,
+  getTotalSales,
+  getCityOulets,
 };

@@ -1,34 +1,46 @@
 import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
-import { LineChart, Line, XAxis, YAxis, Label } from 'recharts';
+import { createStyles, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
+import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
+
+import SalesTimeStatistics from 'src/Types/SalesTimeStatistics';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    title: {
+      margin: theme.spacing(2, 4),
+      textShadow: '#CCC 1px 1px 2px',
+    },
+    chart: {
+      margin: theme.spacing(1, 2, 1, 1),
+    },
+  }),
+);
 
 interface IDataGraph {
   name: string;
-  data: [];
-  xDataName: string;
+  data: SalesTimeStatistics[];
   xName: string;
-  yDataName: string;
   yName: string;
+  color: string;
 }
 
 export const DataGraph: React.FC<IDataGraph> = props => {
   const theme = useTheme();
+  const classes = useStyles();
 
   return (
     <React.Fragment>
-      <Typography component="h2" variant="h6" color="primary" gutterBottom>
+      <Typography align="center" variant="h5" style={{ color: props.color }} className={classes.title} gutterBottom>
         {props.name}
       </Typography>
-      <LineChart data={props.data}>
-        <XAxis dataKey={props.xDataName} stroke={theme.palette.text.primary}>
-          <Label>{props.xName}</Label>
-        </XAxis>
-        <YAxis stroke={theme.palette.text.primary}>
-          <Label>{props.yName}</Label>
-        </YAxis>
-        <Line type="monotone" dataKey={props.yDataName} stroke={theme.palette.primary.main} />
-      </LineChart>
+      <Paper variant="outlined">
+        <LineChart width={500} height={200} data={props.data} className={classes.chart}>
+          <Line type="monotone" dataKey="data" stroke={props.color} name={props.yName} />
+          <XAxis dataKey="date" name={props.xName} />
+          <Tooltip />
+        </LineChart>
+      </Paper>
     </React.Fragment>
   );
 };

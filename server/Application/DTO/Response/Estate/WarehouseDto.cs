@@ -14,6 +14,7 @@
             this.Id = warehouse.Id;
             this.Building = warehouse.Building;
             this.StreetName = warehouse.StreetName;
+            this.PhoneNumber = warehouse.PhoneNumber;
         }
 
         public WarehouseDto()

@@ -28,6 +28,11 @@ export const OutletList = () => {
       headerName: 'Заметка',
       width: 350,
     },
+    {
+      field: 'phoneNumber',
+      headerName: 'Телефон',
+      width: 350,
+    },
   ];
 
   const onDelete = async (id: string): Promise<boolean> => {

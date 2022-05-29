@@ -44,6 +44,7 @@ const EditOutlet: React.FC<IEditOutlet> = props => {
         building: res.building,
         postalCode: res.postalCode,
         noteForUser: res.userNote,
+        phoneNumber: res.phoneNumber,
       });
 
       const reg = regions.find(r => r.id === res.city.regionId);
@@ -75,6 +76,7 @@ const EditOutlet: React.FC<IEditOutlet> = props => {
     building: outletData.building,
     postalCode: outletData.postalCode,
     noteForUser: outletData.noteForUser,
+    phoneNumber: outletData.phoneNumber,
   });
 
   const [outletData, setOutletData] = React.useState({
@@ -84,6 +86,7 @@ const EditOutlet: React.FC<IEditOutlet> = props => {
     building: '',
     postalCode: '',
     noteForUser: '',
+    phoneNumber: '',
   });
 
   const [loading, setLoading] = React.useState(true);
@@ -114,6 +117,12 @@ const EditOutlet: React.FC<IEditOutlet> = props => {
   const handlePostalCodeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const data = cloneData();
     data.postalCode = event.target.value as string;
+    setOutletData(data);
+  };
+
+  const handlePhoneChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const data = cloneData();
+    data.phoneNumber = event.target.value as string;
     setOutletData(data);
   };
 
@@ -156,6 +165,7 @@ const EditOutlet: React.FC<IEditOutlet> = props => {
         outletData.building,
         outletData.postalCode,
         outletData.noteForUser,
+        outletData.phoneNumber,
       );
 
       if (res && props.refresher) {
@@ -196,6 +206,14 @@ const EditOutlet: React.FC<IEditOutlet> = props => {
               value={outletData.name}
               onChange={handleNameChange}
               label="Название"
+              variant="outlined"
+            />
+            <TextField
+              id="outletPhone"
+              className={classes.spaces}
+              value={outletData.phoneNumber}
+              onChange={handlePhoneChange}
+              label="Номер телефона"
               variant="outlined"
             />
             <TextField

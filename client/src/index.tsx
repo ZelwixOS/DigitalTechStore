@@ -6,6 +6,7 @@ import './index.css';
 import App from 'src/App';
 
 import reportWebVitals from './reportWebVitals';
+import Footer from './Components/Parts/Footer';
 
 ReactDOM.render(
   <React.StrictMode>

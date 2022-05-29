@@ -43,6 +43,7 @@ const EditWarehouse: React.FC<IEditWarehouse> = props => {
         streetName: res.streetName,
         building: res.building,
         postalCode: res.postalCode,
+        phoneNumber: res.phoneNumber,
       });
 
       const reg = regions.find(r => r.id === res.city.regionId);
@@ -73,6 +74,7 @@ const EditWarehouse: React.FC<IEditWarehouse> = props => {
     streetName: outletData.streetName,
     building: outletData.building,
     postalCode: outletData.postalCode,
+    phoneNumber: outletData.phoneNumber,
   });
 
   const [outletData, setOutletData] = React.useState({
@@ -81,6 +83,7 @@ const EditWarehouse: React.FC<IEditWarehouse> = props => {
     streetName: '',
     building: '',
     postalCode: '',
+    phoneNumber: '',
   });
 
   const [loading, setLoading] = React.useState(true);
@@ -111,6 +114,12 @@ const EditWarehouse: React.FC<IEditWarehouse> = props => {
   const handlePostalCodeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const data = cloneData();
     data.postalCode = event.target.value as string;
+    setOutletData(data);
+  };
+
+  const handlePhoneChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const data = cloneData();
+    data.phoneNumber = event.target.value as string;
     setOutletData(data);
   };
 
@@ -146,6 +155,7 @@ const EditWarehouse: React.FC<IEditWarehouse> = props => {
         outletData.streetName,
         outletData.building,
         outletData.postalCode,
+        outletData.phoneNumber,
       );
 
       if (res && props.refresher) {
@@ -186,6 +196,14 @@ const EditWarehouse: React.FC<IEditWarehouse> = props => {
               value={outletData.name}
               onChange={handleNameChange}
               label="Название"
+              variant="outlined"
+            />
+            <TextField
+              id="outletPhone"
+              className={classes.spaces}
+              value={outletData.phoneNumber}
+              onChange={handlePhoneChange}
+              label="Номер телефона"
               variant="outlined"
             />
             <TextField

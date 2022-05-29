@@ -174,13 +174,21 @@ async function createOutlet(
   building: string,
   postalCode: string,
   noteForUser: string,
+  phoneNumber: string,
 ) {
-  const data = { name, cityId, streetName, building, postalCode, noteForUser };
+  const data = { name, cityId, streetName, building, postalCode, noteForUser, phoneNumber };
   return await post(`/api/Estate/outlet`, data);
 }
 
-async function createWarehouse(name: string, cityId: number, streetName: string, building: string, postalCode: string) {
-  const data = { name, cityId, streetName, building, postalCode };
+async function createWarehouse(
+  name: string,
+  cityId: number,
+  streetName: string,
+  building: string,
+  postalCode: string,
+  phoneNumber: string,
+) {
+  const data = { name, cityId, streetName, building, postalCode, phoneNumber };
   return await post(`/api/Estate/warehouse`, data);
 }
 

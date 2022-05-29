@@ -14,6 +14,8 @@
 
         public string PostalCode { get; set; }
 
+        public string PhoneNumber { get; set; }
+
         public City City { get; set; }
     }
 }

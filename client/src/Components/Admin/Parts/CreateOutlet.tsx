@@ -58,6 +58,7 @@ const CreateOutlet: React.FC<ICreateOutlet> = props => {
     building: outletData.building,
     postalCode: outletData.postalCode,
     noteForUser: outletData.noteForUser,
+    phoneNumber: outletData.phoneNumber,
   });
 
   const [outletData, setOutletData] = React.useState({
@@ -67,6 +68,7 @@ const CreateOutlet: React.FC<ICreateOutlet> = props => {
     building: '',
     postalCode: '',
     noteForUser: '',
+    phoneNumber: '',
   });
 
   const [loading, setLoading] = React.useState(true);
@@ -97,6 +99,12 @@ const CreateOutlet: React.FC<ICreateOutlet> = props => {
   const handlePostalCodeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const data = cloneData();
     data.postalCode = event.target.value as string;
+    setOutletData(data);
+  };
+
+  const handlePhoneChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const data = cloneData();
+    data.phoneNumber = event.target.value as string;
     setOutletData(data);
   };
 
@@ -138,6 +146,7 @@ const CreateOutlet: React.FC<ICreateOutlet> = props => {
         outletData.building,
         outletData.postalCode,
         outletData.noteForUser,
+        outletData.phoneNumber,
       );
 
       if (res && props.refresher) {
@@ -178,6 +187,14 @@ const CreateOutlet: React.FC<ICreateOutlet> = props => {
               value={outletData.name}
               onChange={handleNameChange}
               label="Название"
+              variant="outlined"
+            />
+            <TextField
+              id="outletPhone"
+              className={classes.spaces}
+              value={outletData.phoneNumber}
+              onChange={handlePhoneChange}
+              label="Номер телефона"
               variant="outlined"
             />
             <TextField
