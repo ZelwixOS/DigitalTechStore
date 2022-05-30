@@ -7,6 +7,7 @@ import { DataGraph } from 'src/Components/Admin/Parts/DataGraph';
 import SalesTimeStatistics from 'src/Types/SalesTimeStatistics';
 import { DonutSalesStatisticsDiagram } from 'src/Components/Admin/Parts/DonutSalesStatisticsDiagram';
 import SalesStatistics from 'src/Types/SalesStatistics';
+import CreateFileReport from 'src/Components/Admin/Parts/CreateFileReport';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -202,6 +203,11 @@ export const AdminPage = () => {
             </Paper>
           </Grid>
         </Grid>
+        <Divider />
+        <Typography variant="h4" align="center" className={classes.title}>
+          Сформировать отчёт за период
+        </Typography>
+        <CreateFileReport />
       </List>
     </React.Fragment>
   );

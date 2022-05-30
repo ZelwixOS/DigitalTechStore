@@ -12,5 +12,7 @@
         SalesStatisticsForPeriod GetSalesForMonth(User user, StatisticsType type);
 
         SalesStatisticsForPeriod GetSalesTotal(User user, StatisticsType type);
+
+        string GetStatFile(User user, string fromStr, string toStr);
     }
 }

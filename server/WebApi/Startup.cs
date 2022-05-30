@@ -1,6 +1,8 @@
 namespace WebApi
 {
     using System;
+    using System.IO;
+    using System.Net;
     using System.Threading.Tasks;
     using Application.Helpers;
     using Application.Interfaces;
@@ -19,6 +21,7 @@ namespace WebApi
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.FileProviders;
     using Microsoft.Extensions.Hosting;
     using Microsoft.OpenApi.Models;
 
@@ -221,10 +224,24 @@ namespace WebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
             }
 
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
-
             app.UseAuthentication();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(System.IO.Path.Combine(env.ContentRootPath, "Docs")),
+                RequestPath = "/Docs",
+                OnPrepareResponse = ctx =>
+                {
+                    if (!ctx.Context.User.IsInRole(Constants.RoleManager.Admin) && !ctx.Context.User.IsInRole(Constants.RoleManager.Manager))
+                    {
+                        ctx.Context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        ctx.Context.Response.ContentLength = 0;
+                        ctx.Context.Response.Body = Stream.Null;
+                    }
+                },
+            });
+
+            app.UseSpaStaticFiles();
 
             app.UseRouting();
 

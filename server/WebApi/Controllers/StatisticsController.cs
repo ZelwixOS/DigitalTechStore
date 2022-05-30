@@ -47,5 +47,19 @@
             var user = await _accountService.GetCurrentUserAsync(HttpContext);
             return this.Ok(_statisticService.GetSalesTotal(user, type));
         }
+
+        [HttpGet("statForPeriod")]
+        [Authorize(Roles = Constants.AuthManager.AdminManager)]
+        public async Task<ActionResult<SalesStatisticsForPeriod>> GetStatFile([FromQuery] string fromDate, string toDate)
+        {
+            var user = await _accountService.GetCurrentUserAsync(HttpContext);
+            var adress = _statisticService.GetStatFile(user, fromDate, toDate);
+            if (adress != null)
+            {
+                adress = adress.Replace('\\', '/').Substring(1);
+            }
+
+            return this.Ok(adress);
+        }
     }
 }
