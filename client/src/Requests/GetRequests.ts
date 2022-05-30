@@ -252,6 +252,12 @@ async function getCityOulets() {
   return await getRequest(`/api/Estate/outlets/${cityId}`);
 }
 
+async function getStatFile(fromDate: Date, toDate: Date) {
+  return await getRequest(
+    `/api/Statistics/statForPeriod?fromDate=${fromDate.toISOString()}&toDate=${toDate.toISOString()}`,
+  );
+}
+
 export default getRequest;
 
 export {
@@ -301,4 +307,5 @@ export {
   getMonthSales,
   getTotalSales,
   getCityOulets,
+  getStatFile,
 };

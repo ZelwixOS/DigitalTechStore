@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
+    using System.IO;
     using System.Linq;
     using Application.DTO.Response.Statistics;
     using Application.Helpers;
@@ -9,10 +11,14 @@
 
     using Domain.Models;
     using Domain.Repository;
+    using NPOI.SS.UserModel;
+    using NPOI.XSSF.UserModel;
 
     public class StatisticsService : IStatisticsService
     {
         private readonly IPurchaseRepository purchaseRepository;
+
+        private readonly string directory = ".\\Docs\\reports\\";
 
         public StatisticsService(IPurchaseRepository purchaseRepository)
         {
@@ -43,6 +49,48 @@
             var stats = this.GetSales(total, user.OutletId, type);
 
             return stats;
+        }
+
+        public string GetStatFile(User user, string fromStr, string toStr)
+        {
+            if (fromStr == null || toStr == null)
+            {
+                return null;
+            }
+
+            DateTime to;
+            DateTime from;
+
+            if (!DateTime.TryParse(fromStr, out from) || !DateTime.TryParse(toStr, out to))
+            {
+                return null;
+            }
+
+            var name = $"{directory}statistics_outlet_{user.OutletId}_from_{from.ToShortDateString()}_to_{to.ToShortDateString()}.xlsx";
+
+            var items = this.purchaseRepository
+                .GetItems()
+                .Where(p => p.CreatedDate > from && p.CreatedDate < to && p.OutletId == user.OutletId && p.Status == PurchaseStatus.Finished)
+                .SelectMany(p => p.PurchaseItems);
+
+            var grouppedItems = items.GroupBy(p => new { p.ProductId, ProductName = p.Product.Name, Code = p.Product.VendorCode, Category = p.Product.Category.Name });
+
+            var orderedPreItems = grouppedItems
+                .Select(p => new StatClass()
+                {
+                    ProductName = p.Key.ProductName,
+                    ProductId = p.Key.ProductId,
+                    Category = p.Key.Category,
+                    Count = p.Select(r => r.Count).Sum(),
+                    Sum = p.Select(r => r.Sum).Sum(),
+                    Code = p.Key.Code,
+                })
+                .OrderBy(p => p.Sum)
+                .ToList();
+
+            CreateExcel(name, orderedPreItems);
+
+            return name;
         }
 
         protected SalesStatisticsForPeriod GetSales(IQueryable<Purchase> purchase, int? outletId, StatisticsType type)
@@ -98,6 +146,84 @@
             }
 
             return getter;
+        }
+
+        protected void CreateExcel(string name, List<StatClass> items)
+        {
+            if (File.Exists(name))
+            {
+                return;
+            }
+
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            else
+            {
+                if (Directory.GetFiles(directory).Length > 500)
+                {
+                    Directory.Delete(directory, true);
+                }
+            }
+
+            using (var fs = new FileStream(name, FileMode.Create, FileAccess.Write))
+            {
+                IWorkbook workbook = new XSSFWorkbook();
+                ISheet excelSheet = workbook.CreateSheet("Статистика за период");
+
+                List<string> columns = new List<string>()
+                {
+                    "Продукт",
+                    "Категория",
+                    "Продано за период (шт.)",
+                    "Общая выручка (руб.)",
+                    "Артикул",
+                };
+
+                IRow row = excelSheet.CreateRow(0);
+                int columnIndex = 0;
+
+                foreach (string column in columns)
+                {
+                    row.CreateCell(columnIndex).SetCellValue(column);
+                    columnIndex++;
+                }
+
+                int rowIndex = 1;
+                ICell cell;
+                foreach (var item in items)
+                {
+                    row = excelSheet.CreateRow(rowIndex);
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        cell = row.CreateCell(i);
+                        switch (i)
+                        {
+                            case 0:
+                                cell.SetCellValue(item.ProductName);
+                                break;
+                            case 1:
+                                cell.SetCellValue(item.Category);
+                                break;
+                            case 2:
+                                cell.SetCellValue(item.Count);
+                                break;
+                            case 3:
+                                cell.SetCellValue(decimal.ToDouble(item.Sum));
+                                break;
+                            case 4:
+                                cell.SetCellValue(item.Code);
+                                break;
+                        }
+                    }
+
+                    rowIndex++;
+                }
+
+                workbook.Write(fs);
+            }
         }
     }
 }
