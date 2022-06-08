@@ -2,12 +2,14 @@ import React from 'react';
 import { createStyles, Divider, Grid, List, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
 
 import NavigationBar from 'src/Components/Admin/Parts/NavigationBar';
-import { getMonthSales, getOrdersForMonth, getTotalSales } from 'src/Requests/GetRequests';
+import { getMonthSales, getOrdersForMonth, getTotalSales, getWorkersSales } from 'src/Requests/GetRequests';
 import { DataGraph } from 'src/Components/Admin/Parts/DataGraph';
 import SalesTimeStatistics from 'src/Types/SalesTimeStatistics';
 import { DonutSalesStatisticsDiagram } from 'src/Components/Admin/Parts/DonutSalesStatisticsDiagram';
 import SalesStatistics from 'src/Types/SalesStatistics';
 import CreateFileReport from 'src/Components/Admin/Parts/CreateFileReport';
+import { DonutSellers } from 'src/Components/Admin/Parts/DonutSellers';
+import WorkersSales from 'src/Types/WorkersSales';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,6 +42,10 @@ export const AdminPage = () => {
     const resPrCTA = await getTotalSales(1);
     const resMATA = await getTotalSales(2);
 
+    const resPFMW = await getWorkersSales(0);
+    const resPrCFMW = await getWorkersSales(1);
+    const resMAFMW = await getWorkersSales(2);
+
     if (isMounted) {
       setPurchasesForMonth(arrDateParser(resPFM));
       setProductsForMonth(arrDateParser(resPrCFM));
@@ -52,6 +58,10 @@ export const AdminPage = () => {
       setPurchasesTotalAll(resPTA);
       setProductsTotalAll(resPrCTA);
       setMoneyTotalAll(resMATA);
+
+      setPurchasesWorkers(resPFMW);
+      setProductsWorkers(resPrCFMW);
+      setMoneyWorkers(resMAFMW);
     }
   };
 
@@ -96,6 +106,12 @@ export const AdminPage = () => {
   const [purchasesTotalAll, setPurchasesTotalAll] = React.useState<SalesStatistics>(getDefaultSalesStat());
   const [productsTotalAll, setProductsTotalAll] = React.useState<SalesStatistics>(getDefaultSalesStat());
   const [moneyTotalAll, setMoneyTotalAll] = React.useState<SalesStatistics>(getDefaultSalesStat());
+
+  const [purchasesWorkers, setPurchasesWorkers] = React.useState<WorkersSales>({ names: [], data: [] });
+  const [productsWorkers, setProductsWorkers] = React.useState<WorkersSales>({ names: [], data: [] });
+  const [moneyWorkers, setMoneyWorkers] = React.useState<WorkersSales>({ names: [], data: [] });
+
+  const role = sessionStorage.getItem('signed');
 
   return (
     <React.Fragment>
@@ -204,6 +220,43 @@ export const AdminPage = () => {
           </Grid>
         </Grid>
         <Divider />
+        {role !== 'Admin' && purchasesWorkers?.data?.length > 0 && (
+          <React.Fragment>
+            <Typography variant="h4" align="center" className={classes.title}>
+              Продажи работников
+            </Typography>
+            <Grid container direction="row" justifyContent="space-evenly" className={classes.mainGrid}>
+              <Grid item xs={12} sm={4} container justifyContent="center">
+                <Paper elevation={3}>
+                  <DonutSellers
+                    colors={['#906CD7', '#7746D7', '#2A0671', '#482A83']}
+                    data={purchasesWorkers}
+                    name="Статистика заказов"
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={4} container justifyContent="center">
+                <Paper elevation={3}>
+                  <DonutSellers
+                    colors={['#FFBE73', '#FFA640', '#A65900', '#FF8900']}
+                    data={productsWorkers}
+                    name="Статистика продуктов"
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={4} container justifyContent="center">
+                <Paper elevation={3}>
+                  <DonutSellers
+                    colors={['#B0F26D', '#98F23D', '#4B9500', '#6CAC2B']}
+                    data={moneyWorkers}
+                    name="Статистика выручки"
+                  />
+                </Paper>
+              </Grid>
+            </Grid>
+            <Divider />
+          </React.Fragment>
+        )}
         <Typography variant="h4" align="center" className={classes.title}>
           Сформировать отчёт за период
         </Typography>

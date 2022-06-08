@@ -15,6 +15,7 @@ import SalesStatistics from 'src/Types/SalesStatistics';
 import SalesTimeStatistics from 'src/Types/SalesTimeStatistics';
 import Sorting from 'src/Types/Sorting';
 import Warehouse from 'src/Types/Warehouse';
+import WorkersSales from 'src/Types/WorkersSales';
 
 async function getRequest(url: string) {
   return (await axios.get(url)).data;
@@ -258,6 +259,10 @@ async function getStatFile(fromDate: Date, toDate: Date) {
   );
 }
 
+async function getWorkersSales(type: number) {
+  return (await getRequest(`/api/Statistics/workersSales/${type}`)) as WorkersSales;
+}
+
 export default getRequest;
 
 export {
@@ -308,4 +313,5 @@ export {
   getTotalSales,
   getCityOulets,
   getStatFile,
+  getWorkersSales,
 };

@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Application.DTO.Response;
     using Application.DTO.Response.Statistics;
     using Application.Helpers;
     using Application.Interfaces;
@@ -38,6 +39,14 @@
         {
             var user = await _accountService.GetCurrentUserAsync(HttpContext);
             return this.Ok(_statisticService.GetSalesForMonth(user, type));
+        }
+
+        [HttpGet("workersSales/{type}")]
+        [Authorize(Roles = Constants.AuthManager.Manager)]
+        public async Task<ActionResult<WorkersSales>> GetWorkerSalesForMonth(StatisticsType type)
+        {
+            var user = await _accountService.GetCurrentUserAsync(HttpContext);
+            return this.Ok(_statisticService.GetWorkersSalesForMonth(user, type));
         }
 
         [HttpGet("totalSales/{type}")]

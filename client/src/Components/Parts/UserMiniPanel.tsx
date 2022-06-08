@@ -132,7 +132,7 @@ const UserMiniPanel: React.FC = () => {
                       <Typography variant="h5">Администрирование</Typography>
                     </MenuItem>
                   )}
-                  {(userInfo.role === 'ShopAssistant' || userInfo.role === 'Manager') && (
+                  {(userInfo.role === 'ShopAssistant' || userInfo.role === 'Manager' || userInfo.role === 'Admin') && (
                     <React.Fragment>
                       <MenuItem
                         className={classes.item}

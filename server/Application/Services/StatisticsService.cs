@@ -5,6 +5,7 @@
     using System.Data;
     using System.IO;
     using System.Linq;
+    using Application.DTO.Response;
     using Application.DTO.Response.Statistics;
     using Application.Helpers;
     using Application.Interfaces;
@@ -39,6 +40,16 @@
             DateTime from = to.AddDays(-31);
             var inPeriod = this.purchaseRepository.GetItems().Where(p => p.CreatedDate > from && p.CreatedDate < to);
             var stats = this.GetSales(inPeriod, user.OutletId, type);
+
+            return stats;
+        }
+
+        public WorkersSales GetWorkersSalesForMonth(User user, StatisticsType type)
+        {
+            DateTime to = DateTime.Today.AddDays(1);
+            DateTime from = to.AddDays(-31);
+            var inPeriod = this.purchaseRepository.GetItems().Where(p => p.CreatedDate > from && p.CreatedDate < to);
+            var stats = this.GetWorkersSales(inPeriod, user.OutletId, type);
 
             return stats;
         }
@@ -108,6 +119,28 @@
             stats.Refused = getter(purch.Where(p => p.Status == PurchaseStatus.Refused));
 
             return stats;
+        }
+
+        protected WorkersSales GetWorkersSales(IQueryable<Purchase> purchase, int? outletId, StatisticsType type)
+        {
+            var purchases = purchase.Where(p => p.OutletId == outletId && p.Status == PurchaseStatus.Finished);
+            var sellers = purchase.Where(p => p.OutletId == outletId && p.Status == PurchaseStatus.Finished).Select(p => p.Seller);
+
+            if (sellers.Count() < 1)
+            {
+                return null;
+            }
+
+            var getter = this.DataGetter(type);
+
+            var res = new WorkersSales();
+            foreach (var seller in sellers)
+            {
+                res.Names.Add($"{seller.SecondName} {seller.FirstName} ({seller.UserName})");
+                res.Data.Add(getter(purchases.Where(p => p.SellerId == seller.Id)));
+            }
+
+            return res;
         }
 
         protected List<SalesTimeStatistics> GetOrdersForPeriod(DateTime from, DateTime to, int? outletId, StatisticsType type, bool finished)

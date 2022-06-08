@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class UnitProduct
+    public abstract class UnitProduct
     {
         public Guid Id { get; set; }
 

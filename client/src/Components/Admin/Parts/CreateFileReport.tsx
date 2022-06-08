@@ -3,8 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import { Button, createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
-import { KeyboardDatePicker } from '@material-ui/pickers';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 import { getStatFile } from 'src/Requests/GetRequests';
 
