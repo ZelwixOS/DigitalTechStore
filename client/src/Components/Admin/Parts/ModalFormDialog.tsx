@@ -21,7 +21,7 @@ const ModalFormDialog: React.FC<IModalFormDialog> = props => {
       aria-labelledby="create-dialog-title"
       aria-describedby="create-dialog-description"
     >
-      <Grid container>
+      <Grid container direction="column">
         <DialogTitle id="create-dialog-title">
           <Grid item xs={12} sm={12} container direction="row" justifyContent="flex-start">
             <IconButton onClick={handleClose}>

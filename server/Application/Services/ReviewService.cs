@@ -38,6 +38,15 @@
                 return null;
             }
 
+            product.Category = null;
+            product.ProductParameters = null;
+            product.CartItems = null;
+            product.OutletProducts = null;
+            product.WarehouseProducts = null;
+            product.OutletsReserved = null;
+            product.WarehousesReserved = null;
+            product.PurchaseItems = null;
+
             product.Mark = ((product.Mark * product.Popularity) + review.Mark) / (product.Popularity + 1);
             product.Popularity++;
 
